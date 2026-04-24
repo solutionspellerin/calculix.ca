@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="À propos de Calculix.ca — outil gratuit trilingue (FR/EN/ES) pour calculer les pourboires et les projections d'investissement au Québec.">
+<title>À propos — About | Calculix.ca</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ads.css?v=20260424d">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451" crossorigin="anonymous"></script>
+<script src="assets/site-config.js?v=20260424c"></script>
+<style>
+  :root { --bleu:#1a3a5c; --bleu-clair:#2d6a9f; --accent:#e8c547; --vert:#2f8f5f; --fond:#f4f1eb; --blanc:#ffffff; --gris:#8a8a8a; --gris-clair:#e8e4dc; --texte:#1a1a1a; --ombre:0 4px 24px rgba(26,58,92,0.10); }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'DM Sans',sans-serif; background:var(--fond); color:var(--texte); min-height:100vh; display:flex; flex-direction:column; align-items:center; }
+  header { width:100%; background:var(--bleu); padding:18px 32px; display:flex; align-items:center; justify-content:space-between; }
+  .logo { font-family:'Playfair Display',serif; color:var(--accent); font-size:1.3rem; letter-spacing:0.03em; text-decoration:none; }
+  .logo span { color:var(--blanc); font-weight:300; }
+  .lang-toggle { display:flex; align-items:center; gap:10px; }
+  .lang-label { color:rgba(255,255,255,0.5); font-size:0.8rem; letter-spacing:0.05em; }
+  nav.site-nav { width:100%; background:#142d47; border-bottom:2px solid rgba(232,197,71,0.2); }
+  nav.site-nav .nav-inner { max-width:960px; margin:0 auto; display:flex; align-items:center; padding:0 16px; gap:4px; overflow-x:auto; }
+  nav.site-nav .nav-link { display:inline-block; padding:12px 18px; color:rgba(255,255,255,0.6); font-size:0.85rem; font-weight:500; text-decoration:none; letter-spacing:0.03em; white-space:nowrap; border-bottom:2px solid transparent; transition:color 0.2s,border-color 0.2s; }
+  nav.site-nav .nav-link:hover { color:var(--blanc); }
+  nav.site-nav .nav-link.active { color:var(--accent); border-bottom-color:var(--accent); }
+  main { width:100%; max-width:860px; padding:48px 24px 80px; }
+  nav.breadcrumb { font-size:0.8rem; color:var(--gris); margin-bottom:28px; }
+  nav.breadcrumb a { color:var(--bleu-clair); text-decoration:none; }
+  .page-header { margin-bottom:40px; padding-bottom:24px; border-bottom:2px solid var(--gris-clair); }
+  .page-header h1 { font-family:'Playfair Display',serif; font-size:2.2rem; color:var(--bleu); margin-bottom:8px; }
+  .hero-box { background:var(--bleu); border-radius:16px; padding:36px 40px; margin-bottom:40px; position:relative; overflow:hidden; }
+  .hero-box::before { content:''; position:absolute; right:-40px; top:-40px; width:160px; height:160px; border-radius:50%; background:rgba(232,197,71,0.10); }
+  .hero-box p { font-size:1.1rem; line-height:1.8; color:rgba(255,255,255,0.85); position:relative; z-index:1; }
+  .hero-box p strong { color:var(--accent); }
+  .section { margin-bottom:36px; }
+  .section h2 { font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--bleu); margin-bottom:12px; padding-left:14px; border-left:3px solid var(--accent); }
+  .section p { font-size:0.95rem; line-height:1.8; color:#333; margin-bottom:10px; }
+  .cards-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-top:16px; }
+  .mini-card { background:var(--blanc); border-radius:12px; padding:22px; box-shadow:var(--ombre); border-top:3px solid var(--accent); }
+  .mini-card.green { border-top-color:var(--vert); }
+  .mini-card.blue { border-top-color:var(--bleu-clair); }
+  .mini-card .emoji { font-size:1.6rem; margin-bottom:10px; }
+  .mini-card h3 { font-size:1rem; font-weight:600; color:var(--bleu); margin-bottom:6px; }
+  .mini-card p { font-size:0.85rem; color:var(--gris); line-height:1.6; }
+  .disclaimer-box { background:var(--blanc); border-radius:12px; border-left:4px solid #e8a147; padding:20px 24px; margin-top:16px; box-shadow:var(--ombre); font-size:0.88rem; line-height:1.7; color:#555; }
+  .affiliate-box { background:#fff7e0; border-left:4px solid var(--accent); border-radius:10px; padding:18px 22px; margin-top:14px; font-size:0.88rem; line-height:1.7; color:#444; }
+  a { color:var(--bleu-clair); }
+  footer { width:100%; background:var(--bleu); padding:18px 32px; text-align:center; color:rgba(255,255,255,0.4); font-size:0.78rem; margin-top:auto; }
+  footer a { color:rgba(255,255,255,0.5); text-decoration:none; margin:0 8px; }
+  footer a:hover { color:var(--accent); }
+  .footer-links { margin-bottom:8px; }
+  @media (max-width:480px) { .cards-grid { grid-template-columns:1fr; } header { padding:14px 16px; } .lang-label { display:none; } }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Calcul<span>ix</span>.ca</a>
+  <div class="lang-toggle">
+    <span class="lang-label" id="headerSubtitle">Calculs financiers gratuits · Québec</span>
+    <div class="lang-toggle-3" onclick="cycleLang()" id="langToggle">
+      <span class="lang-opt active" data-lang="fr">FR</span>
+      <span class="lang-opt" data-lang="en">EN</span>
+      <span class="lang-opt" data-lang="es">ES</span>
+    </div>
+  </div>
+</header>
+
+<nav class="site-nav"><div class="nav-inner" id="siteNav"></div></nav>
+
+<main>
+  <nav class="breadcrumb"><a href="index.html">Calculix.ca</a> › <span id="breadcrumbLabel">À propos</span></nav>
+  <div class="page-header"><h1 id="pageTitle">À propos de Calculix.ca</h1></div>
+
+  <div class="hero-box"><p id="heroText"></p></div>
+
+  <div class="section"><h2 id="s1title">Notre mission</h2><p id="s1p1"></p></div>
+
+  <div class="section">
+    <h2 id="s2title">Nos calculatrices</h2>
+    <div class="cards-grid">
+      <div class="mini-card green"><div class="emoji">💵</div><h3 id="c1title"></h3><p id="c1desc"></p></div>
+      <div class="mini-card blue"><div class="emoji">📈</div><h3 id="c2title"></h3><p id="c2desc"></p></div>
+    </div>
+  </div>
+
+  <div class="section"><h2 id="s3title">Avertissement important</h2><div class="disclaimer-box" id="disclaimerText"></div></div>
+
+  <div class="section">
+    <h2 id="affTitle">Partenariats & affiliation</h2>
+    <div class="affiliate-box" id="affBody"></div>
+  </div>
+
+  <div class="section"><h2 id="s4title">Contact</h2><p id="s4p1"></p></div>
+
+  <!-- Pubs -->
+  <div class="ads-row" id="bottomAds" style="margin-top:28px;"></div>
+</main>
+
+<footer>
+  <div class="footer-links" id="footerLinks"></div>
+  <div id="footerText">© 2026 Calculix.ca — Outil informatif uniquement. Consultez un professionnel pour votre situation personnelle.</div>
+  <div style="margin-top:6px;"><a href="mailto:info@calculix.ca" style="color:rgba(255,255,255,0.5);">info@calculix.ca</a></div>
+</footer>
+
+<script>
+const ACTIVE_PAGE = 'about';
+let lang = 'fr';
+
+const i18n = {
+  fr: {
+    headerSubtitle: 'Calculs financiers gratuits · Québec',
+    breadcrumb: 'À propos', pageTitle: 'À propos de Calculix.ca',
+    heroText: 'Calculix.ca est un <strong>outil gratuit</strong> qui rassemble des calculatrices financières populaires — séparation de pourboires (équitable ou selon les heures travaillées) et projection d\'investissement (capital initial, cotisations récurrentes, rendement composé).',
+    s1title: 'Notre mission',
+    s1p1: "Bien gérer son argent ne devrait pas nécessiter un logiciel payant ou un abonnement. Notre mission est simple : offrir un outil clair, précis et trilingue (français, anglais, espagnol) pour faire les calculs du quotidien en quelques secondes, sans inscription, sans frais et sans collecte de vos données.",
+    s2title: 'Nos calculatrices',
+    c1title: 'Séparation de pourboires',
+    c1desc: "Partagez un pot de pourboires équitablement entre les membres de l'équipe, ou au prorata des heures travaillées. Affichage détaillé par personne. Inclut aussi un calculateur de pourboire au restaurant (10% / 15% / 18% / 20%).",
+    c2title: 'Projection d\'investissement',
+    c2desc: "Simulez la croissance de vos placements sur une durée donnée, ou calculez combien de temps il vous faudra pour atteindre un objectif (1 M$, mise de fonds, études). Capital initial + cotisations récurrentes (jour/semaine/mois/année) + rendement composé.",
+    s3title: 'Avertissement important',
+    disclaimerText: "⚠️ Les calculs fournis par Calculix.ca sont à titre informatif seulement. Ils ne constituent pas un avis financier, fiscal, juridique ni professionnel. Les rendements réels d'un placement varient selon les marchés et ne sont pas garantis. Les règles fiscales (REER, CELI, REEE) peuvent changer et dépendent de votre situation personnelle. Consultez toujours un conseiller financier, comptable ou fiscaliste qualifié avant de prendre une décision d'investissement importante.",
+    affTitle: 'Partenariats & affiliation',
+    affBody: "Pour maintenir Calculix.ca gratuit, nous affichons quelques annonces et participons à des programmes d'affiliation. <strong>En tant que Partenaire Amazon, Calculix.ca réalise un bénéfice sur les achats remplissant les conditions requises.</strong> Nous participons également au programme d'affiliation de <a href=\"https://lecfomasque.com/ref/107/\" target=\"_blank\" rel=\"sponsored noopener\">Le CFO masqué</a> (formations Excel &amp; Power BI). Ces liens ne vous coûtent rien de plus — merci pour votre soutien!",
+    s4title: 'Contact', s4p1: 'Vous avez une suggestion ou une erreur à signaler ? Écrivez-nous à ',
+  },
+  en: {
+    headerSubtitle: 'Free financial calculators · Québec',
+    breadcrumb: 'About', pageTitle: 'About Calculix.ca',
+    heroText: 'Calculix.ca is a <strong>free tool</strong> that bundles popular financial calculators — tip splitting (evenly or by hours worked) and investment projections (starting capital, recurring contributions, compound returns).',
+    s1title: 'Our Mission',
+    s1p1: "Managing money well shouldn't require paid software or a subscription. Our mission is simple: provide a clear, precise, trilingual (French, English, Spanish) tool for everyday calculations in seconds — no signup, no fees, and no data collection.",
+    s2title: 'Our Calculators',
+    c1title: 'Tip Splitting',
+    c1desc: "Split a tip pool evenly across the team, or prorate it by hours worked. Detailed breakdown per person. Also includes a restaurant tip calculator (10% / 15% / 18% / 20%).",
+    c2title: 'Investment Projection',
+    c2desc: "Project the growth of your savings over a chosen duration, or compute how long it will take to reach a goal ($1M, down payment, tuition). Initial capital + recurring contributions (daily/weekly/monthly/yearly) + compound returns.",
+    s3title: 'Important Disclaimer',
+    disclaimerText: "⚠️ Calculations provided by Calculix.ca are for informational purposes only. They do not constitute financial, tax, legal, or professional advice. Actual investment returns vary with the markets and are not guaranteed. Tax rules (RRSP, TFSA, RESP) can change and depend on your personal situation. Always consult a qualified financial advisor, accountant, or tax professional before making a significant investment decision.",
+    affTitle: 'Partnerships & affiliation',
+    affBody: "To keep Calculix.ca free, we display a few ads and participate in affiliate programs. <strong>As an Amazon Associate, Calculix.ca earns from qualifying purchases.</strong> We also participate in the <a href=\"https://lecfomasque.com/ref/107/\" target=\"_blank\" rel=\"sponsored noopener\">Le CFO masqué</a> affiliate program (Excel &amp; Power BI training). These links cost you nothing extra — thank you for your support!",
+    s4title: 'Contact', s4p1: 'Have a suggestion or error to report? Write to us at ',
+  },
+  es: {
+    headerSubtitle: 'Calculadoras financieras gratuitas · Québec',
+    breadcrumb: 'Acerca de', pageTitle: 'Acerca de Calculix.ca',
+    heroText: 'Calculix.ca es una <strong>herramienta gratuita</strong> que reúne calculadoras financieras populares — división de propinas (equitativa o según las horas trabajadas) y proyección de inversiones (capital inicial, aportes recurrentes, rendimiento compuesto).',
+    s1title: 'Nuestra misión',
+    s1p1: "Administrar bien el dinero no debería requerir software de pago ni suscripciones. Nuestra misión es simple: ofrecer una herramienta clara, precisa y trilingüe (francés, inglés, español) para los cálculos diarios, en segundos, sin registro, sin costo y sin recopilar sus datos.",
+    s2title: 'Nuestras calculadoras',
+    c1title: 'División de propinas',
+    c1desc: "Reparta un fondo de propinas de forma equitativa entre el equipo, o prorratéelo según las horas trabajadas. Desglose detallado por persona. También incluye una calculadora de propina de restaurante (10% / 15% / 18% / 20%).",
+    c2title: 'Proyección de inversión',
+    c2desc: "Proyecte el crecimiento de sus ahorros en el plazo que elija, o calcule cuánto tiempo le tomará alcanzar una meta ($1M, entrada de casa, estudios). Capital inicial + aportes recurrentes (día/semana/mes/año) + rendimiento compuesto.",
+    s3title: 'Aviso importante',
+    disclaimerText: "⚠️ Los cálculos proporcionados por Calculix.ca son solo con fines informativos. No constituyen asesoramiento financiero, fiscal, legal ni profesional. Los rendimientos reales de una inversión varían según los mercados y no están garantizados. Las reglas fiscales (RRSP, TFSA, RESP) pueden cambiar y dependen de su situación personal. Consulte siempre a un asesor financiero, contador o fiscalista calificado antes de tomar una decisión de inversión importante.",
+    affTitle: 'Asociaciones y afiliación',
+    affBody: "Para mantener Calculix.ca gratuito, mostramos algunos anuncios y participamos en programas de afiliados. <strong>Como Afiliado de Amazon, Calculix.ca obtiene ingresos por compras que cumplan los requisitos.</strong> También participamos en el programa de afiliados de <a href=\"https://lecfomasque.com/ref/107/\" target=\"_blank\" rel=\"sponsored noopener\">Le CFO masqué</a> (formaciones Excel &amp; Power BI). Estos enlaces no le cuestan nada extra — ¡gracias por su apoyo!",
+    s4title: 'Contacto', s4p1: '¿Tiene una sugerencia o un error que reportar? Escríbanos a ',
+  }
+};
+
+function renderAll() {
+  if (!window.CXSite) return;
+  CXSite.renderNav(lang, ACTIVE_PAGE, 'siteNav');
+  CXSite.renderFooterLinks(lang, 'footerLinks');
+  var ads = document.getElementById('bottomAds');
+  if (ads) ads.innerHTML = CXSite.amazonAd(lang) + CXSite.cfoMasqueAd(lang) + CXSite.alchimixAd(lang);
+}
+
+function cycleLang() {
+  lang = CXSite.cycleLang(lang);
+  CXSite.setStoredLang(lang);
+  document.documentElement.lang = lang;
+  document.body.className = 'lang-' + lang;
+  document.querySelectorAll('#langToggle .lang-opt').forEach(function(o){
+    o.classList.toggle('active', o.dataset.lang === lang);
+  });
+  applyTranslations();
+}
+
+function applyTranslations() {
+  var t = i18n[lang];
+  var setText = function(id, val) { var el = document.getElementById(id); if (el) el.textContent = val; };
+  var setHtml = function(id, val) { var el = document.getElementById(id); if (el) el.innerHTML = val; };
+  setText('headerSubtitle', t.headerSubtitle);
+  setText('breadcrumbLabel', t.breadcrumb);
+  setText('pageTitle', t.pageTitle);
+  setHtml('heroText', t.heroText);
+  setText('s1title', t.s1title);
+  setText('s1p1', t.s1p1);
+  setText('s2title', t.s2title);
+  setText('c1title', t.c1title); setText('c1desc', t.c1desc);
+  setText('c2title', t.c2title); setText('c2desc', t.c2desc);
+  setText('s3title', t.s3title);
+  setText('disclaimerText', t.disclaimerText);
+  setText('affTitle', t.affTitle);
+  setHtml('affBody', t.affBody);
+  setText('s4title', t.s4title);
+  var s4 = document.getElementById('s4p1');
+  if (s4) s4.innerHTML = t.s4p1 + '<a href="mailto:info@calculix.ca">info@calculix.ca</a>.';
+  var ft = document.getElementById('footerText');
+  if (ft && window.CXSite && CXSite.SHARED && CXSite.SHARED[lang] && CXSite.SHARED[lang].footerText) {
+    ft.textContent = CXSite.SHARED[lang].footerText;
+  }
+  renderAll();
+}
+
+function initAboutPage() {
+  try {
+    if (window.CXSite && typeof CXSite.getStoredLang === 'function') {
+      lang = CXSite.getStoredLang() || 'fr';
+    }
+  } catch(e) { lang = 'fr'; }
+  document.documentElement.lang = lang;
+  document.body.className = 'lang-' + lang;
+  document.querySelectorAll('#langToggle .lang-opt').forEach(function(o){
+    o.classList.toggle('active', o.dataset.lang === lang);
+  });
+  try { applyTranslations(); } catch(e) { console.warn('applyTranslations about:', e); }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAboutPage);
+} else {
+  initAboutPage();
+}
+</script>
+
+<!-- Filet de sécurité : garantit menu, footer, pubs et contenu traduit -->
+<script>
+(function(){
+  function safetyRender() {
+    try {
+      if (!window.CXSite) return;
+      var curLang = (typeof lang === 'string' && lang) ? lang : 'fr';
+      var nav = document.getElementById('siteNav');
+      if (nav && nav.innerHTML.trim().length === 0) {
+        CXSite.renderNav(curLang, 'about', 'siteNav');
+      }
+      var fl = document.getElementById('footerLinks');
+      if (fl && fl.innerHTML.trim().length === 0) {
+        CXSite.renderFooterLinks(curLang, 'footerLinks');
+      }
+      var ads = document.getElementById('bottomAds');
+      if (ads && ads.innerHTML.trim().length === 0) {
+        ads.innerHTML = CXSite.amazonAd(curLang) + CXSite.cfoMasqueAd(curLang) + CXSite.alchimixAd(curLang);
+      }
+      var hero = document.getElementById('heroText');
+      if (hero && hero.innerHTML.trim().length === 0 && typeof applyTranslations === 'function') {
+        try { applyTranslations(); } catch(e) {}
+      }
+    } catch(e) { console.warn('safetyRender about:', e); }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', safetyRender);
+  } else {
+    safetyRender();
+  }
+  window.addEventListener('load', safetyRender);
+})();
+</script>
+
+</body>
+</html>

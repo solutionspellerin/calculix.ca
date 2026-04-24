@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Calculix.ca — calculateurs financiers gratuits : séparation de pourboires (équitable ou selon les heures) et projection d'investissement avec rendement composé.">
+<title>Calculix.ca — Calculateurs financiers gratuits | Québec</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ads.css?v=20260424a">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451" crossorigin="anonymous"></script>
+<style>
+  :root {
+    --bleu: #1a3a5c; --bleu-clair: #2d6a9f; --accent: #e8c547;
+    --vert: #2f8f5f; --vert-clair: #4db37f;
+    --fond: #f4f1eb; --blanc: #ffffff; --gris: #8a8a8a;
+    --gris-clair: #e8e4dc; --texte: #1a1a1a;
+    --ombre: 0 4px 24px rgba(26,58,92,0.10);
+    --ombre-h: 0 10px 40px rgba(26,58,92,0.18);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--fond); color: var(--texte); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+
+  header { width: 100%; background: var(--bleu); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1.35rem; letter-spacing: 0.03em; text-decoration: none; }
+  .logo span { color: var(--blanc); font-weight: 300; }
+  .header-right { display: flex; align-items: center; gap: 14px; }
+  .lang-label { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.05em; }
+
+  nav.site-nav { width: 100%; background: #142d47; border-bottom: 2px solid rgba(232,197,71,0.2); }
+  nav.site-nav .nav-inner { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; padding: 0 16px; gap: 4px; overflow-x: auto; }
+  nav.site-nav .nav-link { display: inline-block; padding: 12px 16px; color: rgba(255,255,255,0.6); font-size: 0.85rem; font-weight: 500; text-decoration: none; letter-spacing: 0.03em; white-space: nowrap; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
+  nav.site-nav .nav-link:hover { color: var(--blanc); }
+  nav.site-nav .nav-link.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  main { width: 100%; max-width: 1080px; padding: 0 16px 64px; }
+
+  .hero {
+    width: 100%; margin: 0 0 44px;
+    background: linear-gradient(135deg, var(--bleu) 0%, #2d6a9f 100%);
+    border-radius: 0 0 24px 24px;
+    padding: 56px 40px 60px;
+    text-align: center;
+    color: var(--blanc);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before { content: ''; position: absolute; right: -80px; top: -80px; width: 260px; height: 260px; border-radius: 50%; background: rgba(232,197,71,0.12); }
+  .hero::after  { content: ''; position: absolute; left: -60px; bottom: -60px; width: 180px; height: 180px; border-radius: 50%; background: rgba(77,179,127,0.12); }
+  .hero-inner { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; }
+  .hero-badge {
+    display: inline-block; font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 16px;
+    padding: 5px 14px; background: rgba(232,197,71,0.14);
+    border: 1px solid rgba(232,197,71,0.3); border-radius: 20px;
+  }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; line-height: 1.1; margin-bottom: 16px; letter-spacing: -0.01em; }
+  .hero h1 em { color: var(--accent); font-style: normal; }
+  .hero p.tagline { font-size: 1.1rem; font-weight: 300; color: rgba(255,255,255,0.85); line-height: 1.5; max-width: 580px; margin: 0 auto; }
+
+  .tools-section { width: 100%; margin-bottom: 40px; }
+  .section-title {
+    font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--bleu);
+    margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--gris-clair);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-title::before {
+    content: ''; display: inline-block; width: 6px; height: 24px;
+    background: var(--accent); border-radius: 3px;
+  }
+
+  .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .tool-card {
+    background: var(--blanc); border-radius: 18px; overflow: hidden;
+    box-shadow: var(--ombre); text-decoration: none; color: inherit;
+    display: flex; flex-direction: column;
+    transition: transform 0.25s cubic-bezier(.2,.9,.3,1.1), box-shadow 0.25s;
+    border: 1.5px solid transparent;
+  }
+  .tool-card:hover { transform: translateY(-4px); box-shadow: var(--ombre-h); border-color: var(--accent); }
+  .tool-card .tool-head {
+    padding: 28px 32px 22px; position: relative; overflow: hidden;
+    color: var(--blanc);
+  }
+  .tool-card .tool-head::before {
+    content: ''; position: absolute; right: -30px; top: -30px;
+    width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,0.1);
+  }
+  .tool-card.tip .tool-head  { background: linear-gradient(135deg, #2f8f5f 0%, #4db37f 100%); }
+  .tool-card.inv .tool-head  { background: linear-gradient(135deg, #1a3a5c 0%, #2d6a9f 100%); }
+  .tool-card .tool-icon {
+    font-size: 2.2rem; line-height: 1; margin-bottom: 10px; display: inline-block;
+    position: relative; z-index: 1;
+  }
+  .tool-card .tool-title {
+    font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700;
+    margin-bottom: 6px; position: relative; z-index: 1;
+  }
+  .tool-card .tool-subtitle {
+    font-size: 0.88rem; font-weight: 300; color: rgba(255,255,255,0.82);
+    position: relative; z-index: 1;
+  }
+  .tool-card .tool-body {
+    padding: 22px 32px 26px; flex: 1;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .tool-card .tool-features {
+    list-style: none; padding: 0; margin: 0;
+  }
+  .tool-card .tool-features li {
+    font-size: 0.9rem; color: #444; padding: 6px 0 6px 26px;
+    position: relative; line-height: 1.5;
+  }
+  .tool-card .tool-features li::before {
+    content: '✓'; position: absolute; left: 0; top: 6px;
+    color: var(--vert); font-weight: 700; font-size: 1rem;
+  }
+  .tool-card .tool-cta {
+    margin-top: auto; padding-top: 14px;
+    font-size: 0.95rem; font-weight: 600; color: var(--bleu-clair);
+    display: inline-flex; align-items: center; gap: 6px;
+    letter-spacing: 0.01em;
+  }
+  .tool-card:hover .tool-cta { color: var(--bleu); }
+  .tool-card .tool-cta .arrow { transition: transform 0.2s; }
+  .tool-card:hover .tool-cta .arrow { transform: translateX(4px); }
+
+  .why-section { background: var(--blanc); border-radius: 18px; box-shadow: var(--ombre); padding: 32px 36px; margin-bottom: 40px; }
+  .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 20px; }
+  .why-item { text-align: center; }
+  .why-item .why-icon {
+    width: 54px; height: 54px; margin: 0 auto 12px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 1.6rem;
+    background: linear-gradient(135deg, rgba(232,197,71,0.15) 0%, rgba(47,143,95,0.10) 100%);
+    border-radius: 50%;
+  }
+  .why-item h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--bleu); margin-bottom: 6px; }
+  .why-item p  { font-size: 0.86rem; color: #555; line-height: 1.6; }
+
+  footer { width: 100%; background: var(--bleu); padding: 22px 32px; text-align: center; color: rgba(255,255,255,0.4); font-size: 0.78rem; margin-top: auto; }
+  footer a { color: rgba(255,255,255,0.55); text-decoration: none; margin: 0 8px; }
+  footer a:hover { color: var(--accent); }
+  .footer-links { margin-bottom: 10px; }
+
+  @media (max-width: 820px) {
+    .tools-grid { grid-template-columns: 1fr; }
+    .why-grid   { grid-template-columns: 1fr; }
+    .hero h1    { font-size: 2rem; }
+    .hero       { padding: 42px 22px 48px; }
+  }
+  @media (max-width: 480px) {
+    header { padding: 14px 16px; }
+    .lang-label { display: none; }
+    .hero h1 { font-size: 1.7rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Calcul<span>ix</span>.ca</a>
+  <div class="header-right">
+    <span class="lang-label" id="headerSubtitle">Calculs financiers gratuits · Québec</span>
+    <div class="lang-toggle-3" onclick="toggleLang()" id="langToggle" title="Language">
+      <span class="lang-opt" data-lang="fr">FR</span>
+      <span class="lang-opt" data-lang="en">EN</span>
+      <span class="lang-opt" data-lang="es">ES</span>
+    </div>
+  </div>
+</header>
+
+<nav class="site-nav">
+  <div class="nav-inner" id="siteNav"></div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <span class="hero-badge" id="heroBadge">✨ 100 % gratuit · Sans inscription</span>
+    <h1 id="heroTitle">Vos calculs financiers <em>en quelques secondes</em>.</h1>
+    <p class="tagline" id="heroTagline">Séparation de pourboires, projection d'investissement et plus — bilingue, rapide, sans frais.</p>
+  </div>
+</div>
+
+<main>
+  <div class="tools-section">
+    <h2 class="section-title" id="toolsTitle">Nos calculateurs</h2>
+    <div class="tools-grid">
+
+      <a href="pourboires.html" class="tool-card tip">
+        <div class="tool-head">
+          <div class="tool-icon">💰</div>
+          <div class="tool-title" id="tipTitle">Séparation de pourboires</div>
+          <div class="tool-subtitle" id="tipSubtitle">Équitable ou au prorata des heures</div>
+        </div>
+        <div class="tool-body">
+          <ul class="tool-features">
+            <li id="tipF1">Partage équitable par personne</li>
+            <li id="tipF2">Prorata selon les heures travaillées</li>
+            <li id="tipF3">Calcul du pourboire sur l'addition</li>
+          </ul>
+          <div class="tool-cta" id="tipCTA">Ouvrir le calculateur <span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a href="investissement.html" class="tool-card inv">
+        <div class="tool-head">
+          <div class="tool-icon">📈</div>
+          <div class="tool-title" id="invTitle">Projection d'investissement</div>
+          <div class="tool-subtitle" id="invSubtitle">Capital + cotisations + rendement composé</div>
+        </div>
+        <div class="tool-body">
+          <ul class="tool-features">
+            <li id="invF1">Combien pour atteindre votre objectif ?</li>
+            <li id="invF2">Cotisations quotidiennes, hebdo, mensuelles ou annuelles</li>
+            <li id="invF3">Tableau et graphique d'évolution</li>
+          </ul>
+          <div class="tool-cta" id="invCTA">Ouvrir le calculateur <span class="arrow">→</span></div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="why-section">
+    <h2 class="section-title" id="whyTitle">Pourquoi Calculix.ca ?</h2>
+    <div class="why-grid">
+      <div class="why-item">
+        <div class="why-icon">🆓</div>
+        <h3 id="why1T">100 % gratuit</h3>
+        <p id="why1P">Aucune inscription, aucun frais caché. Nos outils sont financés par quelques annonces discrètes.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">🌐</div>
+        <h3 id="why2T">Trilingue FR/EN/ES</h3>
+        <p id="why2P">Basculez d'une langue à l'autre en un clic. Idéal pour les familles et équipes multiculturelles du Québec.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">🔒</div>
+        <h3 id="why3T">Vos données restent privées</h3>
+        <p id="why3P">Aucun calcul n'est envoyé à un serveur. Tout se passe dans votre navigateur.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ads-row" id="bottomAds"></div>
+</main>
+
+<footer>
+  <div class="footer-links" id="footerLinks"></div>
+  <div id="footerText">© 2026 Calculix.ca — Outil informatif uniquement. Consultez un professionnel pour votre situation personnelle.</div>
+  <div style="margin-top:8px;font-size:0.72rem;">
+    <a href="mailto:info@calculix.ca">info@calculix.ca</a>
+  </div>
+</footer>
+
+<script src="assets/site-config.js?v=20260424a"></script>
+<script>
+const ACTIVE_PAGE = 'home';
+let lang = (window.CXSite && CXSite.getStoredLang()) || 'fr';
+
+const i18n = {
+  fr: {
+    heroBadge: '✨ 100 % gratuit · Sans inscription',
+    heroTitle: 'Vos calculs financiers <em>en quelques secondes</em>.',
+    heroTagline: "Séparation de pourboires, projection d'investissement et plus — bilingue, rapide, sans frais.",
+    toolsTitle: 'Nos calculateurs',
+    tipTitle: 'Séparation de pourboires',
+    tipSubtitle: 'Équitable ou au prorata des heures',
+    tipF1: 'Partage équitable par personne',
+    tipF2: 'Prorata selon les heures travaillées',
+    tipF3: "Calcul du pourboire sur l'addition",
+    tipCTA: 'Ouvrir le calculateur',
+    invTitle: "Projection d'investissement",
+    invSubtitle: 'Capital + cotisations + rendement composé',
+    invF1: 'Combien pour atteindre votre objectif ?',
+    invF2: 'Cotisations quotidiennes, hebdo, mensuelles ou annuelles',
+    invF3: "Tableau et graphique d'évolution",
+    invCTA: 'Ouvrir le calculateur',
+    whyTitle: 'Pourquoi Calculix.ca ?',
+    why1T: '100 % gratuit',
+    why1P: 'Aucune inscription, aucun frais caché. Nos outils sont financés par quelques annonces discrètes.',
+    why2T: 'Trilingue FR / EN / ES',
+    why2P: "Basculez d'une langue à l'autre en un clic. Idéal pour les familles et équipes multiculturelles du Québec.",
+    why3T: 'Vos données restent privées',
+    why3P: "Aucun calcul n'est envoyé à un serveur. Tout se passe dans votre navigateur.",
+  },
+  en: {
+    heroBadge: '✨ 100 % free · No sign-up',
+    heroTitle: 'Your financial calculations, <em>in seconds</em>.',
+    heroTagline: 'Tip splitting, investment projection and more — bilingual, fast, free.',
+    toolsTitle: 'Our calculators',
+    tipTitle: 'Tip Splitter',
+    tipSubtitle: 'Even split or prorated by hours',
+    tipF1: 'Even split per person',
+    tipF2: 'Prorated based on hours worked',
+    tipF3: 'Tip calculation on the bill',
+    tipCTA: 'Open calculator',
+    invTitle: 'Investment Projection',
+    invSubtitle: 'Capital + contributions + compound return',
+    invF1: 'How much to reach your goal?',
+    invF2: 'Daily, weekly, monthly or yearly contributions',
+    invF3: 'Evolution table and chart',
+    invCTA: 'Open calculator',
+    whyTitle: 'Why Calculix.ca?',
+    why1T: '100 % free',
+    why1P: 'No sign-up, no hidden fees. Our tools are funded by a few discreet ads.',
+    why2T: 'Trilingual FR / EN / ES',
+    why2P: 'Switch languages in one click. Ideal for multicultural families and teams in Quebec.',
+    why3T: 'Your data stays private',
+    why3P: 'No calculation is sent to any server — everything happens in your browser.',
+  },
+  es: {
+    heroBadge: '✨ 100 % gratis · Sin registro',
+    heroTitle: 'Sus cálculos financieros, <em>en segundos</em>.',
+    heroTagline: 'División de propinas, proyección de inversión y más — bilingüe, rápido, gratis.',
+    toolsTitle: 'Nuestras calculadoras',
+    tipTitle: 'Divisor de propinas',
+    tipSubtitle: 'Igual o según las horas trabajadas',
+    tipF1: 'Reparto igual por persona',
+    tipF2: 'Prorrateo según las horas trabajadas',
+    tipF3: 'Cálculo de la propina sobre la cuenta',
+    tipCTA: 'Abrir calculadora',
+    invTitle: 'Proyección de inversión',
+    invSubtitle: 'Capital + aportes + rendimiento compuesto',
+    invF1: '¿Cuánto para alcanzar su meta?',
+    invF2: 'Aportes diarios, semanales, mensuales o anuales',
+    invF3: 'Tabla y gráfico de evolución',
+    invCTA: 'Abrir calculadora',
+    whyTitle: '¿Por qué Calculix.ca?',
+    why1T: '100 % gratis',
+    why1P: 'Sin registro, sin costos ocultos. Nuestras herramientas se financian con algunos anuncios discretos.',
+    why2T: 'Trilingüe FR / EN / ES',
+    why2P: 'Cambie de idioma con un clic. Ideal para familias y equipos multiculturales de Quebec.',
+    why3T: 'Sus datos permanecen privados',
+    why3P: 'Ningún cálculo se envía a un servidor — todo ocurre en su navegador.',
+  }
+};
+
+function updateLangToggleUI() {
+  document.querySelectorAll('#langToggle .lang-opt').forEach(function(el){
+    el.classList.toggle('active', el.dataset.lang === lang);
+  });
+}
+
+function toggleLang() {
+  lang = CXSite.cycleLang(lang);
+  CXSite.setStoredLang(lang);
+  document.documentElement.lang = lang;
+  updateLangToggleUI();
+  applyTranslations();
+}
+
+function applyTranslations() {
+  var t = i18n[lang];
+  var s = CXSite.SHARED[lang];
+  var setText = function(id, val) { var el = document.getElementById(id); if (el) el.textContent = val; };
+  var setHtml = function(id, val) { var el = document.getElementById(id); if (el) el.innerHTML = val; };
+
+  setText('headerSubtitle', s.headerSubtitle);
+  setText('heroBadge', t.heroBadge);
+  setHtml('heroTitle', t.heroTitle);
+  setText('heroTagline', t.heroTagline);
+  setText('toolsTitle', t.toolsTitle);
+  setText('tipTitle', t.tipTitle);
+  setText('tipSubtitle', t.tipSubtitle);
+  setText('tipF1', t.tipF1);
+  setText('tipF2', t.tipF2);
+  setText('tipF3', t.tipF3);
+  setHtml('tipCTA', t.tipCTA + ' <span class="arrow">→</span>');
+  setText('invTitle', t.invTitle);
+  setText('invSubtitle', t.invSubtitle);
+  setText('invF1', t.invF1);
+  setText('invF2', t.invF2);
+  setText('invF3', t.invF3);
+  setHtml('invCTA', t.invCTA + ' <span class="arrow">→</span>');
+  setText('whyTitle', t.whyTitle);
+  setText('why1T', t.why1T); setText('why1P', t.why1P);
+  setText('why2T', t.why2T); setText('why2P', t.why2P);
+  setText('why3T', t.why3T); setText('why3P', t.why3P);
+  setText('footerText', s.footerText);
+
+  CXSite.renderNav(lang, ACTIVE_PAGE);
+  CXSite.renderFooterLinks(lang, 'footerLinks');
+  document.getElementById('bottomAds').innerHTML =
+    CXSite.amazonAd(lang) + CXSite.cfoMasqueAd(lang) + CXSite.alchimixAd(lang);
+}
+
+document.documentElement.lang = lang;
+updateLangToggleUI();
+applyTranslations();
+</script>
+
+<!-- Filet de sécurité -->
+<script>
+(function(){
+  function safetyRender() {
+    try {
+      if (!window.CXSite) return;
+      var curLang = (typeof lang === 'string' && lang) ? lang : ((CXSite.getStoredLang && CXSite.getStoredLang()) || 'fr');
+      var nav = document.getElementById('siteNav');
+      if (nav && nav.innerHTML.trim().length === 0) CXSite.renderNav(curLang, 'home', 'siteNav');
+      var fl = document.getElementById('footerLinks');
+      if (fl && fl.innerHTML.trim().length === 0) CXSite.renderFooterLinks(curLang, 'footerLinks');
+      var ads = document.getElementById('bottomAds');
+      if (ads && ads.innerHTML.trim().length === 0) ads.innerHTML = CXSite.amazonAd(curLang) + CXSite.cfoMasqueAd(curLang) + CXSite.alchimixAd(curLang);
+    } catch(e) { console.warn('safetyRender index:', e); }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', safetyRender);
+  else safetyRender();
+  window.addEventListener('load', safetyRender);
+})();
+</script>
+
+</body>
+</html>

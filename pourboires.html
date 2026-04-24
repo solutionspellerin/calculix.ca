@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Calculateur de pourboire : séparez le pourboire équitablement entre les serveurs ou au prorata des heures travaillées. Gratuit · Québec.">
+<title>Séparation de pourboires — Tip Splitter | Calculix.ca</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ads.css?v=20260424a">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451" crossorigin="anonymous"></script>
+<style>
+  :root {
+    --bleu: #1a3a5c; --bleu-clair: #2d6a9f; --accent: #e8c547;
+    --vert: #2f8f5f; --vert-clair: #4db37f; --vert-fonce: #1f6e45;
+    --fond: #f4f1eb; --blanc: #ffffff; --gris: #8a8a8a;
+    --gris-clair: #e8e4dc; --texte: #1a1a1a;
+    --ombre: 0 4px 24px rgba(26,58,92,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--fond); color: var(--texte); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+
+  header { width: 100%; background: var(--bleu); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1.3rem; letter-spacing: 0.03em; text-decoration: none; }
+  .logo span { color: var(--blanc); font-weight: 300; }
+  .header-right { display: flex; align-items: center; gap: 14px; }
+  .lang-label { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.05em; }
+
+  nav.site-nav { width: 100%; background: #142d47; border-bottom: 2px solid rgba(232,197,71,0.2); }
+  nav.site-nav .nav-inner { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; padding: 0 16px; gap: 4px; overflow-x: auto; }
+  nav.site-nav .nav-link { display: inline-block; padding: 12px 16px; color: rgba(255,255,255,0.6); font-size: 0.85rem; font-weight: 500; text-decoration: none; letter-spacing: 0.03em; white-space: nowrap; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
+  nav.site-nav .nav-link:hover { color: var(--blanc); }
+  nav.site-nav .nav-link.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  main { width: 100%; max-width: 1080px; padding: 24px 16px 64px; display: grid; grid-template-columns: 1fr 320px; gap: 28px; align-items: start; }
+
+  .card { background: var(--blanc); border-radius: 16px; box-shadow: var(--ombre); overflow: hidden; }
+  .card-header { background: linear-gradient(135deg, #2f8f5f 0%, #1f6e45 100%); padding: 24px 32px 20px; position: relative; overflow: hidden; }
+  .card-header::before { content: ''; position: absolute; right: -40px; top: -40px; width: 160px; height: 160px; border-radius: 50%; background: rgba(232,197,71,0.12); }
+  .card-header::after  { content: ''; position: absolute; right: 20px; top: 20px; width: 80px; height: 80px; border-radius: 50%; background: rgba(232,197,71,0.08); }
+  .card-header h1 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--blanc); margin-bottom: 6px; position: relative; z-index: 1; }
+  .card-header p  { color: rgba(255,255,255,0.75); font-size: 0.88rem; font-weight: 300; position: relative; z-index: 1; }
+  .card-body { padding: 32px; }
+
+  .mode-switch {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+    background: var(--fond); border: 1.5px solid var(--gris-clair);
+    border-radius: 12px; padding: 5px; margin-bottom: 28px;
+  }
+  .mode-btn {
+    border: none; background: transparent; cursor: pointer;
+    padding: 11px 12px; border-radius: 9px; font-family: inherit;
+    font-size: 0.88rem; font-weight: 500; color: var(--gris);
+    letter-spacing: 0.01em; transition: all 0.2s;
+  }
+  .mode-btn.active {
+    background: var(--blanc); color: var(--bleu); font-weight: 600;
+    box-shadow: 0 2px 8px rgba(26,58,92,0.08);
+  }
+
+  .form-group { margin-bottom: 22px; }
+  label { display: block; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gris); margin-bottom: 8px; }
+  label small { text-transform: none; letter-spacing: 0; font-size: 0.82rem; color: var(--bleu-clair); font-weight: 500; margin-left: 6px; }
+  input[type="number"], input[type="text"], select {
+    width: 100%; padding: 13px 16px;
+    border: 1.5px solid var(--gris-clair); border-radius: 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 1rem; color: var(--texte);
+    background: var(--fond);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  input[type="number"]:focus, input[type="text"]:focus, select:focus {
+    border-color: var(--vert-clair); box-shadow: 0 0 0 3px rgba(77,179,127,0.14); background: var(--blanc);
+  }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .row-3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; align-items: end; }
+
+  .tip-suggest { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .tip-suggest button {
+    background: var(--fond); border: 1.5px solid var(--gris-clair);
+    border-radius: 8px; padding: 8px 14px; font-family: inherit;
+    font-size: 0.85rem; color: var(--bleu); font-weight: 500;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .tip-suggest button:hover { border-color: var(--vert-clair); color: var(--vert-fonce); }
+  .tip-suggest button.active { background: var(--vert); color: white; border-color: var(--vert); }
+
+  .workers-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+  .worker-row {
+    display: grid; grid-template-columns: 1.4fr 1fr 40px; gap: 10px;
+    align-items: center;
+    background: var(--fond); padding: 10px 12px; border-radius: 10px;
+    border: 1px solid var(--gris-clair);
+  }
+  .worker-row input { background: var(--blanc); padding: 9px 12px; font-size: 0.92rem; }
+  .worker-row .remove {
+    background: transparent; border: none; color: var(--gris);
+    font-size: 1.3rem; line-height: 1; cursor: pointer; border-radius: 6px;
+    width: 36px; height: 36px;
+    transition: all 0.15s;
+  }
+  .worker-row .remove:hover { background: #fde5e5; color: #c44; }
+  .worker-row .worker-share {
+    font-size: 0.82rem; font-weight: 600; color: var(--vert-fonce);
+    text-align: right; padding-right: 8px;
+    min-height: 1em;
+  }
+
+  .add-worker-btn {
+    width: 100%; padding: 12px; background: var(--fond); border: 1.5px dashed var(--gris-clair);
+    border-radius: 10px; color: var(--vert-fonce); font-weight: 500; font-size: 0.9rem;
+    cursor: pointer; font-family: inherit; transition: all 0.15s;
+  }
+  .add-worker-btn:hover { background: #eafaf0; border-color: var(--vert-clair); color: var(--vert-fonce); }
+
+  .result-box { margin-top: 22px; background: linear-gradient(135deg, #1f6e45 0%, #2f8f5f 100%); border-radius: 12px; padding: 24px 28px; position: relative; overflow: hidden; }
+  .result-box::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--accent); border-radius: 4px 0 0 4px; }
+  .result-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 10px; }
+  .result-main { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--blanc); line-height: 1.1; font-weight: 700; }
+  .result-sub  { font-size: 0.88rem; color: var(--accent); margin-top: 8px; font-weight: 500; }
+  .result-detail { font-size: 0.82rem; color: rgba(255,255,255,0.7); margin-top: 4px; }
+  .result-box.empty .result-main { color: rgba(255,255,255,0.3); font-size: 1rem; font-family: 'DM Sans', sans-serif; font-weight: 300; padding: 6px 0; }
+
+  .breakdown {
+    margin-top: 20px; background: var(--fond); border-radius: 12px;
+    padding: 18px 22px; border: 1px solid var(--gris-clair);
+  }
+  .breakdown h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--bleu); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--gris-clair); }
+  .breakdown-row { display: flex; justify-content: space-between; padding: 7px 0; font-size: 0.9rem; border-bottom: 1px dashed rgba(0,0,0,0.06); }
+  .breakdown-row:last-child { border-bottom: none; }
+  .breakdown-row .b-name { color: #333; font-weight: 500; }
+  .breakdown-row .b-hrs  { color: var(--gris); font-size: 0.82rem; }
+  .breakdown-row .b-amt  { color: var(--vert-fonce); font-weight: 600; }
+
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .info-card { background: var(--blanc); border-radius: 14px; box-shadow: var(--ombre); padding: 22px 24px; }
+  .info-card h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--bleu); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1.5px solid var(--gris-clair); }
+  .info-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--gris-clair); font-size: 0.88rem; }
+  .info-item:last-child { border-bottom: none; }
+  .info-item .label { color: var(--gris); }
+  .info-item .value { font-weight: 600; color: var(--bleu); }
+  .info-item .value.green { color: var(--vert-fonce); }
+
+  .tip-calc-section {
+    margin-top: 28px; padding-top: 24px; border-top: 1.5px dashed var(--gris-clair);
+  }
+  .tip-calc-title {
+    font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--bleu);
+    margin-bottom: 14px;
+  }
+
+  .disclaimer {
+    grid-column: 1 / -1; margin-top: 4px; padding: 14px 18px;
+    background: #fff8e6; border-left: 3px solid var(--accent);
+    border-radius: 8px; font-size: 0.82rem; line-height: 1.7; color: #666;
+  }
+
+  footer { width: 100%; background: var(--bleu); padding: 22px 32px; text-align: center; color: rgba(255,255,255,0.4); font-size: 0.78rem; margin-top: auto; }
+  footer a { color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 8px; }
+  footer a:hover { color: var(--accent); }
+  .footer-links { margin-bottom: 10px; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .animate { animation: fadeUp 0.3s ease forwards; }
+
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+  @media (max-width: 480px) {
+    .row-2, .row-3 { grid-template-columns: 1fr; }
+    .worker-row { grid-template-columns: 1fr 1fr 36px; }
+    header { padding: 14px 16px; }
+    .lang-label { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Calcul<span>ix</span>.ca</a>
+  <div class="header-right">
+    <span class="lang-label" id="headerSubtitle">Calculs financiers gratuits · Québec</span>
+    <div class="lang-toggle-3" onclick="toggleLang()" id="langToggle" title="Language">
+      <span class="lang-opt" data-lang="fr">FR</span>
+      <span class="lang-opt" data-lang="en">EN</span>
+      <span class="lang-opt" data-lang="es">ES</span>
+    </div>
+  </div>
+</header>
+
+<nav class="site-nav"><div class="nav-inner" id="siteNav"></div></nav>
+
+<main>
+  <div class="card">
+    <div class="card-header">
+      <h1 id="mainTitle">💰 Séparation de pourboires</h1>
+      <p id="mainSubtitle">Partagez équitablement ou au prorata des heures travaillées</p>
+    </div>
+    <div class="card-body">
+
+      <div class="mode-switch" role="tablist">
+        <button class="mode-btn active" id="modeBtnEqual"  onclick="switchMode('equal')">🤝 <span id="modeLbl1">Équitable</span></button>
+        <button class="mode-btn"        id="modeBtnHours"  onclick="switchMode('hours')">⏱️ <span id="modeLbl2">Selon les heures</span></button>
+      </div>
+
+      <!-- Mode A : équitable -->
+      <div id="modeEqual">
+        <div class="form-group">
+          <label id="labelTipTotal">Montant total du pourboire</label>
+          <input type="number" id="tipTotal" min="0" step="0.01" placeholder="ex: 120.00" />
+        </div>
+        <div class="form-group">
+          <label id="labelPeople">Nombre de personnes</label>
+          <input type="number" id="peopleCount" min="1" step="1" placeholder="ex: 4" />
+        </div>
+
+        <div class="result-box empty" id="resultEqual">
+          <div class="result-label" id="resultEqualLabel">Montant par personne</div>
+          <div class="result-main" id="resultEqualMain">Remplissez les champs ci-dessus</div>
+          <div class="result-sub" id="resultEqualSub"></div>
+        </div>
+      </div>
+
+      <!-- Mode B : selon heures -->
+      <div id="modeHours" style="display:none;">
+        <div class="form-group">
+          <label id="labelTipTotalH">Montant total du pourboire à partager</label>
+          <input type="number" id="tipTotalH" min="0" step="0.01" placeholder="ex: 350.00" />
+        </div>
+
+        <label id="labelWorkers">Employés et heures travaillées</label>
+        <div class="workers-list" id="workersList"></div>
+        <button type="button" class="add-worker-btn" onclick="addWorker()" id="addWorkerBtn">+ <span id="addWorkerLbl">Ajouter un employé</span></button>
+
+        <div class="result-box empty" id="resultHours" style="margin-top:20px;">
+          <div class="result-label" id="resultHoursLabel">Total des heures</div>
+          <div class="result-main" id="resultHoursMain">Ajoutez des employés avec leurs heures</div>
+          <div class="result-sub" id="resultHoursSub"></div>
+          <div class="result-detail" id="resultHoursDetail"></div>
+        </div>
+
+        <div class="breakdown" id="breakdown" style="display:none;">
+          <h4 id="breakdownTitle">Répartition par employé</h4>
+          <div id="breakdownBody"></div>
+        </div>
+      </div>
+
+      <!-- Outil annexe : calcul du pourboire -->
+      <div class="tip-calc-section">
+        <div class="tip-calc-title" id="tipCalcTitle">🧾 Vous ne connaissez pas le montant du pourboire ?</div>
+        <div class="row-3">
+          <div class="form-group" style="margin-bottom:0;">
+            <label id="labelBill">Montant de l'addition (avant taxes)</label>
+            <input type="number" id="bill" min="0" step="0.01" placeholder="ex: 85.00" />
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label id="labelPct">Pourcentage</label>
+            <input type="number" id="tipPct" min="0" max="100" step="0.1" value="15" />
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label id="labelTipResult">Pourboire</label>
+            <input type="text" id="tipResult" readonly placeholder="—" style="background:#eafaf0; color:var(--vert-fonce); font-weight:600;" />
+          </div>
+        </div>
+        <div class="tip-suggest">
+          <button type="button" onclick="setPct(10)">10 %</button>
+          <button type="button" onclick="setPct(12)">12 %</button>
+          <button type="button" class="active" onclick="setPct(15)">15 %</button>
+          <button type="button" onclick="setPct(18)">18 %</button>
+          <button type="button" onclick="setPct(20)">20 %</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="info-card">
+      <h3 id="infoTitle">📋 Récapitulatif</h3>
+      <div class="info-item"><span class="label" id="lblI1">Montant à partager</span><span class="value green" id="infoTipTotal">—</span></div>
+      <div class="info-item"><span class="label" id="lblI2">Mode de partage</span><span class="value" id="infoMode">—</span></div>
+      <div class="info-item"><span class="label" id="lblI3">Nombre de parts</span><span class="value" id="infoParts">—</span></div>
+      <div class="info-item"><span class="label" id="lblI4">Part moyenne</span><span class="value green" id="infoAvg">—</span></div>
+    </div>
+
+    <div class="info-card">
+      <h3 id="tipsTitle">💡 Bon à savoir</h3>
+      <p id="tipsP1" style="font-size:0.86rem; color:#555; line-height:1.6; margin-bottom:8px;">
+        Au Québec, on laisse habituellement <strong>15 % avant taxes</strong> au restaurant. C'est aussi à peu près équivalent au total des taxes (TPS + TVQ ≈ 14,975 %).
+      </p>
+      <p id="tipsP2" style="font-size:0.86rem; color:#555; line-height:1.6;">
+        Pour un service exceptionnel, <strong>18-20 %</strong> avant taxes est apprécié.
+      </p>
+    </div>
+  </aside>
+
+  <div class="disclaimer" id="disclaimerText">
+    ⚠️ Les calculs sont fournis à titre indicatif. Certains milieux de travail appliquent des règles internes de partage (ex : quote-part aux aides-serveurs, barmans, cuisine). Consultez votre convention ou entente d'équipe.
+  </div>
+
+  <div style="grid-column: 1 / -1;">
+    <div class="ads-row" id="bottomAds"></div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-links" id="footerLinks"></div>
+  <div id="footerText">© 2026 Calculix.ca — Outil informatif uniquement. Consultez un professionnel pour votre situation personnelle.</div>
+  <div style="margin-top:8px;font-size:0.72rem;">
+    <a href="mailto:info@calculix.ca">info@calculix.ca</a>
+  </div>
+</footer>
+
+<script src="assets/site-config.js?v=20260424a"></script>
+<script>
+const ACTIVE_PAGE = 'pourboires';
+let lang = (window.CXSite && CXSite.getStoredLang()) || 'fr';
+let mode = 'equal';
+let workers = [];
+
+const i18n = {
+  fr: {
+    mainTitle: '💰 Séparation de pourboires',
+    mainSubtitle: 'Partagez équitablement ou au prorata des heures travaillées',
+    modeLbl1: 'Équitable', modeLbl2: 'Selon les heures',
+    labelTipTotal:'Montant total du pourboire',
+    labelPeople:'Nombre de personnes',
+    resultEqualLabel:'Montant par personne',
+    resultEmptyEqual:'Remplissez les champs ci-dessus',
+    resultEqualSub:(n)=>`${n} personne(s) — part égale`,
+    labelTipTotalH:'Montant total du pourboire à partager',
+    labelWorkers:'Employés et heures travaillées',
+    addWorkerLbl:'Ajouter un employé',
+    namePh:'Nom',
+    hoursPh:'Heures',
+    resultHoursLabel:'Total des heures',
+    resultHoursEmpty:'Ajoutez des employés avec leurs heures',
+    resultHoursSub:(h,n)=>`${h} h cumulées · ${n} employé(s)`,
+    resultHoursDetail:(rate)=>`Taux au prorata : ${rate} / heure`,
+    breakdownTitle:'Répartition par employé',
+    tipCalcTitle:"🧾 Vous ne connaissez pas le montant du pourboire ?",
+    labelBill:"Montant de l'addition (avant taxes)",
+    labelPct:'Pourcentage',
+    labelTipResult:'Pourboire',
+    infoTitle:'📋 Récapitulatif',
+    lblI1:'Montant à partager', lblI2:'Mode de partage', lblI3:'Nombre de parts', lblI4:'Part moyenne',
+    modeEqualName:'Équitable', modeHoursName:'Au prorata des heures',
+    tipsTitle:'💡 Bon à savoir',
+    tipsP1:'Au Québec, on laisse habituellement <strong>15 % avant taxes</strong> au restaurant. C\'est aussi à peu près équivalent au total des taxes (TPS + TVQ ≈ 14,975 %).',
+    tipsP2:'Pour un service exceptionnel, <strong>18-20 %</strong> avant taxes est apprécié.',
+    disclaimer:"⚠️ Les calculs sont fournis à titre indicatif. Certains milieux de travail appliquent des règles internes de partage (ex : quote-part aux aides-serveurs, barmans, cuisine). Consultez votre convention ou entente d'équipe.",
+    defaultNames:['Serveuse 1','Serveur 2','Aide-serveur','Barman'],
+    hr:'h',
+  },
+  en: {
+    mainTitle: '💰 Tip Splitter',
+    mainSubtitle: 'Share evenly or prorated by hours worked',
+    modeLbl1:'Even split', modeLbl2:'By hours worked',
+    labelTipTotal:'Total tip amount',
+    labelPeople:'Number of people',
+    resultEqualLabel:'Amount per person',
+    resultEmptyEqual:'Fill in the fields above',
+    resultEqualSub:(n)=>`${n} person(s) — even share`,
+    labelTipTotalH:'Total tip amount to share',
+    labelWorkers:'Employees and hours worked',
+    addWorkerLbl:'Add an employee',
+    namePh:'Name',
+    hoursPh:'Hours',
+    resultHoursLabel:'Total hours',
+    resultHoursEmpty:'Add employees with their hours',
+    resultHoursSub:(h,n)=>`${h} h combined · ${n} employee(s)`,
+    resultHoursDetail:(rate)=>`Prorated rate: ${rate} / hour`,
+    breakdownTitle:'Breakdown by employee',
+    tipCalcTitle:"🧾 Don't know the tip amount?",
+    labelBill:'Bill amount (before tax)',
+    labelPct:'Percentage',
+    labelTipResult:'Tip',
+    infoTitle:'📋 Summary',
+    lblI1:'Amount to share', lblI2:'Split mode', lblI3:'Number of shares', lblI4:'Average share',
+    modeEqualName:'Even', modeHoursName:'Prorated by hours',
+    tipsTitle:'💡 Good to know',
+    tipsP1:'In Québec, <strong>15 % before tax</strong> is the standard tip at restaurants. It\'s roughly equal to total taxes (GST + QST ≈ 14.975 %).',
+    tipsP2:'For exceptional service, <strong>18-20 %</strong> before tax is appreciated.',
+    disclaimer:'⚠️ These calculations are for informational purposes. Some workplaces have internal sharing rules (e.g. share for bussers, bartenders, kitchen). Refer to your agreement or team policy.',
+    defaultNames:['Server 1','Server 2','Busser','Bartender'],
+    hr:'h',
+  },
+  es: {
+    mainTitle: '💰 Divisor de propinas',
+    mainSubtitle: 'Comparta por igual o prorrateado según las horas trabajadas',
+    modeLbl1:'Igual', modeLbl2:'Según las horas',
+    labelTipTotal:'Monto total de la propina',
+    labelPeople:'Número de personas',
+    resultEqualLabel:'Monto por persona',
+    resultEmptyEqual:'Complete los campos arriba',
+    resultEqualSub:(n)=>`${n} persona(s) — parte igual`,
+    labelTipTotalH:'Monto total de la propina a compartir',
+    labelWorkers:'Empleados y horas trabajadas',
+    addWorkerLbl:'Agregar un empleado',
+    namePh:'Nombre',
+    hoursPh:'Horas',
+    resultHoursLabel:'Total de horas',
+    resultHoursEmpty:'Agregue empleados con sus horas',
+    resultHoursSub:(h,n)=>`${h} h acumuladas · ${n} empleado(s)`,
+    resultHoursDetail:(rate)=>`Tasa prorrateada: ${rate} / hora`,
+    breakdownTitle:'Distribución por empleado',
+    tipCalcTitle:'🧾 ¿No conoce el monto de la propina?',
+    labelBill:'Monto de la cuenta (antes de impuestos)',
+    labelPct:'Porcentaje',
+    labelTipResult:'Propina',
+    infoTitle:'📋 Resumen',
+    lblI1:'Monto a compartir', lblI2:'Modo de reparto', lblI3:'Número de partes', lblI4:'Parte promedio',
+    modeEqualName:'Igualitario', modeHoursName:'Prorrateado por horas',
+    tipsTitle:'💡 Bueno saber',
+    tipsP1:'En Quebec, lo habitual es dejar <strong>15 % antes de impuestos</strong> en el restaurante. Equivale aproximadamente al total de impuestos (TPS + TVQ ≈ 14,975 %).',
+    tipsP2:'Por un servicio excepcional, <strong>18-20 %</strong> antes de impuestos es apreciado.',
+    disclaimer:'⚠️ Cálculos solo informativos. Algunos lugares de trabajo aplican reglas internas (ej. cuota para ayudantes, barman, cocina). Consulte su convenio o acuerdo de equipo.',
+    defaultNames:['Mesero 1','Mesero 2','Ayudante','Barman'],
+    hr:'h',
+  }
+};
+
+function updateLangToggleUI() {
+  document.querySelectorAll('#langToggle .lang-opt').forEach(function(el){
+    el.classList.toggle('active', el.dataset.lang === lang);
+  });
+}
+
+function toggleLang() {
+  lang = CXSite.cycleLang(lang);
+  CXSite.setStoredLang(lang);
+  document.documentElement.lang = lang;
+  updateLangToggleUI();
+  applyTranslations();
+  renderWorkers();
+  calculate();
+}
+
+function applyTranslations() {
+  var t = i18n[lang];
+  var s = CXSite.SHARED[lang];
+  var setText = function(id, val) { var el = document.getElementById(id); if (el) el.textContent = val; };
+  var setHtml = function(id, val) { var el = document.getElementById(id); if (el) el.innerHTML = val; };
+
+  setText('headerSubtitle', s.headerSubtitle);
+  setText('mainTitle', t.mainTitle);
+  setText('mainSubtitle', t.mainSubtitle);
+  setText('modeLbl1', t.modeLbl1);
+  setText('modeLbl2', t.modeLbl2);
+  setText('labelTipTotal', t.labelTipTotal);
+  setText('labelPeople', t.labelPeople);
+  setText('resultEqualLabel', t.resultEqualLabel);
+  setText('labelTipTotalH', t.labelTipTotalH);
+  setText('labelWorkers', t.labelWorkers);
+  setText('addWorkerLbl', t.addWorkerLbl);
+  setText('resultHoursLabel', t.resultHoursLabel);
+  setText('breakdownTitle', t.breakdownTitle);
+  setText('tipCalcTitle', t.tipCalcTitle);
+  setText('labelBill', t.labelBill);
+  setText('labelPct', t.labelPct);
+  setText('labelTipResult', t.labelTipResult);
+  setText('infoTitle', t.infoTitle);
+  setText('lblI1', t.lblI1); setText('lblI2', t.lblI2); setText('lblI3', t.lblI3); setText('lblI4', t.lblI4);
+  setText('tipsTitle', t.tipsTitle);
+  setHtml('tipsP1', t.tipsP1);
+  setHtml('tipsP2', t.tipsP2);
+  setText('disclaimerText', t.disclaimer);
+  setText('footerText', s.footerText);
+
+  if (document.getElementById('resultEqual').classList.contains('empty')) {
+    setText('resultEqualMain', t.resultEmptyEqual);
+  }
+  if (document.getElementById('resultHours').classList.contains('empty')) {
+    setText('resultHoursMain', t.resultHoursEmpty);
+  }
+
+  CXSite.renderNav(lang, ACTIVE_PAGE);
+  CXSite.renderFooterLinks(lang, 'footerLinks');
+  document.getElementById('bottomAds').innerHTML =
+    CXSite.amazonAd(lang) + CXSite.cfoMasqueAd(lang) + CXSite.alchimixAd(lang);
+}
+
+function switchMode(m) {
+  mode = m;
+  document.getElementById('modeBtnEqual').classList.toggle('active', m === 'equal');
+  document.getElementById('modeBtnHours').classList.toggle('active', m === 'hours');
+  document.getElementById('modeEqual').style.display = m === 'equal' ? '' : 'none';
+  document.getElementById('modeHours').style.display = m === 'hours' ? '' : 'none';
+  calculate();
+}
+
+function addWorker(name, hours) {
+  var t = i18n[lang];
+  var idx = workers.length;
+  workers.push({
+    id: Date.now() + '-' + idx,
+    name: name || (t.defaultNames[idx] || ''),
+    hours: (hours !== undefined) ? hours : ''
+  });
+  renderWorkers();
+  calculate();
+}
+
+function removeWorker(id) {
+  workers = workers.filter(function(w){ return w.id !== id; });
+  renderWorkers();
+  calculate();
+}
+
+function renderWorkers() {
+  var t = i18n[lang];
+  var container = document.getElementById('workersList');
+  container.innerHTML = workers.map(function(w) {
+    return '<div class="worker-row">' +
+      '<input type="text"   placeholder="' + t.namePh + '"  value="' + escapeHtml(w.name) + '" oninput="updateWorker(\'' + w.id + '\', \'name\', this.value)" />' +
+      '<input type="number" placeholder="' + t.hoursPh + '" min="0" step="0.25" value="' + (w.hours === '' ? '' : w.hours) + '" oninput="updateWorker(\'' + w.id + '\', \'hours\', this.value)" />' +
+      '<button type="button" class="remove" title="Supprimer" onclick="removeWorker(\'' + w.id + '\')">×</button>' +
+    '</div>';
+  }).join('');
+}
+
+function escapeHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function updateWorker(id, field, value) {
+  var w = workers.find(function(x){ return x.id === id; });
+  if (!w) return;
+  if (field === 'hours') {
+    w.hours = value === '' ? '' : parseFloat(value);
+  } else {
+    w.name = value;
+  }
+  calculate();
+}
+
+function calculate() {
+  var t = i18n[lang];
+  var tip = 0, parts = 0, avg = 0, modeName = '';
+
+  if (mode === 'equal') {
+    tip   = parseFloat(document.getElementById('tipTotal').value) || 0;
+    parts = parseInt(document.getElementById('peopleCount').value) || 0;
+    modeName = t.modeEqualName;
+    var rBox = document.getElementById('resultEqual');
+    if (tip > 0 && parts > 0) {
+      var per = tip / parts;
+      avg = per;
+      rBox.classList.remove('empty');
+      document.getElementById('resultEqualMain').textContent = CXSite.formatMoney(per, lang);
+      document.getElementById('resultEqualSub').textContent = t.resultEqualSub(parts);
+      rBox.classList.add('animate'); setTimeout(function(){ rBox.classList.remove('animate'); }, 400);
+    } else {
+      rBox.classList.add('empty');
+      document.getElementById('resultEqualMain').textContent = t.resultEmptyEqual;
+      document.getElementById('resultEqualSub').textContent = '';
+    }
+  } else {
+    tip = parseFloat(document.getElementById('tipTotalH').value) || 0;
+    var totalHrs = workers.reduce(function(sum,w){ return sum + (parseFloat(w.hours) || 0); }, 0);
+    var nb = workers.filter(function(w){ return (parseFloat(w.hours) || 0) > 0; }).length;
+    modeName = t.modeHoursName;
+    parts = nb;
+    var rBox = document.getElementById('resultHours');
+    var bd = document.getElementById('breakdown');
+    var bdBody = document.getElementById('breakdownBody');
+    if (tip > 0 && totalHrs > 0 && nb > 0) {
+      var rate = tip / totalHrs;
+      avg = tip / nb;
+      rBox.classList.remove('empty');
+      document.getElementById('resultHoursMain').textContent = totalHrs.toFixed(2).replace(/\.00$/,'') + ' ' + t.hr;
+      document.getElementById('resultHoursSub').textContent = t.resultHoursSub(totalHrs.toFixed(2).replace(/\.00$/,''), nb);
+      document.getElementById('resultHoursDetail').textContent = t.resultHoursDetail(CXSite.formatMoney(rate, lang));
+      rBox.classList.add('animate'); setTimeout(function(){ rBox.classList.remove('animate'); }, 400);
+
+      // Breakdown + show share in row
+      bd.style.display = '';
+      bdBody.innerHTML = workers.map(function(w) {
+        var h = parseFloat(w.hours) || 0;
+        if (h <= 0) return '';
+        var share = h * rate;
+        return '<div class="breakdown-row">' +
+          '<span class="b-name">' + escapeHtml(w.name || '—') + ' <span class="b-hrs">(' + h + ' ' + t.hr + ')</span></span>' +
+          '<span class="b-amt">' + CXSite.formatMoney(share, lang) + '</span>' +
+        '</div>';
+      }).filter(Boolean).join('');
+    } else {
+      rBox.classList.add('empty');
+      document.getElementById('resultHoursMain').textContent = t.resultHoursEmpty;
+      document.getElementById('resultHoursSub').textContent = '';
+      document.getElementById('resultHoursDetail').textContent = '';
+      bd.style.display = 'none';
+    }
+  }
+
+  // Récap sidebar
+  document.getElementById('infoTipTotal').textContent = tip > 0 ? CXSite.formatMoney(tip, lang) : '—';
+  document.getElementById('infoMode').textContent = tip > 0 ? modeName : '—';
+  document.getElementById('infoParts').textContent = parts > 0 ? parts : '—';
+  document.getElementById('infoAvg').textContent = avg > 0 ? CXSite.formatMoney(avg, lang) : '—';
+}
+
+// ── Calcul du pourboire (outil annexe) ──
+function updateTipCalc() {
+  var bill = parseFloat(document.getElementById('bill').value) || 0;
+  var pct  = parseFloat(document.getElementById('tipPct').value) || 0;
+  var tipEl = document.getElementById('tipResult');
+  if (bill > 0 && pct > 0) {
+    var t = bill * pct / 100;
+    tipEl.value = CXSite.formatMoney(t, lang);
+  } else {
+    tipEl.value = '';
+  }
+}
+
+function setPct(pct) {
+  document.getElementById('tipPct').value = pct;
+  document.querySelectorAll('.tip-suggest button').forEach(function(b){ b.classList.remove('active'); });
+  var btns = document.querySelectorAll('.tip-suggest button');
+  btns.forEach(function(b){ if (b.textContent.trim().startsWith(pct)) b.classList.add('active'); });
+  updateTipCalc();
+}
+
+document.getElementById('tipTotal').addEventListener('input', calculate);
+document.getElementById('peopleCount').addEventListener('input', calculate);
+document.getElementById('tipTotalH').addEventListener('input', calculate);
+document.getElementById('bill').addEventListener('input', updateTipCalc);
+document.getElementById('tipPct').addEventListener('input', updateTipCalc);
+
+document.documentElement.lang = lang;
+updateLangToggleUI();
+applyTranslations();
+// Ajout de 3 employés par défaut
+addWorker(); addWorker(); addWorker();
+</script>
+
+<!-- Filet de sécurité -->
+<script>
+(function(){
+  function safetyRender() {
+    try {
+      if (!window.CXSite) return;
+      var curLang = (typeof lang === 'string' && lang) ? lang : ((CXSite.getStoredLang && CXSite.getStoredLang()) || 'fr');
+      var nav = document.getElementById('siteNav');
+      if (nav && nav.innerHTML.trim().length === 0) CXSite.renderNav(curLang, 'pourboires', 'siteNav');
+      var fl = document.getElementById('footerLinks');
+      if (fl && fl.innerHTML.trim().length === 0) CXSite.renderFooterLinks(curLang, 'footerLinks');
+      var ads = document.getElementById('bottomAds');
+      if (ads && ads.innerHTML.trim().length === 0) ads.innerHTML = CXSite.amazonAd(curLang) + CXSite.cfoMasqueAd(curLang) + CXSite.alchimixAd(curLang);
+    } catch(e) { console.warn('safetyRender pourboires:', e); }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', safetyRender);
+  else safetyRender();
+  window.addEventListener('load', safetyRender);
+})();
+</script>
+
+</body>
+</html>
