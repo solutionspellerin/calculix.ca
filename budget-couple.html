@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Budget de couple : partagez les dépenses au prorata des salaires ou par pourcentage personnalisé. Lignes suggérées, montants par jour/semaine/mois/année. Exportable en Excel.">
+<title>Budget de couple — Couple Budget | Calculix.ca</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ads.css?v=20260424h">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451" crossorigin="anonymous"></script>
+<script src="assets/site-config.js?v=20260424h"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+  :root {
+    --bleu: #1a3a5c; --bleu-clair: #2d6a9f; --accent: #e8c547;
+    --vert: #2f8f5f; --vert-clair: #4db37f; --vert-fonce: #1f6e45;
+    --rouge: #c64545; --rouge-clair: #e57373;
+    --rose: #d94f7a; --rose-clair: #ec7599;
+    --fond: #f4f1eb; --blanc: #ffffff; --gris: #8a8a8a;
+    --gris-clair: #e8e4dc; --texte: #1a1a1a;
+    --ombre: 0 4px 24px rgba(26,58,92,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--fond); color: var(--texte); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+
+  header { width: 100%; background: var(--bleu); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1.3rem; letter-spacing: 0.03em; text-decoration: none; }
+  .logo span { color: var(--blanc); font-weight: 300; }
+  .header-right { display: flex; align-items: center; gap: 14px; }
+  .lang-label { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.05em; }
+  .lang-toggle-3 {
+    display: inline-flex; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px;
+    overflow: hidden; cursor: pointer; background: rgba(255,255,255,0.04);
+    font-size: 0.78rem; letter-spacing: 0.08em;
+  }
+  .lang-toggle-3 .lang-opt { padding: 6px 12px; color: rgba(255,255,255,0.6); transition: all 0.15s; }
+  .lang-toggle-3 .lang-opt.active { color: var(--bleu); background: var(--accent); font-weight: 700; }
+
+  nav.site-nav { width: 100%; background: #142d47; border-bottom: 2px solid rgba(232,197,71,0.2); }
+  nav.site-nav .nav-inner { max-width: 1180px; margin: 0 auto; display: flex; align-items: center; padding: 0 16px; gap: 4px; overflow-x: auto; }
+  nav.site-nav .nav-link { display: inline-block; padding: 12px 16px; color: rgba(255,255,255,0.6); font-size: 0.85rem; font-weight: 500; text-decoration: none; letter-spacing: 0.03em; white-space: nowrap; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
+  nav.site-nav .nav-link:hover { color: var(--blanc); }
+  nav.site-nav .nav-link.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  main { width: 100%; max-width: 1180px; padding: 24px 16px 64px; display: grid; grid-template-columns: 1fr 320px; gap: 28px; align-items: start; }
+
+  .card { background: var(--blanc); border-radius: 16px; box-shadow: var(--ombre); overflow: hidden; }
+  .card-header { background: linear-gradient(135deg, #d94f7a 0%, #8a3760 100%); padding: 24px 32px 20px; position: relative; overflow: hidden; }
+  .card-header::before { content: ''; position: absolute; right: -40px; top: -40px; width: 160px; height: 160px; border-radius: 50%; background: rgba(232,197,71,0.12); }
+  .card-header::after  { content: ''; position: absolute; right: 20px; top: 20px; width: 80px; height: 80px; border-radius: 50%; background: rgba(232,197,71,0.08); }
+  .card-header h1 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--blanc); margin-bottom: 6px; position: relative; z-index: 1; }
+  .card-header p  { color: rgba(255,255,255,0.85); font-size: 0.88rem; font-weight: 300; position: relative; z-index: 1; }
+  .card-body { padding: 28px 32px; }
+
+  .form-group { margin-bottom: 16px; }
+  label { display: block; font-size: 0.74rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gris); margin-bottom: 6px; }
+  input[type="number"], input[type="text"], select {
+    width: 100%; padding: 11px 14px;
+    border: 1.5px solid var(--gris-clair); border-radius: 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--texte);
+    background: var(--fond);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  input:focus, select:focus {
+    border-color: var(--rose); box-shadow: 0 0 0 3px rgba(217,79,122,0.14); background: var(--blanc);
+  }
+  .input-prefix, .input-suffix { position: relative; }
+  .input-prefix input { padding-left: 32px; }
+  .input-prefix::before { content: attr(data-prefix); position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--gris); font-weight: 600; pointer-events: none; }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .row-3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; }
+  .select-wrapper { position: relative; }
+  .select-wrapper select { appearance: none; cursor: pointer; padding-right: 34px; }
+  .select-wrapper::after { content: '▾'; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--rose); pointer-events: none; font-size: 0.85rem; }
+
+  .partner-block { background: var(--fond); border-radius: 14px; padding: 18px 20px; border: 1.5px solid var(--gris-clair); }
+  .partner-block.p1 { border-color: rgba(45,106,159,0.35); }
+  .partner-block.p2 { border-color: rgba(217,79,122,0.35); }
+  .partner-label { font-family: 'Playfair Display', serif; font-size: 1.05rem; margin-bottom: 10px; }
+  .partner-block.p1 .partner-label { color: var(--bleu-clair); }
+  .partner-block.p2 .partner-label { color: var(--rose); }
+
+  .mode-tabs { display: flex; gap: 8px; background: var(--fond); border-radius: 10px; padding: 4px; margin-bottom: 14px; }
+  .mode-tab { flex: 1; padding: 10px 14px; text-align: center; border-radius: 8px; font-size: 0.85rem; font-weight: 500; cursor: pointer; color: var(--gris); transition: all 0.15s; border: none; background: transparent; font-family: inherit; }
+  .mode-tab.active { background: var(--blanc); color: var(--rose); box-shadow: 0 2px 6px rgba(0,0,0,0.08); font-weight: 600; }
+
+  .result-banner {
+    margin-top: 20px; background: linear-gradient(135deg, #1a3a5c 0%, #2d6a9f 100%);
+    border-radius: 14px; padding: 22px 26px; position: relative; overflow: hidden;
+  }
+  .result-banner::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--accent); border-radius: 4px 0 0 4px; }
+  .result-banner-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .result-banner-main  { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--blanc); line-height: 1.1; font-weight: 700; }
+  .result-banner-sub   { font-size: 0.88rem; color: var(--accent); margin-top: 8px; font-weight: 500; }
+  .result-banner.empty .result-banner-main { color: rgba(255,255,255,0.3); font-size: 1rem; font-family: 'DM Sans', sans-serif; font-weight: 300; padding: 6px 0; }
+
+  .share-grid { margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .share-card { padding: 16px 18px; border-radius: 12px; border: 1.5px solid transparent; background: var(--fond); }
+  .share-card.p1 { border-color: rgba(45,106,159,0.35); background: #eaf2f9; }
+  .share-card.p2 { border-color: rgba(217,79,122,0.35); background: #fbeff3; }
+  .share-label { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gris); margin-bottom: 6px; }
+  .share-value { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; line-height: 1.1; }
+  .share-card.p1 .share-value { color: var(--bleu-clair); }
+  .share-card.p2 .share-value { color: var(--rose); }
+  .share-sub { font-size: 0.78rem; color: var(--gris); margin-top: 4px; }
+
+  .section-divider { margin: 28px 0 16px; padding-top: 22px; border-top: 1.5px dashed var(--gris-clair); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--rose); }
+
+  .budget-table-wrap { overflow-x: auto; background: var(--fond); border-radius: 12px; border: 1px solid var(--gris-clair); }
+  table.budget { width: 100%; border-collapse: collapse; font-size: 0.86rem; min-width: 780px; }
+  table.budget thead th {
+    background: var(--bleu); color: var(--blanc);
+    font-weight: 600; padding: 11px 12px; font-size: 0.75rem;
+    letter-spacing: 0.04em; text-align: right; white-space: nowrap;
+  }
+  table.budget thead th.th-cat { text-align: left; }
+  table.budget thead th.th-act { width: 42px; text-align: center; }
+  table.budget td { padding: 8px 10px; border-bottom: 1px solid rgba(0,0,0,0.05); text-align: right; color: #333; vertical-align: middle; }
+  table.budget td.td-cat { text-align: left; }
+  table.budget td.td-act { text-align: center; width: 42px; }
+  table.budget td input[type="text"], table.budget td input[type="number"], table.budget td select {
+    width: 100%; padding: 7px 9px; font-size: 0.88rem;
+    border: 1px solid var(--gris-clair); border-radius: 7px; background: var(--blanc);
+  }
+  table.budget td.calc { font-weight: 600; color: var(--bleu); }
+  table.budget td.calc.p1 { color: var(--bleu-clair); }
+  table.budget td.calc.p2 { color: var(--rose); }
+  table.budget tfoot td { background: var(--bleu); color: var(--blanc); font-weight: 600; padding: 12px; font-size: 0.92rem; }
+  table.budget tfoot td.calc.p1 { background: #2d6a9f; }
+  table.budget tfoot td.calc.p2 { background: #8a3760; }
+
+  .del-btn { background: transparent; border: none; color: var(--rouge); font-size: 1.1rem; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: background 0.15s; }
+  .del-btn:hover { background: rgba(198,69,69,0.1); }
+
+  .add-row-btn {
+    margin-top: 14px; display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 18px; background: var(--blanc); color: var(--rose);
+    border: 1.5px dashed var(--rose); border-radius: 10px;
+    font-family: inherit; font-size: 0.88rem; font-weight: 600;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .add-row-btn:hover { background: #fbeff3; }
+
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .info-card { background: var(--blanc); border-radius: 14px; box-shadow: var(--ombre); padding: 22px 24px; }
+  .info-card h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--bleu); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1.5px solid var(--gris-clair); }
+  .info-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--gris-clair); font-size: 0.88rem; }
+  .info-item:last-child { border-bottom: none; }
+  .info-item .label { color: var(--gris); }
+  .info-item .value { font-weight: 600; color: var(--bleu); }
+  .info-item .value.green { color: var(--vert-fonce); }
+  .info-item .value.red { color: var(--rouge); }
+
+  .disclaimer {
+    grid-column: 1 / -1; margin-top: 4px; padding: 14px 18px;
+    background: #fff8e6; border-left: 3px solid var(--accent);
+    border-radius: 8px; font-size: 0.82rem; line-height: 1.7; color: #666;
+  }
+
+  .export-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #1d6f42 0%, #2f8f5f 100%);
+    color: white; border: none; border-radius: 10px;
+    font-family: inherit; font-size: 0.9rem; font-weight: 600;
+    letter-spacing: 0.02em; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(29,111,66,0.25);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .export-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(29,111,66,0.35); }
+  .export-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  footer { width: 100%; background: var(--bleu); padding: 22px 32px; text-align: center; color: rgba(255,255,255,0.4); font-size: 0.78rem; margin-top: auto; }
+  footer a { color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 8px; }
+  footer a:hover { color: var(--accent); }
+  .footer-links { margin-bottom: 10px; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .animate { animation: fadeUp 0.3s ease forwards; }
+
+  @media (max-width: 980px) { main { grid-template-columns: 1fr; } }
+  @media (max-width: 640px) {
+    .row-2, .row-3 { grid-template-columns: 1fr; }
+    .share-grid { grid-template-columns: 1fr; }
+    header { padding: 14px 16px; }
+    .lang-label { display: none; }
+    .card-body { padding: 20px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Calcul<span>ix</span>.ca</a>
+  <div class="header-right">
+    <span class="lang-label" id="headerSubtitle">Calculs financiers gratuits · Québec</span>
+    <div class="lang-toggle-3" onclick="toggleLang()" id="langToggle" title="Language">
+      <span class="lang-opt" data-lang="fr">FR</span>
+      <span class="lang-opt" data-lang="en">EN</span>
+      <span class="lang-opt" data-lang="es">ES</span>
+    </div>
+  </div>
+</header>
+
+<nav class="site-nav"><div class="nav-inner" id="siteNav"></div></nav>
+
+<main>
+  <div class="card">
+    <div class="card-header">
+      <h1 id="mainTitle">💞 Budget de couple</h1>
+      <p id="mainSubtitle">Partagez les dépenses au prorata des salaires ou par pourcentage personnalisé</p>
+    </div>
+    <div class="card-body">
+
+      <!-- Revenus -->
+      <div class="section-title" id="sectIncome" style="margin-bottom:14px;">💰 Revenus</div>
+      <div class="row-2">
+        <div class="partner-block p1">
+          <div class="partner-label" id="p1Label">Partenaire 1</div>
+          <div class="form-group">
+            <label id="p1NameLbl">Nom</label>
+            <input type="text" id="p1Name" value="Alex" />
+          </div>
+          <div class="form-group">
+            <label id="p1SalaryLbl">Salaire net</label>
+            <div class="input-prefix" data-prefix="$"><input type="number" id="p1Salary" min="0" step="100" value="4200" /></div>
+          </div>
+          <div class="form-group">
+            <label id="p1FreqLbl">Fréquence</label>
+            <div class="select-wrapper">
+              <select id="p1Freq">
+                <option value="yearly"  id="p1optYear">Par année</option>
+                <option value="monthly" id="p1optMonth" selected>Par mois</option>
+                <option value="biweekly" id="p1optBiwk">Aux 2 semaines</option>
+                <option value="weekly"  id="p1optWk">Par semaine</option>
+                <option value="daily"   id="p1optDay">Par jour</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="partner-block p2">
+          <div class="partner-label" id="p2Label">Partenaire 2</div>
+          <div class="form-group">
+            <label id="p2NameLbl">Nom</label>
+            <input type="text" id="p2Name" value="Sam" />
+          </div>
+          <div class="form-group">
+            <label id="p2SalaryLbl">Salaire net</label>
+            <div class="input-prefix" data-prefix="$"><input type="number" id="p2Salary" min="0" step="100" value="3300" /></div>
+          </div>
+          <div class="form-group">
+            <label id="p2FreqLbl">Fréquence</label>
+            <div class="select-wrapper">
+              <select id="p2Freq">
+                <option value="yearly"  id="p2optYear">Par année</option>
+                <option value="monthly" id="p2optMonth" selected>Par mois</option>
+                <option value="biweekly" id="p2optBiwk">Aux 2 semaines</option>
+                <option value="weekly"  id="p2optWk">Par semaine</option>
+                <option value="daily"   id="p2optDay">Par jour</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mode de partage -->
+      <div class="section-divider">
+        <div class="section-title" id="sectMode">⚖️ Mode de partage</div>
+      </div>
+      <div class="mode-tabs">
+        <button type="button" class="mode-tab active" data-mode="prorata" id="modeProrata">Prorata des salaires</button>
+        <button type="button" class="mode-tab" data-mode="percent" id="modePercent">Pourcentage personnalisé</button>
+        <button type="button" class="mode-tab" data-mode="equal" id="modeEqual">50 / 50</button>
+      </div>
+
+      <div class="row-2" id="customPercentRow" style="display:none;">
+        <div class="form-group">
+          <label id="customP1Lbl">Pourcentage du partenaire 1</label>
+          <div class="input-prefix" data-prefix="%"><input type="number" id="customP1" min="0" max="100" step="1" value="50" /></div>
+        </div>
+        <div class="form-group">
+          <label id="customP2Lbl">Pourcentage du partenaire 2 (auto)</label>
+          <div class="input-prefix" data-prefix="%"><input type="number" id="customP2" value="50" readonly style="background:#eaeaea;color:#666;" /></div>
+        </div>
+      </div>
+
+      <!-- Résultat principal -->
+      <div class="result-banner empty" id="resultBanner">
+        <div class="result-banner-label" id="resultLabel">Budget total mensuel</div>
+        <div class="result-banner-main"  id="resultMain">Ajoutez vos lignes de budget ci-dessous</div>
+        <div class="result-banner-sub"   id="resultSub"></div>
+      </div>
+
+      <div class="share-grid">
+        <div class="share-card p1">
+          <div class="share-label" id="shareP1Lbl">Part de Alex</div>
+          <div class="share-value" id="shareP1Val">—</div>
+          <div class="share-sub"   id="shareP1Sub"></div>
+        </div>
+        <div class="share-card p2">
+          <div class="share-label" id="shareP2Lbl">Part de Sam</div>
+          <div class="share-value" id="shareP2Val">—</div>
+          <div class="share-sub"   id="shareP2Sub"></div>
+        </div>
+      </div>
+
+      <!-- Table budget -->
+      <div class="section-divider">
+        <div class="section-title" id="sectBudget">📋 Lignes de budget</div>
+        <button type="button" class="export-btn" id="exportBtn" onclick="exportToExcel()" disabled>
+          <span>📊</span><span id="exportLbl">Exporter en Excel</span>
+        </button>
+      </div>
+
+      <div class="budget-table-wrap">
+        <table class="budget" id="budgetTable">
+          <thead><tr>
+            <th class="th-cat" id="tcCategory">Catégorie</th>
+            <th id="tcAmount">Montant</th>
+            <th id="tcFreq">Fréquence</th>
+            <th id="tcMonthly">Mensuel</th>
+            <th id="tcYearly">Annuel</th>
+            <th id="tcPartP1">Part P1</th>
+            <th id="tcPartP2">Part P2</th>
+            <th class="th-act">✕</th>
+          </tr></thead>
+          <tbody id="budgetBody"></tbody>
+          <tfoot><tr>
+            <td class="td-cat" id="tfTotalLbl">TOTAL</td>
+            <td></td>
+            <td></td>
+            <td class="calc" id="tfMonthly">—</td>
+            <td class="calc" id="tfYearly">—</td>
+            <td class="calc p1" id="tfP1">—</td>
+            <td class="calc p2" id="tfP2">—</td>
+            <td></td>
+          </tr></tfoot>
+        </table>
+      </div>
+
+      <button type="button" class="add-row-btn" id="addRowBtn" onclick="addBudgetRow()">
+        <span>➕</span><span id="addRowLbl">Ajouter une ligne</span>
+      </button>
+
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="info-card">
+      <h3 id="infoTitle">📋 Résumé</h3>
+      <div class="info-item"><span class="label" id="lblI1">Revenu mensuel P1</span><span class="value" id="infoP1Inc">—</span></div>
+      <div class="info-item"><span class="label" id="lblI2">Revenu mensuel P2</span><span class="value" id="infoP2Inc">—</span></div>
+      <div class="info-item"><span class="label" id="lblI3">Revenu combiné</span><span class="value green" id="infoTotalInc">—</span></div>
+      <div class="info-item"><span class="label" id="lblI4">Budget total mensuel</span><span class="value" id="infoBudget">—</span></div>
+      <div class="info-item"><span class="label" id="lblI5">Reste après budget</span><span class="value green" id="infoReste">—</span></div>
+    </div>
+
+    <div class="info-card">
+      <h3 id="tipsTitle">💡 Bon à savoir</h3>
+      <p id="tipsP1" style="font-size:0.86rem; color:#555; line-height:1.6; margin-bottom:8px;">
+        Le <strong>prorata des salaires</strong> répartit les dépenses selon la part de chacun dans le revenu total — c'est souvent perçu comme plus équitable quand les salaires sont inégaux.
+      </p>
+      <p id="tipsP2" style="font-size:0.86rem; color:#555; line-height:1.6;">
+        Les calculs sont normalisés au <strong>mensuel</strong> : 365,25 j/an, 52 sem/an, 26 périodes bi-hebdo, 12 mois/an.
+      </p>
+    </div>
+
+    <div class="partners-row" id="partnersRow"></div>
+  </aside>
+
+  <div class="disclaimer" id="disclaimerText">
+    ⚠️ Calculix.ca fournit des outils à titre informatif uniquement. Ces calculs ne remplacent pas un conseil personnalisé d'un planificateur financier.
+  </div>
+</main>
+
+<footer>
+  <div class="footer-links" id="footerLinks"></div>
+  <div id="footerText">© 2026 Calculix.ca — Outil informatif uniquement.</div>
+</footer>
+
+<script>
+  // ========== i18n ==========
+  const i18n = {
+    fr: {
+      mainTitle: '💞 Budget de couple',
+      mainSubtitle: 'Partagez les dépenses au prorata des salaires ou par pourcentage personnalisé',
+      sectIncome: '💰 Revenus',
+      p1Label: 'Partenaire 1', p2Label: 'Partenaire 2',
+      nameLbl: 'Nom', salaryLbl: 'Salaire net', freqLbl: 'Fréquence',
+      optYear: 'Par année', optMonth: 'Par mois', optBiwk: 'Aux 2 semaines', optWk: 'Par semaine', optDay: 'Par jour',
+      sectMode: '⚖️ Mode de partage',
+      modeProrata: 'Prorata des salaires', modePercent: 'Pourcentage personnalisé', modeEqual: '50 / 50',
+      customP1Lbl: 'Pourcentage du partenaire 1', customP2Lbl: 'Pourcentage du partenaire 2 (auto)',
+      resultLabel: 'Budget total mensuel', resultEmpty: 'Ajoutez vos lignes de budget ci-dessous',
+      resultSubMonthly: function(y){ return y + ' par année'; },
+      shareLblFor: function(n){ return 'Part de ' + n; },
+      shareSub: function(pct){ return pct + '% du total'; },
+      sectBudget: '📋 Lignes de budget',
+      exportLbl: 'Exporter en Excel',
+      tcCategory: 'Catégorie', tcAmount: 'Montant', tcFreq: 'Fréquence',
+      tcMonthly: 'Mensuel', tcYearly: 'Annuel', tcPartP1: 'Part P1', tcPartP2: 'Part P2',
+      tfTotalLbl: 'TOTAL',
+      addRowLbl: 'Ajouter une ligne',
+      infoTitle: '📋 Résumé',
+      infoP1Inc: 'Revenu mensuel P1', infoP2Inc: 'Revenu mensuel P2',
+      infoTotalInc: 'Revenu combiné', infoBudget: 'Budget total mensuel', infoReste: 'Reste après budget',
+      tipsTitle: '💡 Bon à savoir',
+      tipsP1: 'Le <strong>prorata des salaires</strong> répartit les dépenses selon la part de chacun dans le revenu total — c\'est souvent perçu comme plus équitable quand les salaires sont inégaux.',
+      tipsP2: 'Les calculs sont normalisés au <strong>mensuel</strong> : 365,25 j/an, 52 sem/an, 26 périodes bi-hebdo, 12 mois/an.',
+      disclaimer: '⚠️ Calculix.ca fournit des outils à titre informatif uniquement. Ces calculs ne remplacent pas un conseil personnalisé d\'un planificateur financier.',
+      suggestedLines: [
+        { cat: '🏠 Loyer / Hypothèque',     amount: 1800, freq: 'monthly' },
+        { cat: '⚡ Électricité',              amount: 120,  freq: 'monthly' },
+        { cat: '🌐 Internet',                 amount: 80,   freq: 'monthly' },
+        { cat: '📱 Téléphones',               amount: 90,   freq: 'monthly' },
+        { cat: '🛒 Épicerie',                 amount: 200,  freq: 'weekly' },
+        { cat: '🚗 Transport / Essence',      amount: 300,  freq: 'monthly' },
+        { cat: '🛡️ Assurances',              amount: 150,  freq: 'monthly' },
+        { cat: '💰 Épargne',                  amount: 500,  freq: 'monthly' },
+        { cat: '🎬 Loisirs / Abonnements',    amount: 60,   freq: 'monthly' },
+        { cat: '🍽️ Restaurants',              amount: 150,  freq: 'monthly' },
+      ],
+      xlsSheetName: 'Budget',
+      xlsTitle: 'Budget de couple — Calculix.ca',
+      xlsRowP1Income: 'Revenu mensuel P1',
+      xlsRowP2Income: 'Revenu mensuel P2',
+      xlsRowTotalIncome: 'Revenu combiné mensuel',
+      xlsRowMode: 'Mode de partage',
+      xlsRowSharePct: function(n, p){ return 'Part ' + n + ' (%)'; },
+      xlsColCategory: 'Catégorie', xlsColAmount: 'Montant', xlsColFreq: 'Fréquence',
+      xlsColMonthly: 'Mensuel ($)', xlsColYearly: 'Annuel ($)',
+      xlsColPartP1: function(n){ return 'Part ' + n + ' ($)'; },
+      xlsColPartP2: function(n){ return 'Part ' + n + ' ($)'; },
+      xlsRowTotal: 'TOTAL',
+      xlsRowReste: 'Reste après budget (mensuel)',
+      xlsFooter: 'Calculix.ca · Outil informatif',
+      xlsFilename: 'budget-couple',
+    },
+    en: {
+      mainTitle: '💞 Couple Budget',
+      mainSubtitle: 'Split expenses proportionally to salaries or by custom percentage',
+      sectIncome: '💰 Income',
+      p1Label: 'Partner 1', p2Label: 'Partner 2',
+      nameLbl: 'Name', salaryLbl: 'Net salary', freqLbl: 'Frequency',
+      optYear: 'Per year', optMonth: 'Per month', optBiwk: 'Bi-weekly', optWk: 'Per week', optDay: 'Per day',
+      sectMode: '⚖️ Split mode',
+      modeProrata: 'Prorated by salary', modePercent: 'Custom percentage', modeEqual: '50 / 50',
+      customP1Lbl: 'Partner 1 percentage', customP2Lbl: 'Partner 2 percentage (auto)',
+      resultLabel: 'Total monthly budget', resultEmpty: 'Add your budget lines below',
+      resultSubMonthly: function(y){ return y + ' per year'; },
+      shareLblFor: function(n){ return n + '\'s share'; },
+      shareSub: function(pct){ return pct + '% of total'; },
+      sectBudget: '📋 Budget lines',
+      exportLbl: 'Export to Excel',
+      tcCategory: 'Category', tcAmount: 'Amount', tcFreq: 'Frequency',
+      tcMonthly: 'Monthly', tcYearly: 'Yearly', tcPartP1: 'P1 share', tcPartP2: 'P2 share',
+      tfTotalLbl: 'TOTAL',
+      addRowLbl: 'Add a line',
+      infoTitle: '📋 Summary',
+      infoP1Inc: 'P1 monthly income', infoP2Inc: 'P2 monthly income',
+      infoTotalInc: 'Combined income', infoBudget: 'Total monthly budget', infoReste: 'Remaining after budget',
+      tipsTitle: '💡 Good to know',
+      tipsP1: '<strong>Prorated</strong> splitting divides expenses based on each person\'s share of combined income — often seen as fairer when salaries differ significantly.',
+      tipsP2: 'All values are normalized to <strong>monthly</strong>: 365.25 d/yr, 52 wk/yr, 26 bi-weekly periods, 12 months/yr.',
+      disclaimer: '⚠️ Calculix.ca provides tools for informational purposes only. These calculations do not replace personalized advice from a financial planner.',
+      suggestedLines: [
+        { cat: '🏠 Rent / Mortgage',        amount: 1800, freq: 'monthly' },
+        { cat: '⚡ Electricity',             amount: 120,  freq: 'monthly' },
+        { cat: '🌐 Internet',                amount: 80,   freq: 'monthly' },
+        { cat: '📱 Phones',                  amount: 90,   freq: 'monthly' },
+        { cat: '🛒 Groceries',               amount: 200,  freq: 'weekly' },
+        { cat: '🚗 Transport / Gas',         amount: 300,  freq: 'monthly' },
+        { cat: '🛡️ Insurance',              amount: 150,  freq: 'monthly' },
+        { cat: '💰 Savings',                 amount: 500,  freq: 'monthly' },
+        { cat: '🎬 Entertainment / Subs',    amount: 60,   freq: 'monthly' },
+        { cat: '🍽️ Restaurants',             amount: 150,  freq: 'monthly' },
+      ],
+      xlsSheetName: 'Budget',
+      xlsTitle: 'Couple Budget — Calculix.ca',
+      xlsRowP1Income: 'P1 monthly income',
+      xlsRowP2Income: 'P2 monthly income',
+      xlsRowTotalIncome: 'Combined monthly income',
+      xlsRowMode: 'Split mode',
+      xlsRowSharePct: function(n, p){ return n + ' share (%)'; },
+      xlsColCategory: 'Category', xlsColAmount: 'Amount', xlsColFreq: 'Frequency',
+      xlsColMonthly: 'Monthly ($)', xlsColYearly: 'Yearly ($)',
+      xlsColPartP1: function(n){ return n + ' share ($)'; },
+      xlsColPartP2: function(n){ return n + ' share ($)'; },
+      xlsRowTotal: 'TOTAL',
+      xlsRowReste: 'Remaining after budget (monthly)',
+      xlsFooter: 'Calculix.ca · Informational tool',
+      xlsFilename: 'couple-budget',
+    },
+    es: {
+      mainTitle: '💞 Presupuesto de pareja',
+      mainSubtitle: 'Divida los gastos proporcionalmente a los salarios o por porcentaje personalizado',
+      sectIncome: '💰 Ingresos',
+      p1Label: 'Pareja 1', p2Label: 'Pareja 2',
+      nameLbl: 'Nombre', salaryLbl: 'Salario neto', freqLbl: 'Frecuencia',
+      optYear: 'Por año', optMonth: 'Por mes', optBiwk: 'Cada 2 semanas', optWk: 'Por semana', optDay: 'Por día',
+      sectMode: '⚖️ Modo de división',
+      modeProrata: 'Prorrateo por salario', modePercent: 'Porcentaje personalizado', modeEqual: '50 / 50',
+      customP1Lbl: 'Porcentaje de la pareja 1', customP2Lbl: 'Porcentaje de la pareja 2 (auto)',
+      resultLabel: 'Presupuesto mensual total', resultEmpty: 'Añade tus líneas de presupuesto abajo',
+      resultSubMonthly: function(y){ return y + ' por año'; },
+      shareLblFor: function(n){ return 'Parte de ' + n; },
+      shareSub: function(pct){ return pct + '% del total'; },
+      sectBudget: '📋 Líneas de presupuesto',
+      exportLbl: 'Exportar a Excel',
+      tcCategory: 'Categoría', tcAmount: 'Monto', tcFreq: 'Frecuencia',
+      tcMonthly: 'Mensual', tcYearly: 'Anual', tcPartP1: 'Parte P1', tcPartP2: 'Parte P2',
+      tfTotalLbl: 'TOTAL',
+      addRowLbl: 'Añadir una línea',
+      infoTitle: '📋 Resumen',
+      infoP1Inc: 'Ingreso mensual P1', infoP2Inc: 'Ingreso mensual P2',
+      infoTotalInc: 'Ingreso combinado', infoBudget: 'Presupuesto mensual total', infoReste: 'Restante tras presupuesto',
+      tipsTitle: '💡 Bueno saber',
+      tipsP1: 'El <strong>prorrateo</strong> divide los gastos según la parte de cada uno en el ingreso total — se considera más justo cuando los salarios difieren mucho.',
+      tipsP2: 'Los cálculos se normalizan a <strong>mensual</strong>: 365,25 d/año, 52 sem/año, 26 períodos quincenales, 12 meses/año.',
+      disclaimer: '⚠️ Calculix.ca proporciona herramientas solo con fines informativos. Estos cálculos no reemplazan el consejo personalizado de un planificador financiero.',
+      suggestedLines: [
+        { cat: '🏠 Alquiler / Hipoteca',    amount: 1800, freq: 'monthly' },
+        { cat: '⚡ Electricidad',            amount: 120,  freq: 'monthly' },
+        { cat: '🌐 Internet',                amount: 80,   freq: 'monthly' },
+        { cat: '📱 Teléfonos',               amount: 90,   freq: 'monthly' },
+        { cat: '🛒 Supermercado',            amount: 200,  freq: 'weekly' },
+        { cat: '🚗 Transporte / Gasolina',   amount: 300,  freq: 'monthly' },
+        { cat: '🛡️ Seguros',                amount: 150,  freq: 'monthly' },
+        { cat: '💰 Ahorro',                  amount: 500,  freq: 'monthly' },
+        { cat: '🎬 Ocio / Suscripciones',    amount: 60,   freq: 'monthly' },
+        { cat: '🍽️ Restaurantes',            amount: 150,  freq: 'monthly' },
+      ],
+      xlsSheetName: 'Presupuesto',
+      xlsTitle: 'Presupuesto de pareja — Calculix.ca',
+      xlsRowP1Income: 'Ingreso mensual P1',
+      xlsRowP2Income: 'Ingreso mensual P2',
+      xlsRowTotalIncome: 'Ingreso mensual combinado',
+      xlsRowMode: 'Modo de división',
+      xlsRowSharePct: function(n, p){ return 'Parte ' + n + ' (%)'; },
+      xlsColCategory: 'Categoría', xlsColAmount: 'Monto', xlsColFreq: 'Frecuencia',
+      xlsColMonthly: 'Mensual ($)', xlsColYearly: 'Anual ($)',
+      xlsColPartP1: function(n){ return 'Parte ' + n + ' ($)'; },
+      xlsColPartP2: function(n){ return 'Parte ' + n + ' ($)'; },
+      xlsRowTotal: 'TOTAL',
+      xlsRowReste: 'Restante tras presupuesto (mensual)',
+      xlsFooter: 'Calculix.ca · Herramienta informativa',
+      xlsFilename: 'presupuesto-pareja',
+    }
+  };
+
+  // ========== Langue ==========
+  let lang = (window.CXSite && CXSite.getStoredLang) ? CXSite.getStoredLang() : 'fr';
+
+  function updateLangToggleUI() {
+    document.querySelectorAll('.lang-opt').forEach(function(el){
+      el.classList.toggle('active', el.getAttribute('data-lang') === lang);
+    });
+  }
+  function toggleLang() {
+    if (window.CXSite && CXSite.cycleLang) { lang = CXSite.cycleLang(lang); CXSite.setStoredLang(lang); }
+    else { lang = lang === 'fr' ? 'en' : lang === 'en' ? 'es' : 'fr'; }
+    document.documentElement.lang = lang;
+    updateLangToggleUI();
+    applyTranslations();
+    renderBudgetTable();
+    calculate();
+  }
+
+  function applyTranslations() {
+    const t = i18n[lang];
+    function setText(id, v) { const el = document.getElementById(id); if (el) el.textContent = v; }
+    function setHTML(id, v) { const el = document.getElementById(id); if (el) el.innerHTML = v; }
+
+    document.title = t.mainTitle.replace(/^\S+\s/, '') + ' | Calculix.ca';
+    setText('mainTitle', t.mainTitle);
+    setText('mainSubtitle', t.mainSubtitle);
+    setText('sectIncome', t.sectIncome);
+    setText('p1Label', t.p1Label);
+    setText('p2Label', t.p2Label);
+    setText('p1NameLbl', t.nameLbl);
+    setText('p2NameLbl', t.nameLbl);
+    setText('p1SalaryLbl', t.salaryLbl);
+    setText('p2SalaryLbl', t.salaryLbl);
+    setText('p1FreqLbl', t.freqLbl);
+    setText('p2FreqLbl', t.freqLbl);
+
+    ['p1','p2'].forEach(function(p) {
+      setText(p+'optYear', t.optYear);
+      setText(p+'optMonth', t.optMonth);
+      setText(p+'optBiwk', t.optBiwk);
+      setText(p+'optWk', t.optWk);
+      setText(p+'optDay', t.optDay);
+    });
+
+    setText('sectMode', t.sectMode);
+    setText('modeProrata', t.modeProrata);
+    setText('modePercent', t.modePercent);
+    setText('modeEqual', t.modeEqual);
+    setText('customP1Lbl', t.customP1Lbl);
+    setText('customP2Lbl', t.customP2Lbl);
+    setText('resultLabel', t.resultLabel);
+    setText('sectBudget', t.sectBudget);
+    setText('exportLbl', t.exportLbl);
+    setText('tcCategory', t.tcCategory);
+    setText('tcAmount', t.tcAmount);
+    setText('tcFreq', t.tcFreq);
+    setText('tcMonthly', t.tcMonthly);
+    setText('tcYearly', t.tcYearly);
+    setText('tcPartP1', t.tcPartP1);
+    setText('tcPartP2', t.tcPartP2);
+    setText('tfTotalLbl', t.tfTotalLbl);
+    setText('addRowLbl', t.addRowLbl);
+    setText('infoTitle', t.infoTitle);
+    setText('lblI1', t.infoP1Inc);
+    setText('lblI2', t.infoP2Inc);
+    setText('lblI3', t.infoTotalInc);
+    setText('lblI4', t.infoBudget);
+    setText('lblI5', t.infoReste);
+    setText('tipsTitle', t.tipsTitle);
+    setHTML('tipsP1', t.tipsP1);
+    setHTML('tipsP2', t.tipsP2);
+    setText('disclaimerText', t.disclaimer);
+
+    if (window.CXSite) {
+      var shared = CXSite.SHARED[lang];
+      if (shared) {
+        setText('headerSubtitle', shared.headerSubtitle);
+        setText('footerText', shared.footerText);
+      }
+      CXSite.renderNav(lang, 'budget', 'siteNav');
+      CXSite.renderFooterLinks(lang, 'footerLinks');
+      var ads = document.getElementById('partnersRow');
+      if (ads) ads.innerHTML = CXSite.amazonAd(lang) + CXSite.cfoMasqueAd(lang) + CXSite.alchimixAd(lang);
+    }
+  }
+
+  // ========== Lignes de budget ==========
+  let budgetLines = []; // { cat, amount, freq }
+  let nextRowId = 1;
+
+  function initBudgetLines() {
+    const t = i18n[lang];
+    budgetLines = t.suggestedLines.map(function(line) {
+      return { id: nextRowId++, cat: line.cat, amount: line.amount, freq: line.freq };
+    });
+  }
+
+  function renderBudgetTable() {
+    const t = i18n[lang];
+    const body = document.getElementById('budgetBody');
+    body.innerHTML = '';
+
+    budgetLines.forEach(function(row) {
+      const tr = document.createElement('tr');
+      tr.setAttribute('data-id', row.id);
+      tr.innerHTML =
+        '<td class="td-cat"><input type="text" class="cx-cat" value="' + escapeHtml(row.cat) + '" /></td>' +
+        '<td><input type="number" class="cx-amount" min="0" step="1" value="' + row.amount + '" /></td>' +
+        '<td>' +
+          '<div class="select-wrapper"><select class="cx-freq">' +
+            '<option value="daily"' + (row.freq==='daily'?' selected':'') + '>' + t.optDay + '</option>' +
+            '<option value="weekly"' + (row.freq==='weekly'?' selected':'') + '>' + t.optWk + '</option>' +
+            '<option value="biweekly"' + (row.freq==='biweekly'?' selected':'') + '>' + t.optBiwk + '</option>' +
+            '<option value="monthly"' + (row.freq==='monthly'?' selected':'') + '>' + t.optMonth + '</option>' +
+            '<option value="yearly"' + (row.freq==='yearly'?' selected':'') + '>' + t.optYear + '</option>' +
+          '</select></div>' +
+        '</td>' +
+        '<td class="calc cx-monthly">—</td>' +
+        '<td class="calc cx-yearly">—</td>' +
+        '<td class="calc p1 cx-pp1">—</td>' +
+        '<td class="calc p2 cx-pp2">—</td>' +
+        '<td class="td-act"><button type="button" class="del-btn" title="Supprimer">✕</button></td>';
+      body.appendChild(tr);
+
+      // Wire events
+      tr.querySelector('.cx-cat').addEventListener('input', function(e){ row.cat = e.target.value; calculate(); });
+      tr.querySelector('.cx-amount').addEventListener('input', function(e){ row.amount = parseFloat(e.target.value) || 0; calculate(); });
+      tr.querySelector('.cx-freq').addEventListener('change', function(e){ row.freq = e.target.value; calculate(); });
+      tr.querySelector('.del-btn').addEventListener('click', function(){ removeBudgetRow(row.id); });
+    });
+  }
+
+  function addBudgetRow() {
+    const t = i18n[lang];
+    budgetLines.push({ id: nextRowId++, cat: lang==='fr'?'Nouvelle ligne':(lang==='es'?'Nueva línea':'New line'), amount: 0, freq: 'monthly' });
+    renderBudgetTable();
+    calculate();
+  }
+
+  function removeBudgetRow(id) {
+    budgetLines = budgetLines.filter(function(r){ return r.id !== id; });
+    renderBudgetTable();
+    calculate();
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  // ========== Calculs ==========
+  // Conversion en montant mensuel
+  function toMonthly(amount, freq) {
+    switch (freq) {
+      case 'daily':    return amount * 365.25 / 12;
+      case 'weekly':   return amount * 52 / 12;
+      case 'biweekly': return amount * 26 / 12;
+      case 'monthly':  return amount;
+      case 'yearly':   return amount / 12;
+      default: return amount;
+    }
+  }
+
+  let currentMode = 'prorata';
+
+  function setMode(m) {
+    currentMode = m;
+    document.querySelectorAll('.mode-tab').forEach(function(el){
+      el.classList.toggle('active', el.getAttribute('data-mode') === m);
+    });
+    document.getElementById('customPercentRow').style.display = (m === 'percent') ? 'grid' : 'none';
+    calculate();
+  }
+
+  function getSharePcts() {
+    const p1Sal = toMonthly(parseFloat(document.getElementById('p1Salary').value) || 0, document.getElementById('p1Freq').value);
+    const p2Sal = toMonthly(parseFloat(document.getElementById('p2Salary').value) || 0, document.getElementById('p2Freq').value);
+    const total = p1Sal + p2Sal;
+
+    let p1Pct = 50, p2Pct = 50;
+    if (currentMode === 'prorata') {
+      if (total > 0) { p1Pct = p1Sal / total * 100; p2Pct = p2Sal / total * 100; }
+    } else if (currentMode === 'percent') {
+      p1Pct = parseFloat(document.getElementById('customP1').value) || 0;
+      if (p1Pct < 0) p1Pct = 0;
+      if (p1Pct > 100) p1Pct = 100;
+      p2Pct = 100 - p1Pct;
+      document.getElementById('customP2').value = p2Pct.toFixed(0);
+    }
+    return { p1Pct: p1Pct, p2Pct: p2Pct, p1Inc: p1Sal, p2Inc: p2Sal };
+  }
+
+  let lastResult = null;
+
+  function calculate() {
+    const t = i18n[lang];
+    const banner = document.getElementById('resultBanner');
+    const shares = getSharePcts();
+
+    let totalMonthly = 0;
+    const bodyRows = document.querySelectorAll('#budgetBody tr');
+    budgetLines.forEach(function(row, idx) {
+      const monthly = toMonthly(row.amount, row.freq);
+      totalMonthly += monthly;
+      const tr = bodyRows[idx];
+      if (tr) {
+        tr.querySelector('.cx-monthly').textContent = CXSite.formatMoney(monthly, lang);
+        tr.querySelector('.cx-yearly').textContent  = CXSite.formatMoney(monthly * 12, lang);
+        tr.querySelector('.cx-pp1').textContent     = CXSite.formatMoney(monthly * shares.p1Pct / 100, lang);
+        tr.querySelector('.cx-pp2').textContent     = CXSite.formatMoney(monthly * shares.p2Pct / 100, lang);
+      }
+    });
+
+    const partP1 = totalMonthly * shares.p1Pct / 100;
+    const partP2 = totalMonthly * shares.p2Pct / 100;
+    const p1Name = document.getElementById('p1Name').value || 'P1';
+    const p2Name = document.getElementById('p2Name').value || 'P2';
+
+    // Footer totaux
+    document.getElementById('tfMonthly').textContent = CXSite.formatMoney(totalMonthly, lang);
+    document.getElementById('tfYearly').textContent  = CXSite.formatMoney(totalMonthly * 12, lang);
+    document.getElementById('tfP1').textContent      = CXSite.formatMoney(partP1, lang);
+    document.getElementById('tfP2').textContent      = CXSite.formatMoney(partP2, lang);
+
+    // Share cards
+    document.getElementById('shareP1Lbl').textContent = t.shareLblFor(p1Name);
+    document.getElementById('shareP2Lbl').textContent = t.shareLblFor(p2Name);
+
+    if (totalMonthly > 0) {
+      lastResult = {
+        p1Name: p1Name, p2Name: p2Name,
+        p1Inc: shares.p1Inc, p2Inc: shares.p2Inc,
+        p1Pct: shares.p1Pct, p2Pct: shares.p2Pct,
+        totalMonthly: totalMonthly, partP1: partP1, partP2: partP2,
+        mode: currentMode, lines: budgetLines.slice()
+      };
+      document.getElementById('exportBtn').disabled = false;
+
+      banner.classList.remove('empty');
+      document.getElementById('resultMain').textContent = CXSite.formatMoney(totalMonthly, lang);
+      document.getElementById('resultSub').textContent  = t.resultSubMonthly(CXSite.formatMoney(totalMonthly * 12, lang));
+      document.getElementById('shareP1Val').textContent = CXSite.formatMoney(partP1, lang);
+      document.getElementById('shareP1Sub').textContent = t.shareSub(CXSite.formatNumber(shares.p1Pct, lang, 1));
+      document.getElementById('shareP2Val').textContent = CXSite.formatMoney(partP2, lang);
+      document.getElementById('shareP2Sub').textContent = t.shareSub(CXSite.formatNumber(shares.p2Pct, lang, 1));
+      banner.classList.add('animate'); setTimeout(function(){ banner.classList.remove('animate'); }, 400);
+    } else {
+      lastResult = null;
+      document.getElementById('exportBtn').disabled = true;
+      banner.classList.add('empty');
+      document.getElementById('resultMain').textContent = t.resultEmpty;
+      document.getElementById('resultSub').textContent = '';
+      document.getElementById('shareP1Val').textContent = '—';
+      document.getElementById('shareP2Val').textContent = '—';
+      document.getElementById('shareP1Sub').textContent = '';
+      document.getElementById('shareP2Sub').textContent = '';
+    }
+
+    // Sidebar info
+    const totalInc = shares.p1Inc + shares.p2Inc;
+    document.getElementById('infoP1Inc').textContent = CXSite.formatMoney(shares.p1Inc, lang);
+    document.getElementById('infoP2Inc').textContent = CXSite.formatMoney(shares.p2Inc, lang);
+    document.getElementById('infoTotalInc').textContent = CXSite.formatMoney(totalInc, lang);
+    document.getElementById('infoBudget').textContent = CXSite.formatMoney(totalMonthly, lang);
+    const reste = totalInc - totalMonthly;
+    const elReste = document.getElementById('infoReste');
+    elReste.textContent = CXSite.formatMoney(reste, lang);
+    elReste.className = 'value ' + (reste >= 0 ? 'green' : 'red');
+  }
+
+  // ========== Export Excel ==========
+  function exportToExcel() {
+    if (!lastResult || typeof XLSX === 'undefined') return;
+    const t = i18n[lang];
+    const r = lastResult;
+    const freqLbl = { daily:t.optDay, weekly:t.optWk, biweekly:t.optBiwk, monthly:t.optMonth, yearly:t.optYear };
+    const modeLbl = { prorata:t.modeProrata, percent:t.modePercent, equal:t.modeEqual };
+
+    const wb = XLSX.utils.book_new();
+    const aoa = [];
+    aoa.push([t.xlsTitle]);
+    aoa.push([]);
+    aoa.push([t.xlsRowP1Income, r.p1Inc]);
+    aoa.push([t.xlsRowP2Income, r.p2Inc]);
+    aoa.push([t.xlsRowTotalIncome, r.p1Inc + r.p2Inc]);
+    aoa.push([t.xlsRowMode, modeLbl[r.mode] || r.mode]);
+    aoa.push([t.xlsRowSharePct(r.p1Name), r.p1Pct / 100]);
+    aoa.push([t.xlsRowSharePct(r.p2Name), r.p2Pct / 100]);
+    aoa.push([]);
+    aoa.push([t.xlsColCategory, t.xlsColAmount, t.xlsColFreq, t.xlsColMonthly, t.xlsColYearly, t.xlsColPartP1(r.p1Name), t.xlsColPartP2(r.p2Name)]);
+    r.lines.forEach(function(line) {
+      const monthly = toMonthly(line.amount, line.freq);
+      aoa.push([line.cat, line.amount, freqLbl[line.freq] || line.freq, monthly, monthly * 12, monthly * r.p1Pct / 100, monthly * r.p2Pct / 100]);
+    });
+    aoa.push([t.xlsRowTotal, '', '', r.totalMonthly, r.totalMonthly * 12, r.partP1, r.partP2]);
+    aoa.push([]);
+    const reste = (r.p1Inc + r.p2Inc) - r.totalMonthly;
+    aoa.push([t.xlsRowReste, '', '', reste]);
+    aoa.push([]);
+    aoa.push([t.xlsFooter]);
+
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    ws['!cols'] = [{wch:30},{wch:14},{wch:16},{wch:14},{wch:14},{wch:16},{wch:16}];
+    ws['!merges'] = [{ s:{r:0,c:0}, e:{r:0,c:6} }];
+
+    const money = '#,##0.00 [$CAD]';
+    const pct   = '0.0%';
+
+    // Cellules monétaires : revenus rows 2,3,4 col B; pct rows 6,7 col B
+    [2, 3, 4].forEach(function(rr) {
+      const ref = XLSX.utils.encode_cell({r:rr, c:1});
+      if (ws[ref]) ws[ref].z = money;
+    });
+    [6, 7].forEach(function(rr) {
+      const ref = XLSX.utils.encode_cell({r:rr, c:1});
+      if (ws[ref]) ws[ref].z = pct;
+    });
+
+    // Header tableau = ligne 9
+    const headerRow = 9;
+    for (let c = 0; c < 7; c++) {
+      const ref = XLSX.utils.encode_cell({r:headerRow, c:c});
+      if (ws[ref]) ws[ref].s = { font: { bold: true, color: { rgb: 'FFFFFF' } }, fill: { fgColor: { rgb: '1A3A5C' } } };
+    }
+    // Lignes de données
+    const firstDataRow = 10;
+    const lastDataRow  = firstDataRow + r.lines.length - 1;
+    for (let rr = firstDataRow; rr <= lastDataRow; rr++) {
+      for (let c = 1; c <= 6; c++) {
+        if (c === 2) continue; // col freq est texte
+        const ref = XLSX.utils.encode_cell({r:rr, c:c});
+        if (ws[ref]) ws[ref].z = money;
+      }
+    }
+    // TOTAL row
+    const totalRow = lastDataRow + 1;
+    for (let c = 3; c <= 6; c++) {
+      const ref = XLSX.utils.encode_cell({r:totalRow, c:c});
+      if (ws[ref]) { ws[ref].z = money; ws[ref].s = { font: { bold: true } }; }
+    }
+    // Reste row
+    const resteRow = totalRow + 2;
+    const resteRef = XLSX.utils.encode_cell({r:resteRow, c:3});
+    if (ws[resteRef]) ws[resteRef].z = money;
+
+    XLSX.utils.book_append_sheet(wb, ws, t.xlsSheetName);
+    const fn = t.xlsFilename + '-' + new Date().toISOString().slice(0,10) + '.xlsx';
+    XLSX.writeFile(wb, fn);
+  }
+
+  // ========== Event listeners ==========
+  document.querySelectorAll('.mode-tab').forEach(function(el){
+    el.addEventListener('click', function(){ setMode(el.getAttribute('data-mode')); });
+  });
+  ['p1Name','p2Name','p1Salary','p2Salary','p1Freq','p2Freq','customP1'].forEach(function(id){
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('input', calculate);
+      el.addEventListener('change', calculate);
+    }
+  });
+
+  // ========== Init ==========
+  document.documentElement.lang = lang;
+  updateLangToggleUI();
+  initBudgetLines();
+  applyTranslations();
+  renderBudgetTable();
+  calculate();
+</script>
+
+<!-- Filet de sécurité -->
+<script>
+(function(){
+  function safetyRender() {
+    try {
+      if (!window.CXSite) return;
+      var curLang = (typeof lang === 'string' && lang) ? lang : ((CXSite.getStoredLang && CXSite.getStoredLang()) || 'fr');
+      var nav = document.getElementById('siteNav');
+      if (nav && nav.innerHTML.trim().length === 0) CXSite.renderNav(curLang, 'budget', 'siteNav');
+      var fl = document.getElementById('footerLinks');
+      if (fl && fl.innerHTML.trim().length === 0) CXSite.renderFooterLinks(curLang, 'footerLinks');
+      var ads = document.getElementById('partnersRow');
+      if (ads && ads.innerHTML.trim().length === 0) ads.innerHTML = CXSite.amazonAd(curLang) + CXSite.cfoMasqueAd(curLang) + CXSite.alchimixAd(curLang);
+      var shared = CXSite.SHARED[curLang] || CXSite.SHARED.fr;
+      var hs = document.getElementById('headerSubtitle');
+      var ft = document.getElementById('footerText');
+      if (hs) hs.textContent = shared.headerSubtitle;
+      if (ft) ft.textContent = shared.footerText;
+      if (CXSite.checkAdBlockAndNotify) CXSite.checkAdBlockAndNotify(curLang);
+    } catch(e) { console.warn('safetyRender budget-couple:', e); }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', safetyRender);
+  else safetyRender();
+  window.addEventListener('load', safetyRender);
+})();
+</script>
+
+</body>
+</html>

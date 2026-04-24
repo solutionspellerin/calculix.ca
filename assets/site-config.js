@@ -13,6 +13,8 @@
     { key: 'pourboires',    href: 'pourboires.html',     fr: 'Pourboires',              en: 'Tip Calculator',          es: 'Propinas' },
     { key: 'investissement',href: 'investissement.html', fr: 'Investissement',          en: 'Investment',              es: 'Inversión' },
     { key: 'amortissement', href: 'amortissement.html',  fr: 'Amortissement',           en: 'Amortization',            es: 'Amortización' },
+    { key: 'budget',        href: 'budget-couple.html',  fr: 'Budget couple',           en: 'Couple Budget',           es: 'Presupuesto pareja' },
+    { key: 'equite',        href: 'equite-salariale.html', fr: 'Équité salariale',      en: 'Pay Equity',              es: 'Equidad salarial' },
     { key: 'about',         href: 'about.html',          fr: 'À propos',                en: 'About',                   es: 'Acerca de' },
     { key: 'privacy',       href: 'privacy-policy.html', fr: 'Politique de conf.',      en: 'Privacy Policy',          es: 'Privacidad' },
   ];
