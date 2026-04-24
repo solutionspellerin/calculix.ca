@@ -6,9 +6,9 @@
 <meta name="description" content="Budget de couple : partagez les dépenses au prorata des salaires ou par pourcentage personnalisé. Lignes suggérées, montants par jour/semaine/mois/année. Exportable en Excel.">
 <title>Budget de couple — Couple Budget | Calculix.ca</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/ads.css?v=20260424h">
+<link rel="stylesheet" href="assets/ads.css?v=20260424i">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451" crossorigin="anonymous"></script>
-<script src="assets/site-config.js?v=20260424h"></script>
+<script src="assets/site-config.js?v=20260424i"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
   :root {
@@ -127,9 +127,9 @@
   table.budget td.calc { font-weight: 600; color: var(--bleu); }
   table.budget td.calc.p1 { color: var(--bleu-clair); }
   table.budget td.calc.p2 { color: var(--rose); }
-  table.budget tfoot td { background: var(--bleu); color: var(--blanc); font-weight: 600; padding: 12px; font-size: 0.92rem; }
-  table.budget tfoot td.calc.p1 { background: #2d6a9f; }
-  table.budget tfoot td.calc.p2 { background: #8a3760; }
+  table.budget tfoot td { background: var(--bleu); color: var(--blanc); font-weight: 700; padding: 12px; font-size: 0.95rem; }
+  table.budget tfoot td.calc.p1 { background: #1e5380; color: #ffffff; text-shadow: 0 1px 1px rgba(0,0,0,0.25); }
+  table.budget tfoot td.calc.p2 { background: #6b2a4a; color: #ffffff; text-shadow: 0 1px 1px rgba(0,0,0,0.25); }
 
   .del-btn { background: transparent; border: none; color: var(--rouge); font-size: 1.1rem; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: background 0.15s; }
   .del-btn:hover { background: rgba(198,69,69,0.1); }
@@ -941,11 +941,4 @@
       if (CXSite.checkAdBlockAndNotify) CXSite.checkAdBlockAndNotify(curLang);
     } catch(e) { console.warn('safetyRender budget-couple:', e); }
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', safetyRender);
-  else safetyRender();
-  window.addEventListener('load', safetyRender);
-})();
-</script>
-
-</body>
-</html>
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', safety
