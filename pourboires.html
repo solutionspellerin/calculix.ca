@@ -6,9 +6,9 @@
 <meta name="description" content="Calculateur de pourboire : séparez le pourboire équitablement entre les serveurs ou au prorata des heures travaillées. Gratuit · Québec.">
 <title>Séparation de pourboires — Tip Splitter | Calculix.ca</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/ads.css?v=20260424d">
+<link rel="stylesheet" href="assets/ads.css?v=20260424f">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451" crossorigin="anonymous"></script>
-<script src="assets/site-config.js?v=20260424e"></script>
+<script src="assets/site-config.js?v=20260424f"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
   :root {
@@ -320,7 +320,7 @@
   </div>
 
   <div style="grid-column: 1 / -1;">
-    <div class="ads-row" id="bottomAds"></div>
+    <div class="partners-row" id="partnersRow"></div>
   </div>
 </main>
 
@@ -543,7 +543,7 @@ function applyTranslations() {
 
   CXSite.renderNav(lang, ACTIVE_PAGE);
   CXSite.renderFooterLinks(lang, 'footerLinks');
-  document.getElementById('bottomAds').innerHTML =
+  document.getElementById('partnersRow').innerHTML =
     CXSite.amazonAd(lang) + CXSite.cfoMasqueAd(lang) + CXSite.alchimixAd(lang);
 }
 
@@ -798,7 +798,7 @@ addWorker(); addWorker(); addWorker();
       if (nav && nav.innerHTML.trim().length === 0) CXSite.renderNav(curLang, 'pourboires', 'siteNav');
       var fl = document.getElementById('footerLinks');
       if (fl && fl.innerHTML.trim().length === 0) CXSite.renderFooterLinks(curLang, 'footerLinks');
-      var ads = document.getElementById('bottomAds');
+      var ads = document.getElementById('partnersRow');
       if (ads && ads.innerHTML.trim().length === 0) ads.innerHTML = CXSite.amazonAd(curLang) + CXSite.cfoMasqueAd(curLang) + CXSite.alchimixAd(curLang);
     } catch(e) { console.warn('safetyRender pourboires:', e); }
   }

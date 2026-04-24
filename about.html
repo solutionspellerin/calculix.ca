@@ -6,9 +6,9 @@
 <meta name="description" content="À propos de Calculix.ca — outil gratuit trilingue (FR/EN/ES) pour calculer les pourboires et les projections d'investissement au Québec.">
 <title>À propos — About | Calculix.ca</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/ads.css?v=20260424d">
+<link rel="stylesheet" href="assets/ads.css?v=20260424f">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451" crossorigin="anonymous"></script>
-<script src="assets/site-config.js?v=20260424c"></script>
+<script src="assets/site-config.js?v=20260424f"></script>
 <style>
   :root { --bleu:#1a3a5c; --bleu-clair:#2d6a9f; --accent:#e8c547; --vert:#2f8f5f; --fond:#f4f1eb; --blanc:#ffffff; --gris:#8a8a8a; --gris-clair:#e8e4dc; --texte:#1a1a1a; --ombre:0 4px 24px rgba(26,58,92,0.10); }
   * { box-sizing:border-box; margin:0; padding:0; }
@@ -94,7 +94,7 @@
   <div class="section"><h2 id="s4title">Contact</h2><p id="s4p1"></p></div>
 
   <!-- Pubs -->
-  <div class="ads-row" id="bottomAds" style="margin-top:28px;"></div>
+  <div class="partners-row" id="partnersRow" style="margin-top:28px;"></div>
 </main>
 
 <footer>
@@ -165,7 +165,7 @@ function renderAll() {
   if (!window.CXSite) return;
   CXSite.renderNav(lang, ACTIVE_PAGE, 'siteNav');
   CXSite.renderFooterLinks(lang, 'footerLinks');
-  var ads = document.getElementById('bottomAds');
+  var ads = document.getElementById('partnersRow');
   if (ads) ads.innerHTML = CXSite.amazonAd(lang) + CXSite.cfoMasqueAd(lang) + CXSite.alchimixAd(lang);
 }
 
@@ -243,7 +243,7 @@ if (document.readyState === 'loading') {
       if (fl && fl.innerHTML.trim().length === 0) {
         CXSite.renderFooterLinks(curLang, 'footerLinks');
       }
-      var ads = document.getElementById('bottomAds');
+      var ads = document.getElementById('partnersRow');
       if (ads && ads.innerHTML.trim().length === 0) {
         ads.innerHTML = CXSite.amazonAd(curLang) + CXSite.cfoMasqueAd(curLang) + CXSite.alchimixAd(curLang);
       }

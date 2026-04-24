@@ -6,7 +6,7 @@
 <meta name="description" content="Calculix.ca — calculateurs financiers gratuits : séparation de pourboires (équitable ou selon les heures) et projection d'investissement avec rendement composé.">
 <title>Calculix.ca — Calculateurs financiers gratuits | Québec</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/ads.css?v=20260424a">
+<link rel="stylesheet" href="assets/ads.css?v=20260424f">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451" crossorigin="anonymous"></script>
 <style>
   :root {
@@ -243,7 +243,7 @@
     </div>
   </div>
 
-  <div class="ads-row" id="bottomAds"></div>
+  <div class="partners-row" id="partnersRow"></div>
 </main>
 
 <footer>
@@ -254,7 +254,7 @@
   </div>
 </footer>
 
-<script src="assets/site-config.js?v=20260424a"></script>
+<script src="assets/site-config.js?v=20260424f"></script>
 <script>
 const ACTIVE_PAGE = 'home';
 let lang = (window.CXSite && CXSite.getStoredLang()) || 'fr';
@@ -382,7 +382,7 @@ function applyTranslations() {
 
   CXSite.renderNav(lang, ACTIVE_PAGE);
   CXSite.renderFooterLinks(lang, 'footerLinks');
-  document.getElementById('bottomAds').innerHTML =
+  document.getElementById('partnersRow').innerHTML =
     CXSite.amazonAd(lang) + CXSite.cfoMasqueAd(lang) + CXSite.alchimixAd(lang);
 }
 
@@ -402,7 +402,7 @@ applyTranslations();
       if (nav && nav.innerHTML.trim().length === 0) CXSite.renderNav(curLang, 'home', 'siteNav');
       var fl = document.getElementById('footerLinks');
       if (fl && fl.innerHTML.trim().length === 0) CXSite.renderFooterLinks(curLang, 'footerLinks');
-      var ads = document.getElementById('bottomAds');
+      var ads = document.getElementById('partnersRow');
       if (ads && ads.innerHTML.trim().length === 0) ads.innerHTML = CXSite.amazonAd(curLang) + CXSite.cfoMasqueAd(curLang) + CXSite.alchimixAd(curLang);
     } catch(e) { console.warn('safetyRender index:', e); }
   }

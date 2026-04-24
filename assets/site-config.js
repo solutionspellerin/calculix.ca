@@ -119,17 +119,17 @@
   function cfoMasqueAd(lang) {
     const t = SHARED[lang] || SHARED.fr;
     return [
-      '<a href="https://lecfomasque.com/ref/107/" target="_blank" rel="sponsored noopener" class="ad-cfo">',
-      '  <div class="ad-cfo-inner">',
-      '    <img src="images/cfo-masque.svg?v=20260424c" alt="Le CFO masqué" class="ad-cfo-logo" loading="lazy" />',
-      '    <div class="ad-cfo-text">',
-      '      <div class="ad-cfo-headline">' + t.cfoHeadline + '</div>',
-      '      <div class="ad-cfo-subline">' + t.cfoSubline + '</div>',
-      '      <div class="ad-cfo-promo">' + t.cfoPromo + ' <span class="ad-cfo-code">MPP5%Rabais</span></div>',
-      '      <div class="ad-cfo-cta">' + t.cfoCTA + '</div>',
+      '<a href="https://lecfomasque.com/ref/107/" target="_blank" rel="sponsored noopener" class="partner-cfo">',
+      '  <div class="partner-cfo-inner">',
+      '    <img src="images/cfo-masque.svg?v=20260424f" alt="Le CFO masqué" class="partner-cfo-logo" loading="lazy" />',
+      '    <div class="partner-cfo-text">',
+      '      <div class="partner-cfo-headline">' + t.cfoHeadline + '</div>',
+      '      <div class="partner-cfo-subline">' + t.cfoSubline + '</div>',
+      '      <div class="partner-cfo-promo">' + t.cfoPromo + ' <span class="partner-cfo-code">MPP5%Rabais</span></div>',
+      '      <div class="partner-cfo-cta">' + t.cfoCTA + '</div>',
       '    </div>',
       '  </div>',
-      '  <div class="ad-label">' + t.adLabel + '</div>',
+      '  <div class="partner-label">' + t.adLabel + '</div>',
       '</a>'
     ].join('\n');
   }
@@ -138,16 +138,16 @@
   function alchimixAd(lang) {
     const t = SHARED[lang] || SHARED.fr;
     return [
-      '<a href="https://alchimix-app.com/" target="_blank" rel="sponsored noopener" class="ad-alch">',
-      '  <div class="ad-alch-inner">',
-      '    <img src="images/alchimix.png?v=20260424c" alt="Alchimix" class="ad-alch-banner" loading="lazy" />',
-      '    <div class="ad-alch-text">',
-      '      <div class="ad-alch-headline">' + t.alchHeadline + '</div>',
-      '      <div class="ad-alch-subline">' + t.alchSubline + '</div>',
-      '      <div class="ad-alch-cta">' + t.alchCTA + '</div>',
+      '<a href="https://alchimix-app.com/" target="_blank" rel="sponsored noopener" class="partner-alch">',
+      '  <div class="partner-alch-inner">',
+      '    <img src="images/alchimix.png?v=20260424f" alt="Alchimix" class="partner-alch-banner" loading="lazy" />',
+      '    <div class="partner-alch-text">',
+      '      <div class="partner-alch-headline">' + t.alchHeadline + '</div>',
+      '      <div class="partner-alch-subline">' + t.alchSubline + '</div>',
+      '      <div class="partner-alch-cta">' + t.alchCTA + '</div>',
       '    </div>',
       '  </div>',
-      '  <div class="ad-label">' + t.adLabel + '</div>',
+      '  <div class="partner-label">' + t.adLabel + '</div>',
       '</a>'
     ].join('\n');
   }
@@ -158,16 +158,16 @@
     const t = SHARED[lang] || SHARED.fr;
     const url = 'https://www.amazon.ca/?tag=amazingam068f-20';
     return [
-      '<a href="' + url + '" target="_blank" rel="sponsored noopener" class="ad-amz">',
-      '  <div class="ad-amz-inner">',
-      '    <img src="images/amazon.svg?v=20260424c" alt="Amazon" class="ad-amz-logo" loading="lazy" />',
-      '    <div class="ad-amz-text">',
-      '      <div class="ad-amz-headline">' + t.amazonHeadline + '</div>',
-      '      <div class="ad-amz-subline">' + t.amazonSubline + '</div>',
-      '      <div class="ad-amz-cta">' + t.amazonCTA + ' <span aria-hidden="true">›</span></div>',
+      '<a href="' + url + '" target="_blank" rel="sponsored noopener" class="partner-amz">',
+      '  <div class="partner-amz-inner">',
+      '    <img src="images/amazon.svg?v=20260424f" alt="Amazon" class="partner-amz-logo" loading="lazy" />',
+      '    <div class="partner-amz-text">',
+      '      <div class="partner-amz-headline">' + t.amazonHeadline + '</div>',
+      '      <div class="partner-amz-subline">' + t.amazonSubline + '</div>',
+      '      <div class="partner-amz-cta">' + t.amazonCTA + ' <span aria-hidden="true">›</span></div>',
       '    </div>',
       '  </div>',
-      '  <div class="ad-label">' + t.adLabel + '</div>',
+      '  <div class="partner-label">' + t.adLabel + '</div>',
       '</a>'
     ].join('\n');
   }

@@ -6,7 +6,7 @@
 <meta name="description" content="Calculateur d'investissement : combien de temps ou quelle mise pour atteindre un objectif ? Avec rendement composé, cotisations récurrentes et graphique.">
 <title>Projection d'investissement — Investment Projection | Calculix.ca</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/ads.css?v=20260424a">
+<link rel="stylesheet" href="assets/ads.css?v=20260424f">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451" crossorigin="anonymous"></script>
 <style>
   :root {
@@ -335,7 +335,7 @@
   </div>
 
   <div style="grid-column: 1 / -1;">
-    <div class="ads-row" id="bottomAds"></div>
+    <div class="partners-row" id="partnersRow"></div>
   </div>
 </main>
 
@@ -347,7 +347,7 @@
   </div>
 </footer>
 
-<script src="assets/site-config.js?v=20260424a"></script>
+<script src="assets/site-config.js?v=20260424f"></script>
 <script>
 const ACTIVE_PAGE = 'investissement';
 let lang = (window.CXSite && CXSite.getStoredLang()) || 'fr';
@@ -543,7 +543,7 @@ function applyTranslations() {
 
   CXSite.renderNav(lang, ACTIVE_PAGE);
   CXSite.renderFooterLinks(lang, 'footerLinks');
-  document.getElementById('bottomAds').innerHTML =
+  document.getElementById('partnersRow').innerHTML =
     CXSite.amazonAd(lang) + CXSite.cfoMasqueAd(lang) + CXSite.alchimixAd(lang);
 }
 
@@ -815,7 +815,7 @@ calculate();
       if (nav && nav.innerHTML.trim().length === 0) CXSite.renderNav(curLang, 'investissement', 'siteNav');
       var fl = document.getElementById('footerLinks');
       if (fl && fl.innerHTML.trim().length === 0) CXSite.renderFooterLinks(curLang, 'footerLinks');
-      var ads = document.getElementById('bottomAds');
+      var ads = document.getElementById('partnersRow');
       if (ads && ads.innerHTML.trim().length === 0) ads.innerHTML = CXSite.amazonAd(curLang) + CXSite.cfoMasqueAd(curLang) + CXSite.alchimixAd(curLang);
     } catch(e) { console.warn('safetyRender investissement:', e); }
   }
