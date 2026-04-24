@@ -6,9 +6,9 @@
 <meta name="description" content="Calculateur d'équité salariale par professionnel selon les facteurs et sous-facteurs pondérés en pourcentage. Basé sur la Loi sur l'équité salariale du Québec. Exportable en Excel.">
 <title>Équité salariale — Pay Equity | Calculix.ca</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/ads.css?v=20260424h">
+<link rel="stylesheet" href="assets/ads.css?v=20260424i">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451" crossorigin="anonymous"></script>
-<script src="assets/site-config.js?v=20260424h"></script>
+<script src="assets/site-config.js?v=20260424i"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
   :root {
@@ -355,7 +355,7 @@
       infoNbPro: 'Nombre de professionnels', infoAvgRate: 'Salaire par point moyen',
       tipsTitle: '💡 Bon à savoir',
       tipsP1: 'Au Québec, la <strong>Loi sur l\'équité salariale</strong> identifie 4 facteurs : qualifications, responsabilités, efforts et conditions de travail.',
-      tipsP2: 'Le <strong>total pondéré</strong> d\'un emploi = Σ (score × poids sous-facteur × poids facteur / 10 000). Un écart d\'équité positif signifie que l\'emploi est payé <strong>au-dessus</strong> de la moyenne $/point.',
+      tipsP2: 'Le <strong>total pondéré</strong> d\'un emploi = Σ (score × poids absolu du sous-facteur / 100). Un écart d\'équité positif signifie que l\'emploi est payé <strong>au-dessus</strong> de la moyenne $/point.',
       disclaimer: '⚠️ Calculix.ca fournit des outils à titre informatif uniquement. Pour un exercice d\'équité salariale conforme à la Loi, consultez un conseiller en ressources humaines ou la CNESST.',
       sectBornes: '📚 Bornes généralement reconnues',
       bornesIntro: 'Valeurs de référence selon les pratiques habituelles d\'évaluation d\'emplois. Utilisez-les comme point de départ pour pondérer vos facteurs ci-dessous.',
@@ -382,22 +382,23 @@
         ]}
       ],
       defaultFactors: [
-        { name: 'Qualifications', pct: 30, subs: [
-          { name: 'Formation', pct: 50 },
-          { name: 'Expérience', pct: 50 }
+        { name: 'Qualifications requises', pct: 30, subs: [
+          { name: 'Formation', pct: 12 },
+          { name: 'Expérience', pct: 10 },
+          { name: 'Dextérité et coordination', pct: 8 }
         ]},
-        { name: 'Responsabilités', pct: 30, subs: [
-          { name: 'Supervision de personnel', pct: 40 },
-          { name: 'Ressources matérielles et financières', pct: 30 },
-          { name: 'Communication / relations', pct: 30 }
+        { name: 'Responsabilités assumées', pct: 30, subs: [
+          { name: 'Imputabilité', pct: 10 },
+          { name: 'Communications', pct: 10 },
+          { name: 'Supervision', pct: 10 }
         ]},
-        { name: 'Efforts', pct: 20, subs: [
-          { name: 'Effort mental', pct: 60 },
-          { name: 'Effort physique', pct: 40 }
+        { name: 'Efforts requis', pct: 30, subs: [
+          { name: 'Effort intellectuel', pct: 10 },
+          { name: 'Concentration et attention sensorielle', pct: 10 },
+          { name: 'Effort physique', pct: 10 }
         ]},
-        { name: 'Conditions de travail', pct: 20, subs: [
-          { name: 'Environnement physique', pct: 50 },
-          { name: 'Risques professionnels', pct: 50 }
+        { name: 'Conditions de travail', pct: 10, subs: [
+          { name: 'Inconvénients et risques', pct: 10 }
         ]}
       ],
       defaultPros: [
@@ -439,7 +440,7 @@
       infoNbPro: 'Number of professionals', infoAvgRate: 'Average $/point',
       tipsTitle: '💡 Good to know',
       tipsP1: 'In Quebec, the <strong>Pay Equity Act</strong> defines 4 factors: qualifications, responsibilities, efforts and working conditions.',
-      tipsP2: 'A job\'s <strong>weighted total</strong> = Σ (score × sub-factor weight × factor weight / 10,000). A positive equity gap means the job is paid <strong>above</strong> the average $/point.',
+      tipsP2: 'A job\'s <strong>weighted total</strong> = Σ (score × absolute sub-factor weight / 100). A positive equity gap means the job is paid <strong>above</strong> the average $/point.',
       disclaimer: '⚠️ Calculix.ca provides tools for informational purposes only. For a pay equity exercise compliant with the Act, consult an HR advisor or CNESST.',
       sectBornes: '📚 Generally accepted ranges',
       bornesIntro: 'Reference values based on common job evaluation practices. Use them as a starting point for weighting your factors below.',
@@ -466,22 +467,23 @@
         ]}
       ],
       defaultFactors: [
-        { name: 'Qualifications', pct: 30, subs: [
-          { name: 'Education', pct: 50 },
-          { name: 'Experience', pct: 50 }
+        { name: 'Required qualifications', pct: 30, subs: [
+          { name: 'Education', pct: 12 },
+          { name: 'Experience', pct: 10 },
+          { name: 'Dexterity and coordination', pct: 8 }
         ]},
         { name: 'Responsibilities', pct: 30, subs: [
-          { name: 'Staff supervision', pct: 40 },
-          { name: 'Material and financial resources', pct: 30 },
-          { name: 'Communication / relations', pct: 30 }
+          { name: 'Accountability', pct: 10 },
+          { name: 'Communication', pct: 10 },
+          { name: 'Supervision', pct: 10 }
         ]},
-        { name: 'Efforts', pct: 20, subs: [
-          { name: 'Mental effort', pct: 60 },
-          { name: 'Physical effort', pct: 40 }
+        { name: 'Required effort', pct: 30, subs: [
+          { name: 'Intellectual effort', pct: 10 },
+          { name: 'Concentration and sensory attention', pct: 10 },
+          { name: 'Physical effort', pct: 10 }
         ]},
-        { name: 'Working conditions', pct: 20, subs: [
-          { name: 'Physical environment', pct: 50 },
-          { name: 'Occupational hazards', pct: 50 }
+        { name: 'Working conditions', pct: 10, subs: [
+          { name: 'Inconveniences and risks', pct: 10 }
         ]}
       ],
       defaultPros: [
@@ -523,7 +525,7 @@
       infoNbPro: 'Número de profesionales', infoAvgRate: 'Salario promedio / punto',
       tipsTitle: '💡 Bueno saber',
       tipsP1: 'En Quebec, la <strong>Ley de Equidad Salarial</strong> define 4 factores: calificaciones, responsabilidades, esfuerzos y condiciones de trabajo.',
-      tipsP2: 'El <strong>total ponderado</strong> de un empleo = Σ (puntaje × peso sub-factor × peso factor / 10 000). Una brecha positiva significa que el empleo se paga <strong>por encima</strong> del promedio $/punto.',
+      tipsP2: 'El <strong>total ponderado</strong> de un empleo = Σ (puntaje × peso absoluto del sub-factor / 100). Una brecha positiva significa que el empleo se paga <strong>por encima</strong> del promedio $/punto.',
       disclaimer: '⚠️ Calculix.ca ofrece herramientas solo con fines informativos. Para un ejercicio de equidad salarial conforme a la Ley, consulte a un asesor de RR. HH. o a la CNESST.',
       sectBornes: '📚 Rangos generalmente reconocidos',
       bornesIntro: 'Valores de referencia según las prácticas habituales de evaluación de empleos. Úselos como punto de partida para ponderar sus factores a continuación.',
@@ -550,22 +552,23 @@
         ]}
       ],
       defaultFactors: [
-        { name: 'Calificaciones', pct: 30, subs: [
-          { name: 'Formación', pct: 50 },
-          { name: 'Experiencia', pct: 50 }
+        { name: 'Calificaciones requeridas', pct: 30, subs: [
+          { name: 'Formación', pct: 12 },
+          { name: 'Experiencia', pct: 10 },
+          { name: 'Destreza y coordinación', pct: 8 }
         ]},
-        { name: 'Responsabilidades', pct: 30, subs: [
-          { name: 'Supervisión de personal', pct: 40 },
-          { name: 'Recursos materiales y financieros', pct: 30 },
-          { name: 'Comunicación / relaciones', pct: 30 }
+        { name: 'Responsabilidades asumidas', pct: 30, subs: [
+          { name: 'Responsabilización', pct: 10 },
+          { name: 'Comunicaciones', pct: 10 },
+          { name: 'Supervisión', pct: 10 }
         ]},
-        { name: 'Esfuerzos', pct: 20, subs: [
-          { name: 'Esfuerzo mental', pct: 60 },
-          { name: 'Esfuerzo físico', pct: 40 }
+        { name: 'Esfuerzos requeridos', pct: 30, subs: [
+          { name: 'Esfuerzo intelectual', pct: 10 },
+          { name: 'Concentración y atención sensorial', pct: 10 },
+          { name: 'Esfuerzo físico', pct: 10 }
         ]},
-        { name: 'Condiciones de trabajo', pct: 20, subs: [
-          { name: 'Entorno físico', pct: 50 },
-          { name: 'Riesgos laborales', pct: 50 }
+        { name: 'Condiciones de trabajo', pct: 10, subs: [
+          { name: 'Inconvenientes y riesgos', pct: 10 }
         ]}
       ],
       defaultPros: [
@@ -738,16 +741,15 @@
           '</div>';
       });
 
-      // Somme des sous-facteurs
+      // Somme des sous-facteurs = pct absolu du facteur
       const subSum = fac.subs.reduce(function(a, s){ return a + (parseFloat(s.pct) || 0); }, 0);
-      const subPill = Math.abs(subSum - 100) < 0.01
-        ? '<span class="sum-pill ok">' + t.sumOk + subSum.toFixed(0) + ' %</span>'
-        : '<span class="sum-pill bad">' + t.sumBad + subSum.toFixed(0) + ' %</span>';
+      fac.pct = subSum; // fac.pct est toujours dérivé de la somme de ses sous-facteurs
+      const subPill = '<span class="sum-pill ok">' + t.sumOk + subSum.toFixed(0) + ' %</span>';
 
       grp.innerHTML =
         '<div class="factor-head">' +
           '<input type="text" class="cx-fac-name" value="' + escapeHtml(fac.name) + '" />' +
-          '<div class="pct-input"><input type="number" class="cx-fac-pct" min="0" max="100" step="1" value="' + fac.pct + '" /></div>' +
+          '<div class="pct-input"><input type="number" class="cx-fac-pct" value="' + fac.pct + '" readonly tabindex="-1" title="= Σ sous-facteurs" /></div>' +
           '<button type="button" class="del-btn cx-fac-del" title="' + t.delTooltip + '">✕</button>' +
         '</div>' +
         subsHtml +
@@ -760,7 +762,6 @@
 
       // Wire events
       grp.querySelector('.cx-fac-name').addEventListener('input', function(e){ fac.name = e.target.value; updateSums(); renderProsHeader(); calculate(); });
-      grp.querySelector('.cx-fac-pct').addEventListener('input', function(e){ fac.pct = parseFloat(e.target.value) || 0; updateSums(); calculate(); });
       grp.querySelector('.cx-fac-del').addEventListener('click', function(){ removeFactor(fac.id); });
       grp.querySelector('.cx-add-sub').addEventListener('click', function(){ addSubFactor(fac.id); });
 
@@ -769,7 +770,17 @@
         const sub = fac.subs.find(function(x){ return x.id === sid; });
         if (!sub) return;
         row.querySelector('.cx-sub-name').addEventListener('input', function(e){ sub.name = e.target.value; renderProsHeader(); calculate(); });
-        row.querySelector('.cx-sub-pct').addEventListener('input', function(e){ sub.pct = parseFloat(e.target.value) || 0; updateSums(); calculate(); });
+        row.querySelector('.cx-sub-pct').addEventListener('input', function(e){
+          sub.pct = parseFloat(e.target.value) || 0;
+          // Recompute factor pct and refresh the display
+          fac.pct = fac.subs.reduce(function(a, s){ return a + (parseFloat(s.pct) || 0); }, 0);
+          const facPctInput = grp.querySelector('.cx-fac-pct');
+          if (facPctInput) facPctInput.value = fac.pct;
+          const pill = grp.querySelector('.sum-pill');
+          if (pill) pill.textContent = t.sumOk + fac.pct.toFixed(0) + ' %';
+          updateSums();
+          calculate();
+        });
         row.querySelector('.cx-sub-del').addEventListener('click', function(){ removeSubFactor(fac.id, sid); });
       });
     });
@@ -901,12 +912,11 @@
   function computeProTotal(pro) {
     let total = 0;
     factors.forEach(function(fac) {
-      const facPct = parseFloat(fac.pct) || 0;
       fac.subs.forEach(function(sub) {
         const subPct = parseFloat(sub.pct) || 0;
         const score = pro.scores[sub.id] != null ? pro.scores[sub.id] : 0;
-        // total = Σ (score × subPct × facPct) / 10000
-        total += score * subPct * facPct / 10000;
+        // total = Σ (score × subPct) / 100  — sub.pct is absolute (all subs sum to 100)
+        total += score * subPct / 100;
       });
     });
     return total;
@@ -990,7 +1000,7 @@
     const weightRows = [];
     r.factors.forEach(function(fac) {
       fac.subs.forEach(function(sub) {
-        const effectiveWeight = (parseFloat(fac.pct) * parseFloat(sub.pct)) / 100;
+        const effectiveWeight = parseFloat(sub.pct) || 0;
         aoa.push([fac.name, sub.name, effectiveWeight / 100]);
         weightRows.push(aoa.length - 1);
       });
