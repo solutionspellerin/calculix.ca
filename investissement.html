@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/ads.css?v=20260424f">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
   :root {
     --bleu: #1a3a5c; --bleu-clair: #2d6a9f; --bleu-fonce: #0e2540;
@@ -138,6 +139,21 @@
   table.evo td { padding: 10px 14px; border-bottom: 1px solid rgba(0,0,0,0.05); text-align: right; color: #333; }
   table.evo td:first-child { text-align: left; color: var(--bleu); font-weight: 600; }
   table.evo tr:last-child td { border-bottom: none; font-weight: 600; color: var(--bleu); background: #fdf6e0; }
+
+  .export-row { display: flex; justify-content: flex-end; margin: 12px 0 8px; }
+  .export-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #1d6f42 0%, #2f8f5f 100%);
+    color: white; border: none; border-radius: 10px;
+    font-family: inherit; font-size: 0.9rem; font-weight: 600;
+    letter-spacing: 0.02em; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(29,111,66,0.25);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .export-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(29,111,66,0.35); }
+  .export-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+  .export-btn .xls-icon { font-size: 1rem; }
 
   .scenarios { grid-column: 1 / -1; background: var(--blanc); border-radius: 16px; box-shadow: var(--ombre); padding: 28px 32px; margin-top: 4px; }
   .scenarios h2 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--bleu); margin-bottom: 20px; }
@@ -289,6 +305,12 @@
         </div>
       </div>
 
+      <div class="export-row">
+        <button type="button" class="export-btn" id="exportBtn" onclick="exportToExcel()" disabled>
+          <span class="xls-icon">📊</span><span id="exportLbl">Exporter en Excel</span>
+        </button>
+      </div>
+
       <div class="table-wrap">
         <table class="evo" id="evoTable">
           <thead><tr>
@@ -352,6 +374,7 @@
 const ACTIVE_PAGE = 'investissement';
 let lang = (window.CXSite && CXSite.getStoredLang()) || 'fr';
 let calcMode = 'final';
+let lastResult = null; // pour l'export Excel
 
 const i18n = {
   fr: {
@@ -385,6 +408,20 @@ const i18n = {
     tipsP2:"Démarrer tôt fait une énorme différence : 10 ans d'intérêts composés peuvent doubler votre investissement.",
     scenariosTitle:'⚡ Scénarios populaires',
     disclaimer:"⚠️ Les projections sont des estimations basées sur un rendement constant. Les rendements réels varient selon les marchés, les frais de gestion et la fiscalité (REER, CELI, CELIAPP, non-enregistré). Consultez un conseiller financier avant toute décision d'investissement.",
+    exportLbl:'Exporter en Excel',
+    xlsSheetName:'Projection',
+    xlsTitle:"Projection d'investissement — Calculix.ca",
+    xlsRowInitial:'Montant de départ',
+    xlsRowContrib:'Placement récurrent',
+    xlsRowFreq:'Fréquence',
+    xlsRowRate:'Rendement annuel',
+    xlsRowYears:'Durée',
+    xlsRowInvested:'Total investi',
+    xlsRowGains:'Intérêts composés',
+    xlsRowFinal:'Valeur finale',
+    xlsColYear:'Année', xlsColInvested:'Investi', xlsColGains:'Intérêts', xlsColBalance:'Solde',
+    xlsFooter:'Calculix.ca — calculs informatifs uniquement',
+    xlsFilename:'investissement-calculix',
     scenarios:[
       {title:'🏠 Mise de fonds maison', desc:'50 000 $ en 5 ans · CELIAPP', initial:5000, contrib:600, freq:'month', years:5,  target:50000,  mode:'final', rate:5},
       {title:'🎓 Études universitaires', desc:'50 000 $ en 18 ans · REEE', initial:2000, contrib:200, freq:'month', years:18, target:50000,  mode:'final', rate:6},
@@ -427,6 +464,20 @@ const i18n = {
     tipsP2:'Starting early makes a huge difference — 10 years of compounding can double your investment.',
     scenariosTitle:'⚡ Popular scenarios',
     disclaimer:'⚠️ Projections assume a constant return. Real returns vary with markets, fees, and taxation (RRSP, TFSA, FHSA, non-registered). Consult a financial advisor before investing.',
+    exportLbl:'Export to Excel',
+    xlsSheetName:'Projection',
+    xlsTitle:"Investment projection — Calculix.ca",
+    xlsRowInitial:'Starting amount',
+    xlsRowContrib:'Recurring contribution',
+    xlsRowFreq:'Frequency',
+    xlsRowRate:'Annual return',
+    xlsRowYears:'Duration',
+    xlsRowInvested:'Total invested',
+    xlsRowGains:'Compound interest',
+    xlsRowFinal:'Final value',
+    xlsColYear:'Year', xlsColInvested:'Invested', xlsColGains:'Interest', xlsColBalance:'Balance',
+    xlsFooter:'Calculix.ca — informational only',
+    xlsFilename:'investment-calculix',
     scenarios:[
       {title:'🏠 Home down payment', desc:'$50,000 in 5 years · FHSA', initial:5000, contrib:600, freq:'month', years:5,  target:50000,  mode:'final', rate:5},
       {title:'🎓 University fund', desc:'$50,000 in 18 years · RESP', initial:2000, contrib:200, freq:'month', years:18, target:50000,  mode:'final', rate:6},
@@ -469,6 +520,20 @@ const i18n = {
     tipsP2:'Empezar pronto marca una gran diferencia — 10 años de capitalización pueden duplicar su inversión.',
     scenariosTitle:'⚡ Escenarios populares',
     disclaimer:'⚠️ Las proyecciones asumen un rendimiento constante. Los rendimientos reales varían según los mercados, comisiones y fiscalidad (REER, CELI, CELIAPP, no registrado). Consulte a un asesor financiero antes de invertir.',
+    exportLbl:'Exportar a Excel',
+    xlsSheetName:'Proyección',
+    xlsTitle:"Proyección de inversión — Calculix.ca",
+    xlsRowInitial:'Monto inicial',
+    xlsRowContrib:'Aporte recurrente',
+    xlsRowFreq:'Frecuencia',
+    xlsRowRate:'Rendimiento anual',
+    xlsRowYears:'Duración',
+    xlsRowInvested:'Total invertido',
+    xlsRowGains:'Interés compuesto',
+    xlsRowFinal:'Valor final',
+    xlsColYear:'Año', xlsColInvested:'Invertido', xlsColGains:'Intereses', xlsColBalance:'Saldo',
+    xlsFooter:'Calculix.ca — solo con fines informativos',
+    xlsFilename:'inversion-calculix',
     scenarios:[
       {title:'🏠 Enganche casa', desc:'50 000 $ en 5 años · CELIAPP', initial:5000, contrib:600, freq:'month', years:5,  target:50000,  mode:'final', rate:5},
       {title:'🎓 Fondo universitario', desc:'50 000 $ en 18 años · REEE', initial:2000, contrib:200, freq:'month', years:18, target:50000,  mode:'final', rate:6},
@@ -534,6 +599,7 @@ function applyTranslations() {
   setText('scenariosTitle', t.scenariosTitle);
   setText('disclaimerText', t.disclaimer);
   setText('footerText', s.footerText);
+  setText('exportLbl', t.exportLbl);
 
   document.getElementById('scenariosGrid').innerHTML = t.scenarios.map(function(sc, i) {
     return '<button class="scenario-btn" onclick="applyScenario(' + i + ')">' +
@@ -701,6 +767,8 @@ function calculate() {
     var years = parseInt(document.getElementById('years').value) || 0;
     if ((initial > 0 || contrib > 0) && years > 0 && rate >= 0) {
       var res = simulate(initial, contrib, freq, rate, years);
+      lastResult = { mode:'final', initial:initial, contrib:contrib, freq:freq, rate:rate, years:years, yearsData:res.yearsData, invested:res.invested, gains:res.gains, balance:res.balance };
+      document.getElementById('exportBtn').disabled = false;
       banner.classList.remove('empty');
       document.getElementById('resultLabel').textContent = t.resultLabelFinal;
       document.getElementById('resultMain').textContent  = CXSite.formatMoney(res.balance, lang);
@@ -717,6 +785,8 @@ function calculate() {
       renderTable(res.yearsData);
       banner.classList.add('animate'); setTimeout(function(){ banner.classList.remove('animate'); }, 400);
     } else {
+      lastResult = null;
+      document.getElementById('exportBtn').disabled = true;
       banner.classList.add('empty');
       document.getElementById('resultMain').textContent = t.resultEmpty;
       document.getElementById('resultSub').textContent = '';
@@ -737,6 +807,9 @@ function calculate() {
         var yrs = Math.floor(totalYears);
         var months = Math.round((totalYears - yrs) * 12);
         if (months === 12) { yrs += 1; months = 0; }
+        var lastPt = res.yearsData[res.yearsData.length - 1];
+        lastResult = { mode:'target', initial:initial, contrib:contrib, freq:freq, rate:rate, years:Math.ceil(totalYears), yearsData:res.yearsData, invested:lastPt.invested, gains:lastPt.gains, balance:lastPt.balance };
+        document.getElementById('exportBtn').disabled = false;
         banner.classList.remove('empty');
         document.getElementById('resultMain').textContent = yrs + ' ' + (lang === 'fr' ? 'an' + (yrs > 1 ? 's' : '') : (lang === 'es' ? 'año' + (yrs > 1 ? 's' : '') : 'year' + (yrs !== 1 ? 's' : ''))) + ' ' + (months > 0 ? (lang === 'fr' ? 'et ' + months + ' mois' : (lang === 'es' ? 'y ' + months + ' mes' + (months > 1 ? 'es' : '') : 'and ' + months + ' month' + (months > 1 ? 's' : ''))) : '');
         document.getElementById('resultSub').textContent  = t.resultSubTarget(yrs, months);
@@ -753,6 +826,8 @@ function calculate() {
         renderTable(res.yearsData);
         banner.classList.add('animate'); setTimeout(function(){ banner.classList.remove('animate'); }, 400);
       } else {
+        lastResult = null;
+        document.getElementById('exportBtn').disabled = true;
         banner.classList.add('empty');
         document.getElementById('resultMain').textContent = t.resultSubUnreach;
         document.getElementById('resultSub').textContent = '';
@@ -763,6 +838,8 @@ function calculate() {
         document.getElementById('evoBody').innerHTML = '';
       }
     } else {
+      lastResult = null;
+      document.getElementById('exportBtn').disabled = true;
       banner.classList.add('empty');
       document.getElementById('resultMain').textContent = t.resultEmpty;
       document.getElementById('resultSub').textContent = '';
@@ -773,6 +850,66 @@ function calculate() {
       document.getElementById('evoBody').innerHTML = '';
     }
   }
+}
+
+function exportToExcel() {
+  if (!lastResult || typeof XLSX === 'undefined') return;
+  var t = i18n[lang];
+  var r = lastResult;
+  var freqLbl = { day:t.optDay, week:t.optWeek, month:t.optMonth, year:t.optYear }[r.freq] || r.freq;
+
+  var wb = XLSX.utils.book_new();
+  var aoa = [];
+  aoa.push([t.xlsTitle]);
+  aoa.push([]);
+  aoa.push([t.xlsRowInitial, r.initial]);
+  aoa.push([t.xlsRowContrib, r.contrib]);
+  aoa.push([t.xlsRowFreq,    freqLbl]);
+  aoa.push([t.xlsRowRate,    r.rate / 100]);
+  aoa.push([t.xlsRowYears,   r.years + ' ' + (lang === 'fr' ? 'ans' : (lang === 'es' ? 'años' : 'years'))]);
+  aoa.push([t.xlsRowInvested, r.invested]);
+  aoa.push([t.xlsRowGains,    r.gains]);
+  aoa.push([t.xlsRowFinal,    r.balance]);
+  aoa.push([]);
+  aoa.push([t.xlsColYear, t.xlsColInvested, t.xlsColGains, t.xlsColBalance]);
+  r.yearsData.forEach(function(d) {
+    aoa.push([d.year, d.invested, d.gains, d.balance]);
+  });
+  aoa.push([]);
+  aoa.push([t.xlsFooter]);
+
+  var ws = XLSX.utils.aoa_to_sheet(aoa);
+  ws['!cols'] = [{wch:10},{wch:18},{wch:18},{wch:18}];
+  ws['!merges'] = [{ s:{r:0,c:0}, e:{r:0,c:3} }];
+
+  var money = '#,##0.00 [$CAD]';
+  var pct   = '0.00%';
+  // Ligne 5 (index 5 = rate) → %
+  var rateCell = XLSX.utils.encode_cell({r:5, c:1});
+  if (ws[rateCell]) ws[rateCell].z = pct;
+  // Lignes monétaires : Initial(2), Contrib(3), Invested(7), Gains(8), Final(9) — col B
+  [2, 3, 7, 8, 9].forEach(function(rr) {
+    var ref = XLSX.utils.encode_cell({r:rr, c:1});
+    if (ws[ref]) ws[ref].z = money;
+  });
+  // Header tableau = ligne 11
+  var headerRow = 11;
+  for (var c = 0; c < 4; c++) {
+    var ref = XLSX.utils.encode_cell({r:headerRow, c:c});
+    if (ws[ref]) ws[ref].s = { font: { bold: true, color: { rgb: 'FFFFFF' } }, fill: { fgColor: { rgb: '1A3A5C' } } };
+  }
+  var firstDataRow = 12;
+  var lastDataRow  = firstDataRow + r.yearsData.length - 1;
+  for (var rr = firstDataRow; rr <= lastDataRow; rr++) {
+    for (var c = 1; c <= 3; c++) {
+      var ref = XLSX.utils.encode_cell({r:rr, c:c});
+      if (ws[ref]) ws[ref].z = money;
+    }
+  }
+
+  XLSX.utils.book_append_sheet(wb, ws, t.xlsSheetName);
+  var fn = t.xlsFilename + '-' + new Date().toISOString().slice(0,10) + '.xlsx';
+  XLSX.writeFile(wb, fn);
 }
 
 function applyScenario(idx) {
@@ -817,6 +954,7 @@ calculate();
       if (fl && fl.innerHTML.trim().length === 0) CXSite.renderFooterLinks(curLang, 'footerLinks');
       var ads = document.getElementById('partnersRow');
       if (ads && ads.innerHTML.trim().length === 0) ads.innerHTML = CXSite.amazonAd(curLang) + CXSite.cfoMasqueAd(curLang) + CXSite.alchimixAd(curLang);
+      if (CXSite.checkAdBlockAndNotify) CXSite.checkAdBlockAndNotify(curLang);
     } catch(e) { console.warn('safetyRender investissement:', e); }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', safetyRender);

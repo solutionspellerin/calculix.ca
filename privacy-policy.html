@@ -375,6 +375,7 @@ if (document.readyState === 'loading') {
       if (t && t.textContent.trim().length === 0 && typeof applyTranslations === 'function') {
         try { applyTranslations(); } catch(e) {}
       }
+      if (CXSite.checkAdBlockAndNotify) CXSite.checkAdBlockAndNotify(curLang);
     } catch(e) { console.warn('safetyRender privacy:', e); }
   }
   if (document.readyState === 'loading') {

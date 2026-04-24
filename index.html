@@ -404,6 +404,7 @@ applyTranslations();
       if (fl && fl.innerHTML.trim().length === 0) CXSite.renderFooterLinks(curLang, 'footerLinks');
       var ads = document.getElementById('partnersRow');
       if (ads && ads.innerHTML.trim().length === 0) ads.innerHTML = CXSite.amazonAd(curLang) + CXSite.cfoMasqueAd(curLang) + CXSite.alchimixAd(curLang);
+      if (CXSite.checkAdBlockAndNotify) CXSite.checkAdBlockAndNotify(curLang);
     } catch(e) { console.warn('safetyRender index:', e); }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', safetyRender);

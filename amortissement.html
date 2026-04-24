@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Calculateur d'amortissement : calculez vos paiements de prêt ou d'hypothèque, le capital et les intérêts à chaque période. Exportable en Excel. Gratuit · Québec.">
+<title>Calculateur d'amortissement — Loan Schedule | Calculix.ca</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ads.css?v=20260424f">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451" crossorigin="anonymous"></script>
+<script src="assets/site-config.js?v=20260424f"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+  :root {
+    --bleu: #1a3a5c; --bleu-clair: #2d6a9f; --accent: #e8c547;
+    --vert: #2f8f5f; --vert-clair: #4db37f; --vert-fonce: #1f6e45;
+    --rouge: #c64545; --rouge-clair: #e57373;
+    --fond: #f4f1eb; --blanc: #ffffff; --gris: #8a8a8a;
+    --gris-clair: #e8e4dc; --texte: #1a1a1a;
+    --ombre: 0 4px 24px rgba(26,58,92,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--fond); color: var(--texte); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+
+  header { width: 100%; background: var(--bleu); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1.3rem; letter-spacing: 0.03em; text-decoration: none; }
+  .logo span { color: var(--blanc); font-weight: 300; }
+  .header-right { display: flex; align-items: center; gap: 14px; }
+  .lang-label { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.05em; }
+  .lang-toggle-3 {
+    display: inline-flex; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px;
+    overflow: hidden; cursor: pointer; background: rgba(255,255,255,0.04);
+    font-size: 0.78rem; letter-spacing: 0.08em;
+  }
+  .lang-toggle-3 .lang-opt { padding: 6px 12px; color: rgba(255,255,255,0.6); transition: all 0.15s; }
+  .lang-toggle-3 .lang-opt.active { color: var(--bleu); background: var(--accent); font-weight: 700; }
+
+  nav.site-nav { width: 100%; background: #142d47; border-bottom: 2px solid rgba(232,197,71,0.2); }
+  nav.site-nav .nav-inner { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; padding: 0 16px; gap: 4px; overflow-x: auto; }
+  nav.site-nav .nav-link { display: inline-block; padding: 12px 16px; color: rgba(255,255,255,0.6); font-size: 0.85rem; font-weight: 500; text-decoration: none; letter-spacing: 0.03em; white-space: nowrap; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
+  nav.site-nav .nav-link:hover { color: var(--blanc); }
+  nav.site-nav .nav-link.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  main { width: 100%; max-width: 1080px; padding: 24px 16px 64px; display: grid; grid-template-columns: 1fr 320px; gap: 28px; align-items: start; }
+
+  .card { background: var(--blanc); border-radius: 16px; box-shadow: var(--ombre); overflow: hidden; }
+  .card-header { background: linear-gradient(135deg, #2d6a9f 0%, #1a3a5c 100%); padding: 24px 32px 20px; position: relative; overflow: hidden; }
+  .card-header::before { content: ''; position: absolute; right: -40px; top: -40px; width: 160px; height: 160px; border-radius: 50%; background: rgba(232,197,71,0.12); }
+  .card-header::after  { content: ''; position: absolute; right: 20px; top: 20px; width: 80px; height: 80px; border-radius: 50%; background: rgba(232,197,71,0.08); }
+  .card-header h1 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--blanc); margin-bottom: 6px; position: relative; z-index: 1; }
+  .card-header p  { color: rgba(255,255,255,0.75); font-size: 0.88rem; font-weight: 300; position: relative; z-index: 1; }
+  .card-body { padding: 32px; }
+
+  .form-group { margin-bottom: 20px; }
+  label { display: block; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gris); margin-bottom: 8px; }
+  input[type="number"], input[type="date"], select {
+    width: 100%; padding: 13px 16px;
+    border: 1.5px solid var(--gris-clair); border-radius: 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 1rem; color: var(--texte);
+    background: var(--fond);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  input[type="number"]:focus, input[type="date"]:focus, select:focus {
+    border-color: var(--bleu-clair); box-shadow: 0 0 0 3px rgba(45,106,159,0.14); background: var(--blanc);
+  }
+  .input-prefix, .input-suffix { position: relative; }
+  .input-prefix input { padding-left: 36px; }
+  .input-suffix input { padding-right: 44px; }
+  .input-prefix::before { content: attr(data-prefix); position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--gris); font-weight: 600; pointer-events: none; }
+  .input-suffix::after  { content: attr(data-suffix); position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--gris); font-weight: 600; pointer-events: none; }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .select-wrapper { position: relative; }
+  .select-wrapper select { appearance: none; cursor: pointer; padding-right: 40px; }
+  .select-wrapper::after {
+    content: '▾'; position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    color: var(--bleu); pointer-events: none; font-size: 0.9rem;
+  }
+
+  .result-banner {
+    margin-top: 24px; background: linear-gradient(135deg, #1a3a5c 0%, #2d6a9f 100%);
+    border-radius: 14px; padding: 24px 28px; position: relative; overflow: hidden;
+  }
+  .result-banner::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--accent); border-radius: 4px 0 0 4px; }
+  .result-banner-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 10px; }
+  .result-banner-main  { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--blanc); line-height: 1.1; font-weight: 700; }
+  .result-banner-sub   { font-size: 0.88rem; color: var(--accent); margin-top: 8px; font-weight: 500; }
+  .result-banner.empty .result-banner-main { color: rgba(255,255,255,0.3); font-size: 1rem; font-family: 'DM Sans', sans-serif; font-weight: 300; padding: 6px 0; }
+
+  .kpi-grid { margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .kpi { padding: 16px 18px; border-radius: 12px; border: 1.5px solid transparent; background: var(--fond); }
+  .kpi.invested { border-color: rgba(45,106,159,0.25); }
+  .kpi.gains    { border-color: rgba(198,69,69,0.25); background: #fff5f5; }
+  .kpi.final    { border-color: rgba(232,197,71,0.55); background: #fdf6e0; }
+  .kpi-label    { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gris); margin-bottom: 6px; }
+  .kpi-value    { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--bleu); line-height: 1.1; }
+  .kpi.gains .kpi-value { color: var(--rouge); }
+  .kpi.final .kpi-value { color: var(--vert-fonce); }
+  .kpi-sub      { font-size: 0.76rem; color: var(--gris); margin-top: 4px; }
+
+  .section-divider { margin: 28px 0 18px; padding-top: 22px; border-top: 1.5px dashed var(--gris-clair); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--bleu); }
+
+  .table-wrap { overflow-x: auto; background: var(--fond); border-radius: 12px; border: 1px solid var(--gris-clair); max-height: 520px; overflow-y: auto; }
+  table.schedule { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 640px; }
+  table.schedule thead th {
+    position: sticky; top: 0; background: var(--bleu); color: var(--blanc);
+    font-weight: 600; padding: 11px 12px; font-size: 0.78rem;
+    letter-spacing: 0.04em; text-align: right;
+    z-index: 1;
+  }
+  table.schedule thead th:first-child, table.schedule thead th:nth-child(2) { text-align: left; }
+  table.schedule td { padding: 9px 12px; border-bottom: 1px solid rgba(0,0,0,0.05); text-align: right; color: #333; }
+  table.schedule td:first-child { text-align: left; color: var(--bleu); font-weight: 600; }
+  table.schedule td:nth-child(2) { text-align: left; color: var(--gris); }
+  table.schedule tbody tr:hover { background: rgba(45,106,159,0.05); }
+  table.schedule tbody tr.year-end { background: #fdf6e0; font-weight: 600; }
+
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .info-card { background: var(--blanc); border-radius: 14px; box-shadow: var(--ombre); padding: 22px 24px; }
+  .info-card h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--bleu); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1.5px solid var(--gris-clair); }
+  .info-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--gris-clair); font-size: 0.88rem; }
+  .info-item:last-child { border-bottom: none; }
+  .info-item .label { color: var(--gris); }
+  .info-item .value { font-weight: 600; color: var(--bleu); }
+  .info-item .value.green { color: var(--vert-fonce); }
+
+  .disclaimer {
+    grid-column: 1 / -1; margin-top: 4px; padding: 14px 18px;
+    background: #fff8e6; border-left: 3px solid var(--accent);
+    border-radius: 8px; font-size: 0.82rem; line-height: 1.7; color: #666;
+  }
+
+  .export-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #1d6f42 0%, #2f8f5f 100%);
+    color: white; border: none; border-radius: 10px;
+    font-family: inherit; font-size: 0.9rem; font-weight: 600;
+    letter-spacing: 0.02em; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(29,111,66,0.25);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .export-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(29,111,66,0.35); }
+  .export-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+  .export-btn .xls-icon { font-size: 1rem; }
+
+  footer { width: 100%; background: var(--bleu); padding: 22px 32px; text-align: center; color: rgba(255,255,255,0.4); font-size: 0.78rem; margin-top: auto; }
+  footer a { color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 8px; }
+  footer a:hover { color: var(--accent); }
+  .footer-links { margin-bottom: 10px; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .animate { animation: fadeUp 0.3s ease forwards; }
+
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } .kpi-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 480px) {
+    .row-2 { grid-template-columns: 1fr; }
+    header { padding: 14px 16px; }
+    .lang-label { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Calcul<span>ix</span>.ca</a>
+  <div class="header-right">
+    <span class="lang-label" id="headerSubtitle">Calculs financiers gratuits · Québec</span>
+    <div class="lang-toggle-3" onclick="toggleLang()" id="langToggle" title="Language">
+      <span class="lang-opt" data-lang="fr">FR</span>
+      <span class="lang-opt" data-lang="en">EN</span>
+      <span class="lang-opt" data-lang="es">ES</span>
+    </div>
+  </div>
+</header>
+
+<nav class="site-nav"><div class="nav-inner" id="siteNav"></div></nav>
+
+<main>
+  <div class="card">
+    <div class="card-header">
+      <h1 id="mainTitle">🏦 Calculateur d'amortissement</h1>
+      <p id="mainSubtitle">Tableau complet des paiements de votre prêt ou hypothèque</p>
+    </div>
+    <div class="card-body">
+
+      <div class="row-2">
+        <div class="form-group">
+          <label id="labelPrincipal">Montant du prêt</label>
+          <div class="input-prefix" data-prefix="$"><input type="number" id="principal" min="0" step="1000" value="300000" /></div>
+        </div>
+        <div class="form-group">
+          <label id="labelRate">Taux d'intérêt annuel</label>
+          <div class="input-suffix" data-suffix="%"><input type="number" id="rate" min="0" max="50" step="0.01" value="5.25" /></div>
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div class="form-group">
+          <label id="labelYears">Durée d'amortissement (années)</label>
+          <input type="number" id="years" min="1" max="40" step="1" value="25" />
+        </div>
+        <div class="form-group">
+          <label id="labelFreq">Fréquence de paiement</label>
+          <div class="select-wrapper">
+            <select id="freq">
+              <option value="monthly"    id="optMonthly" selected>Mensuel (12 / an)</option>
+              <option value="biweekly"   id="optBiweekly">Aux 2 semaines (26 / an)</option>
+              <option value="weekly"     id="optWeekly">Hebdomadaire (52 / an)</option>
+              <option value="accelerated-biweekly" id="optAccBi">Accéléré aux 2 semaines</option>
+              <option value="accelerated-weekly"   id="optAccWk">Accéléré hebdomadaire</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div class="form-group">
+          <label id="labelCompounding">Mode de composition</label>
+          <div class="select-wrapper">
+            <select id="compounding">
+              <option value="canadian" id="optCanadian" selected>Canadien (semi-annuel)</option>
+              <option value="standard" id="optStandard">Standard (à chaque période)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label id="labelStart">Date du premier paiement</label>
+          <input type="date" id="startDate" />
+        </div>
+      </div>
+
+      <div class="result-banner empty" id="resultBanner">
+        <div class="result-banner-label" id="resultLabel">Paiement périodique</div>
+        <div class="result-banner-main"  id="resultMain">Remplissez les champs ci-dessus</div>
+        <div class="result-banner-sub"   id="resultSub"></div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi invested">
+          <div class="kpi-label" id="kpi1Label">Capital total</div>
+          <div class="kpi-value" id="kpi1Val">—</div>
+          <div class="kpi-sub"   id="kpi1Sub"></div>
+        </div>
+        <div class="kpi gains">
+          <div class="kpi-label" id="kpi2Label">Intérêts totaux</div>
+          <div class="kpi-value" id="kpi2Val">—</div>
+          <div class="kpi-sub"   id="kpi2Sub"></div>
+        </div>
+        <div class="kpi final">
+          <div class="kpi-label" id="kpi3Label">Coût total</div>
+          <div class="kpi-value" id="kpi3Val">—</div>
+          <div class="kpi-sub"   id="kpi3Sub"></div>
+        </div>
+      </div>
+
+      <div class="section-divider">
+        <div class="section-title">📋 <span id="scheduleTitle">Tableau d'amortissement</span></div>
+        <button type="button" class="export-btn" id="exportBtn" onclick="exportToExcel()" disabled>
+          <span class="xls-icon">📊</span><span id="exportLbl">Exporter en Excel</span>
+        </button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="schedule" id="scheduleTable">
+          <thead><tr>
+            <th id="tcNum">#</th>
+            <th id="tcDate">Date</th>
+            <th id="tcPayment">Paiement</th>
+            <th id="tcPrincipal">Capital</th>
+            <th id="tcInterest">Intérêt</th>
+            <th id="tcBalance">Solde</th>
+          </tr></thead>
+          <tbody id="scheduleBody"></tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="info-card">
+      <h3 id="infoTitle">📋 Résumé</h3>
+      <div class="info-item"><span class="label" id="lblI1">Montant emprunté</span><span class="value" id="infoPrincipal">—</span></div>
+      <div class="info-item"><span class="label" id="lblI2">Taux effectif / période</span><span class="value" id="infoPeriodRate">—</span></div>
+      <div class="info-item"><span class="label" id="lblI3">Nombre de paiements</span><span class="value" id="infoNumPayments">—</span></div>
+      <div class="info-item"><span class="label" id="lblI4">Fréquence</span><span class="value" id="infoFreq">—</span></div>
+      <div class="info-item"><span class="label" id="lblI5">Date finale</span><span class="value green" id="infoEndDate">—</span></div>
+    </div>
+
+    <div class="info-card">
+      <h3 id="tipsTitle">💡 Bon à savoir</h3>
+      <p id="tipsP1" style="font-size:0.86rem; color:#555; line-height:1.6; margin-bottom:8px;">
+        Au Canada, les <strong>hypothèques</strong> sont composées <strong>semi-annuellement</strong> par la loi (Loi sur l'intérêt). Les prêts auto, personnels ou cartes utilisent souvent le mode standard.
+      </p>
+      <p id="tipsP2" style="font-size:0.86rem; color:#555; line-height:1.6;">
+        Les paiements <strong>accélérés</strong> (aux 2 semaines ou hebdomadaires) équivalent à 13 paiements mensuels par an — vous réduisez la durée et les intérêts !
+      </p>
+    </div>
+  </aside>
+
+  <div class="disclaimer" id="disclaimerText">
+    ⚠️ Les calculs sont fournis à titre indicatif. Le taux réel, les frais, les assurances et les taxes peuvent varier. Pour une hypothèque, consultez votre institution financière ou un courtier hypothécaire avant de prendre une décision.
+  </div>
+
+  <div style="grid-column: 1 / -1;">
+    <div class="partners-row" id="partnersRow"></div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-links" id="footerLinks"></div>
+  <div id="footerText">© 2026 Calculix.ca — Outil informatif uniquement. Consultez un professionnel pour votre situation personnelle.</div>
+  <div style="margin-top:8px;font-size:0.72rem;">
+    <a href="mailto:info@calculix.ca">info@calculix.ca</a>
+  </div>
+</footer>
+
+<script>
+const ACTIVE_PAGE = 'amortissement';
+let lang = (window.CXSite && CXSite.getStoredLang()) || 'fr';
+let lastSchedule = null;
+let lastSummary = null;
+
+const i18n = {
+  fr: {
+    pageTitle:"Calculateur d'amortissement — Loan Schedule | Calculix.ca",
+    mainTitle:"🏦 Calculateur d'amortissement",
+    mainSubtitle:"Tableau complet des paiements de votre prêt ou hypothèque",
+    labelPrincipal:'Montant du prêt',
+    labelRate:"Taux d'intérêt annuel",
+    labelYears:"Durée d'amortissement (années)",
+    labelFreq:'Fréquence de paiement',
+    labelCompounding:'Mode de composition',
+    labelStart:'Date du premier paiement',
+    optMonthly:'Mensuel (12 / an)',
+    optBiweekly:'Aux 2 semaines (26 / an)',
+    optWeekly:'Hebdomadaire (52 / an)',
+    optAccBi:'Accéléré aux 2 semaines',
+    optAccWk:'Accéléré hebdomadaire',
+    optCanadian:'Canadien (semi-annuel)',
+    optStandard:'Standard (à chaque période)',
+    resultLabel:'Paiement périodique',
+    resultEmpty:'Remplissez les champs ci-dessus',
+    resultSub:(n,freq)=>`${n} paiements · ${freq}`,
+    kpi1Label:'Capital total', kpi1Sub:'Montant emprunté',
+    kpi2Label:'Intérêts totaux', kpi2Sub:(pct)=>`≈ ${pct}% du capital`,
+    kpi3Label:'Coût total', kpi3Sub:'Capital + intérêts',
+    scheduleTitle:"Tableau d'amortissement",
+    exportLbl:'Exporter en Excel',
+    tcNum:'#', tcDate:'Date', tcPayment:'Paiement', tcPrincipal:'Capital', tcInterest:'Intérêt', tcBalance:'Solde',
+    infoTitle:'📋 Résumé',
+    lblI1:'Montant emprunté',
+    lblI2:'Taux effectif / période',
+    lblI3:'Nombre de paiements',
+    lblI4:'Fréquence',
+    lblI5:'Date finale',
+    freqLabels:{ monthly:'Mensuel', biweekly:'Aux 2 semaines', weekly:'Hebdomadaire', 'accelerated-biweekly':'Accéléré aux 2 sem.', 'accelerated-weekly':'Accéléré hebdo.' },
+    tipsTitle:'💡 Bon à savoir',
+    tipsP1:"Au Canada, les <strong>hypothèques</strong> sont composées <strong>semi-annuellement</strong> par la loi (Loi sur l'intérêt). Les prêts auto, personnels ou cartes utilisent souvent le mode standard.",
+    tipsP2:"Les paiements <strong>accélérés</strong> (aux 2 semaines ou hebdomadaires) équivalent à 13 paiements mensuels par an — vous réduisez la durée et les intérêts !",
+    disclaimer:"⚠️ Les calculs sont fournis à titre indicatif. Le taux réel, les frais, les assurances et les taxes peuvent varier. Pour une hypothèque, consultez votre institution financière ou un courtier hypothécaire avant de prendre une décision.",
+    xlsSheetName:'Amortissement',
+    xlsTitle:"Tableau d'amortissement — Calculix.ca",
+    xlsRowLoan:'Montant emprunté',
+    xlsRowRate:"Taux annuel",
+    xlsRowTerm:"Durée",
+    xlsRowFreq:'Fréquence',
+    xlsRowCompound:'Composition',
+    xlsRowPayment:'Paiement périodique',
+    xlsRowInterest:'Intérêts totaux',
+    xlsRowTotal:'Coût total',
+    xlsFooter:'Calculix.ca — calculs informatifs uniquement',
+    xlsFilename:'amortissement-calculix',
+    dateLocale:'fr-CA',
+  },
+  en: {
+    pageTitle:"Loan Amortization Calculator | Calculix.ca",
+    mainTitle:"🏦 Loan amortization calculator",
+    mainSubtitle:"Full payment schedule for your loan or mortgage",
+    labelPrincipal:'Loan amount',
+    labelRate:"Annual interest rate",
+    labelYears:"Amortization period (years)",
+    labelFreq:'Payment frequency',
+    labelCompounding:'Compounding method',
+    labelStart:'First payment date',
+    optMonthly:'Monthly (12 / year)',
+    optBiweekly:'Bi-weekly (26 / year)',
+    optWeekly:'Weekly (52 / year)',
+    optAccBi:'Accelerated bi-weekly',
+    optAccWk:'Accelerated weekly',
+    optCanadian:'Canadian (semi-annual)',
+    optStandard:'Standard (each period)',
+    resultLabel:'Payment per period',
+    resultEmpty:'Fill in the fields above',
+    resultSub:(n,freq)=>`${n} payments · ${freq}`,
+    kpi1Label:'Principal', kpi1Sub:'Amount borrowed',
+    kpi2Label:'Total interest', kpi2Sub:(pct)=>`≈ ${pct}% of principal`,
+    kpi3Label:'Total cost', kpi3Sub:'Principal + interest',
+    scheduleTitle:"Amortization schedule",
+    exportLbl:'Export to Excel',
+    tcNum:'#', tcDate:'Date', tcPayment:'Payment', tcPrincipal:'Principal', tcInterest:'Interest', tcBalance:'Balance',
+    infoTitle:'📋 Summary',
+    lblI1:'Amount borrowed',
+    lblI2:'Effective rate / period',
+    lblI3:'Number of payments',
+    lblI4:'Frequency',
+    lblI5:'End date',
+    freqLabels:{ monthly:'Monthly', biweekly:'Bi-weekly', weekly:'Weekly', 'accelerated-biweekly':'Accel. bi-weekly', 'accelerated-weekly':'Accel. weekly' },
+    tipsTitle:'💡 Good to know',
+    tipsP1:"In Canada, <strong>mortgages</strong> are compounded <strong>semi-annually</strong> by law (Interest Act). Car loans, personal loans and credit cards often use standard compounding.",
+    tipsP2:"<strong>Accelerated</strong> payments (bi-weekly or weekly) equal 13 monthly payments per year — you shorten the term and reduce interest!",
+    disclaimer:"⚠️ Calculations are provided for informational purposes. Actual rates, fees, insurance and taxes may vary. For a mortgage, consult your financial institution or a mortgage broker before deciding.",
+    xlsSheetName:'Amortization',
+    xlsTitle:"Amortization schedule — Calculix.ca",
+    xlsRowLoan:'Amount borrowed',
+    xlsRowRate:"Annual rate",
+    xlsRowTerm:"Period",
+    xlsRowFreq:'Frequency',
+    xlsRowCompound:'Compounding',
+    xlsRowPayment:'Payment per period',
+    xlsRowInterest:'Total interest',
+    xlsRowTotal:'Total cost',
+    xlsFooter:'Calculix.ca — informational only',
+    xlsFilename:'amortization-calculix',
+    dateLocale:'en-CA',
+  },
+  es: {
+    pageTitle:"Calculadora de amortización | Calculix.ca",
+    mainTitle:"🏦 Calculadora de amortización",
+    mainSubtitle:"Tabla completa de pagos de su préstamo o hipoteca",
+    labelPrincipal:'Monto del préstamo',
+    labelRate:"Tasa de interés anual",
+    labelYears:"Plazo (años)",
+    labelFreq:'Frecuencia de pago',
+    labelCompounding:'Método de composición',
+    labelStart:'Fecha del primer pago',
+    optMonthly:'Mensual (12 / año)',
+    optBiweekly:'Quincenal (26 / año)',
+    optWeekly:'Semanal (52 / año)',
+    optAccBi:'Quincenal acelerado',
+    optAccWk:'Semanal acelerado',
+    optCanadian:'Canadiense (semestral)',
+    optStandard:'Estándar (cada período)',
+    resultLabel:'Pago por período',
+    resultEmpty:'Complete los campos arriba',
+    resultSub:(n,freq)=>`${n} pagos · ${freq}`,
+    kpi1Label:'Capital', kpi1Sub:'Monto prestado',
+    kpi2Label:'Intereses totales', kpi2Sub:(pct)=>`≈ ${pct}% del capital`,
+    kpi3Label:'Costo total', kpi3Sub:'Capital + intereses',
+    scheduleTitle:"Tabla de amortización",
+    exportLbl:'Exportar a Excel',
+    tcNum:'#', tcDate:'Fecha', tcPayment:'Pago', tcPrincipal:'Capital', tcInterest:'Interés', tcBalance:'Saldo',
+    infoTitle:'📋 Resumen',
+    lblI1:'Monto prestado',
+    lblI2:'Tasa efectiva / período',
+    lblI3:'Número de pagos',
+    lblI4:'Frecuencia',
+    lblI5:'Fecha final',
+    freqLabels:{ monthly:'Mensual', biweekly:'Quincenal', weekly:'Semanal', 'accelerated-biweekly':'Quinc. acel.', 'accelerated-weekly':'Sem. acel.' },
+    tipsTitle:'💡 Bueno saber',
+    tipsP1:"En Canadá, las <strong>hipotecas</strong> se componen <strong>semestralmente</strong> por ley. Los préstamos para auto, personales o tarjetas de crédito a menudo usan composición estándar.",
+    tipsP2:"Los pagos <strong>acelerados</strong> (quincenales o semanales) equivalen a 13 pagos mensuales al año — ¡acorta el plazo y reduce los intereses!",
+    disclaimer:"⚠️ Los cálculos se proporcionan con fines informativos. Las tasas, comisiones, seguros e impuestos reales pueden variar. Para una hipoteca, consulte a su institución financiera o corredor hipotecario antes de decidir.",
+    xlsSheetName:'Amortización',
+    xlsTitle:"Tabla de amortización — Calculix.ca",
+    xlsRowLoan:'Monto prestado',
+    xlsRowRate:"Tasa anual",
+    xlsRowTerm:"Plazo",
+    xlsRowFreq:'Frecuencia',
+    xlsRowCompound:'Composición',
+    xlsRowPayment:'Pago por período',
+    xlsRowInterest:'Intereses totales',
+    xlsRowTotal:'Costo total',
+    xlsFooter:'Calculix.ca — solo con fines informativos',
+    xlsFilename:'amortizacion-calculix',
+    dateLocale:'es-419',
+  },
+};
+
+function setLang(l) {
+  lang = l;
+  if (window.CXSite) CXSite.setStoredLang(l);
+  document.documentElement.lang = l;
+  updateLangToggleUI();
+  applyTranslations();
+  if (window.CXSite) {
+    CXSite.renderNav(l, ACTIVE_PAGE, 'siteNav');
+    CXSite.renderFooterLinks(l, 'footerLinks');
+    var ads = document.getElementById('partnersRow');
+    if (ads) ads.innerHTML = CXSite.amazonAd(l) + CXSite.cfoMasqueAd(l) + CXSite.alchimixAd(l);
+    var shared = CXSite.SHARED[l] || CXSite.SHARED.fr;
+    document.getElementById('headerSubtitle').textContent = shared.headerSubtitle;
+    document.getElementById('footerText').textContent     = shared.footerText;
+  }
+  calculate();
+}
+
+function toggleLang() {
+  setLang(lang === 'fr' ? 'en' : (lang === 'en' ? 'es' : 'fr'));
+}
+
+function updateLangToggleUI() {
+  document.querySelectorAll('#langToggle .lang-opt').forEach(function(el) {
+    el.classList.toggle('active', el.getAttribute('data-lang') === lang);
+  });
+}
+
+function applyTranslations() {
+  var t = i18n[lang];
+  document.title = t.pageTitle;
+  document.getElementById('mainTitle').textContent    = t.mainTitle;
+  document.getElementById('mainSubtitle').textContent = t.mainSubtitle;
+  document.getElementById('labelPrincipal').textContent = t.labelPrincipal;
+  document.getElementById('labelRate').textContent      = t.labelRate;
+  document.getElementById('labelYears').textContent     = t.labelYears;
+  document.getElementById('labelFreq').textContent      = t.labelFreq;
+  document.getElementById('labelCompounding').textContent = t.labelCompounding;
+  document.getElementById('labelStart').textContent     = t.labelStart;
+  document.getElementById('optMonthly').textContent     = t.optMonthly;
+  document.getElementById('optBiweekly').textContent    = t.optBiweekly;
+  document.getElementById('optWeekly').textContent      = t.optWeekly;
+  document.getElementById('optAccBi').textContent       = t.optAccBi;
+  document.getElementById('optAccWk').textContent       = t.optAccWk;
+  document.getElementById('optCanadian').textContent    = t.optCanadian;
+  document.getElementById('optStandard').textContent    = t.optStandard;
+  document.getElementById('resultLabel').textContent    = t.resultLabel;
+  document.getElementById('kpi1Label').textContent      = t.kpi1Label;
+  document.getElementById('kpi2Label').textContent      = t.kpi2Label;
+  document.getElementById('kpi3Label').textContent      = t.kpi3Label;
+  document.getElementById('kpi1Sub').textContent        = t.kpi1Sub;
+  document.getElementById('kpi3Sub').textContent        = t.kpi3Sub;
+  document.getElementById('scheduleTitle').textContent  = t.scheduleTitle;
+  document.getElementById('exportLbl').textContent      = t.exportLbl;
+  document.getElementById('tcNum').textContent          = t.tcNum;
+  document.getElementById('tcDate').textContent         = t.tcDate;
+  document.getElementById('tcPayment').textContent      = t.tcPayment;
+  document.getElementById('tcPrincipal').textContent    = t.tcPrincipal;
+  document.getElementById('tcInterest').textContent     = t.tcInterest;
+  document.getElementById('tcBalance').textContent      = t.tcBalance;
+  document.getElementById('infoTitle').textContent      = t.infoTitle;
+  document.getElementById('lblI1').textContent          = t.lblI1;
+  document.getElementById('lblI2').textContent          = t.lblI2;
+  document.getElementById('lblI3').textContent          = t.lblI3;
+  document.getElementById('lblI4').textContent          = t.lblI4;
+  document.getElementById('lblI5').textContent          = t.lblI5;
+  document.getElementById('tipsTitle').textContent      = t.tipsTitle;
+  document.getElementById('tipsP1').innerHTML           = t.tipsP1;
+  document.getElementById('tipsP2').innerHTML           = t.tipsP2;
+  document.getElementById('disclaimerText').textContent = t.disclaimer;
+}
+
+function freqPerYear(f) {
+  return { monthly: 12, biweekly: 26, weekly: 52, 'accelerated-biweekly': 26, 'accelerated-weekly': 52 }[f] || 12;
+}
+
+function periodRate(annualPct, freq, compounding) {
+  var r = annualPct / 100;
+  var n = freqPerYear(freq);
+  if (compounding === 'canadian') {
+    // Composé semi-annuellement par la loi au Canada :
+    //   (1 + r/2)^2 = (1 + i)^n   →   i = (1 + r/2)^(2/n) - 1
+    return Math.pow(1 + r / 2, 2 / n) - 1;
+  }
+  // Standard : r par période
+  return r / n;
+}
+
+function formatDate(date, lang) {
+  try {
+    return new Intl.DateTimeFormat(i18n[lang].dateLocale, { year: 'numeric', month: '2-digit', day: '2-digit' }).format(date);
+  } catch (e) {
+    return date.toISOString().slice(0, 10);
+  }
+}
+
+function addDays(date, days) {
+  var d = new Date(date);
+  d.setDate(d.getDate() + days);
+  return d;
+}
+function addMonths(date, months) {
+  var d = new Date(date);
+  d.setMonth(d.getMonth() + months);
+  return d;
+}
+
+function nextDateForFreq(startDate, idx, freq) {
+  // idx = numéro du paiement (1..N), startDate = date du 1er paiement
+  switch (freq) {
+    case 'monthly':                return addMonths(startDate, idx - 1);
+    case 'biweekly':
+    case 'accelerated-biweekly':   return addDays(startDate, 14 * (idx - 1));
+    case 'weekly':
+    case 'accelerated-weekly':     return addDays(startDate, 7 * (idx - 1));
+    default:                       return addMonths(startDate, idx - 1);
+  }
+}
+
+function computePayment(principal, annualPct, years, freq, compounding) {
+  var n = freqPerYear(freq);
+  var totalPeriods = Math.round(n * years);
+  var i = periodRate(annualPct, freq, compounding);
+
+  // Paiements accélérés : on calcule le paiement mensuel (sur la durée donnée),
+  // puis on divise par 2 (aux 2 sem.) ou par 4 (hebdo) → 26 ou 52 paiements / an
+  var monthlyEquivalent = null;
+  if (freq === 'accelerated-biweekly' || freq === 'accelerated-weekly') {
+    var iMonthly = periodRate(annualPct, 'monthly', compounding);
+    var nMonthly = Math.round(12 * years);
+    monthlyEquivalent = iMonthly === 0
+      ? principal / nMonthly
+      : principal * (iMonthly * Math.pow(1 + iMonthly, nMonthly)) / (Math.pow(1 + iMonthly, nMonthly) - 1);
+  }
+
+  var payment;
+  if (monthlyEquivalent !== null) {
+    payment = freq === 'accelerated-biweekly' ? monthlyEquivalent / 2 : monthlyEquivalent / 4;
+  } else if (i === 0) {
+    payment = principal / totalPeriods;
+  } else {
+    payment = principal * (i * Math.pow(1 + i, totalPeriods)) / (Math.pow(1 + i, totalPeriods) - 1);
+  }
+  return { payment: payment, i: i, totalPeriods: totalPeriods };
+}
+
+function buildSchedule(principal, annualPct, years, freq, compounding, startDate) {
+  var comp = computePayment(principal, annualPct, years, freq, compounding);
+  var payment = comp.payment;
+  var i = comp.i;
+
+  var balance = principal;
+  var schedule = [];
+  var totalInterest = 0;
+  var totalPaid = 0;
+  var p = 0;
+  // Les paiements accélérés peuvent terminer plus tôt — on boucle jusqu'à solde = 0
+  var maxPeriods = comp.totalPeriods + 10;
+  while (balance > 0.005 && p < maxPeriods) {
+    p++;
+    var interest = balance * i;
+    var principalPart = payment - interest;
+    // Dernier paiement : ajuster pour solder exactement
+    if (principalPart > balance) {
+      principalPart = balance;
+      payment = principalPart + interest;
+    }
+    balance = balance - principalPart;
+    if (balance < 0.005) balance = 0;
+    totalInterest += interest;
+    totalPaid     += (principalPart + interest);
+    schedule.push({
+      num: p,
+      date: nextDateForFreq(startDate, p, freq),
+      payment: principalPart + interest,
+      principal: principalPart,
+      interest: interest,
+      balance: balance,
+    });
+    if (balance === 0) break;
+  }
+
+  return {
+    payment: comp.payment,
+    periodRate: i,
+    numPayments: schedule.length,
+    totalInterest: totalInterest,
+    totalPaid: totalPaid,
+    schedule: schedule,
+  };
+}
+
+function renderSchedule(result) {
+  var t = i18n[lang];
+  var body = document.getElementById('scheduleBody');
+  if (!result || !result.schedule || result.schedule.length === 0) {
+    body.innerHTML = '';
+    return;
+  }
+  var rows = result.schedule.map(function(r, idx) {
+    // Mettre en surbrillance le dernier paiement de chaque année civile
+    var isYearEnd = (idx < result.schedule.length - 1)
+      && (r.date.getFullYear() !== result.schedule[idx + 1].date.getFullYear());
+    var cls = (isYearEnd || idx === result.schedule.length - 1) ? ' class="year-end"' : '';
+    return '<tr' + cls + '>' +
+      '<td>' + r.num + '</td>' +
+      '<td>' + formatDate(r.date, lang) + '</td>' +
+      '<td>' + CXSite.formatMoney(r.payment, lang) + '</td>' +
+      '<td>' + CXSite.formatMoney(r.principal, lang) + '</td>' +
+      '<td>' + CXSite.formatMoney(r.interest, lang) + '</td>' +
+      '<td>' + CXSite.formatMoney(r.balance, lang) + '</td>' +
+    '</tr>';
+  }).join('');
+  body.innerHTML = rows;
+}
+
+function calculate() {
+  var t = i18n[lang];
+  var principal = parseFloat(document.getElementById('principal').value) || 0;
+  var rate      = parseFloat(document.getElementById('rate').value)      || 0;
+  var years     = parseFloat(document.getElementById('years').value)     || 0;
+  var freq      = document.getElementById('freq').value;
+  var compounding = document.getElementById('compounding').value;
+  var startStr  = document.getElementById('startDate').value;
+  var startDate = startStr ? new Date(startStr + 'T12:00:00') : new Date();
+
+  var banner = document.getElementById('resultBanner');
+
+  if (principal > 0 && rate >= 0 && years > 0) {
+    var res = buildSchedule(principal, rate, years, freq, compounding, startDate);
+    lastSchedule = res;
+    lastSummary = {
+      principal: principal, rate: rate, years: years, freq: freq, compounding: compounding,
+      startDate: startDate,
+    };
+    banner.classList.remove('empty');
+    document.getElementById('resultMain').textContent = CXSite.formatMoney(res.payment, lang);
+    document.getElementById('resultSub').textContent  = t.resultSub(res.numPayments, t.freqLabels[freq]);
+    document.getElementById('kpi1Val').textContent = CXSite.formatMoney(principal, lang);
+    document.getElementById('kpi2Val').textContent = CXSite.formatMoney(res.totalInterest, lang);
+    var pct = principal > 0 ? (res.totalInterest / principal * 100) : 0;
+    document.getElementById('kpi2Sub').textContent = t.kpi2Sub(CXSite.formatNumber(pct, lang, 1));
+    document.getElementById('kpi3Val').textContent = CXSite.formatMoney(res.totalPaid, lang);
+    // Sidebar
+    document.getElementById('infoPrincipal').textContent  = CXSite.formatMoney(principal, lang);
+    document.getElementById('infoPeriodRate').textContent = CXSite.formatNumber(res.periodRate * 100, lang, 4) + ' %';
+    document.getElementById('infoNumPayments').textContent = res.numPayments;
+    document.getElementById('infoFreq').textContent       = t.freqLabels[freq];
+    var endDate = res.schedule.length ? res.schedule[res.schedule.length - 1].date : null;
+    document.getElementById('infoEndDate').textContent    = endDate ? formatDate(endDate, lang) : '—';
+
+    renderSchedule(res);
+    document.getElementById('exportBtn').disabled = false;
+    banner.classList.add('animate'); setTimeout(function(){ banner.classList.remove('animate'); }, 400);
+  } else {
+    lastSchedule = null;
+    banner.classList.add('empty');
+    document.getElementById('resultMain').textContent = t.resultEmpty;
+    document.getElementById('resultSub').textContent = '';
+    ['kpi1Val','kpi2Val','kpi3Val'].forEach(function(id){ document.getElementById(id).textContent = '—'; });
+    document.getElementById('kpi2Sub').textContent = '';
+    ['infoPrincipal','infoPeriodRate','infoNumPayments','infoFreq','infoEndDate'].forEach(function(id){
+      document.getElementById(id).textContent = '—';
+    });
+    document.getElementById('scheduleBody').innerHTML = '';
+    document.getElementById('exportBtn').disabled = true;
+  }
+}
+
+function exportToExcel() {
+  if (!lastSchedule || !lastSummary || typeof XLSX === 'undefined') return;
+  var t = i18n[lang];
+  var s = lastSummary;
+  var r = lastSchedule;
+
+  var wb = XLSX.utils.book_new();
+  var aoa = [];
+  aoa.push([t.xlsTitle]);
+  aoa.push([]);
+  aoa.push([t.xlsRowLoan,    s.principal]);
+  aoa.push([t.xlsRowRate,    s.rate / 100]);
+  aoa.push([t.xlsRowTerm,    s.years + ' ' + (lang === 'fr' ? 'ans' : (lang === 'es' ? 'años' : 'years'))]);
+  aoa.push([t.xlsRowFreq,    t.freqLabels[s.freq]]);
+  aoa.push([t.xlsRowCompound, s.compounding === 'canadian' ? t.optCanadian : t.optStandard]);
+  aoa.push([t.xlsRowPayment, r.payment]);
+  aoa.push([t.xlsRowInterest, r.totalInterest]);
+  aoa.push([t.xlsRowTotal,   r.totalPaid]);
+  aoa.push([]);
+  aoa.push([t.tcNum, t.tcDate, t.tcPayment, t.tcPrincipal, t.tcInterest, t.tcBalance]);
+  r.schedule.forEach(function(row) {
+    aoa.push([row.num, formatDate(row.date, lang), row.payment, row.principal, row.interest, row.balance]);
+  });
+  aoa.push([]);
+  aoa.push([t.xlsFooter]);
+
+  var ws = XLSX.utils.aoa_to_sheet(aoa);
+  ws['!cols'] = [{wch:8},{wch:14},{wch:16},{wch:16},{wch:16},{wch:18}];
+
+  // Formatage titre (row 0) — gras, fusion
+  if (ws['A1']) { ws['A1'].s = { font: { bold: true, sz: 13 } }; }
+  // Merge title across 6 columns
+  ws['!merges'] = [{ s:{r:0,c:0}, e:{r:0,c:5} }];
+
+  // Formats monétaires
+  var money = '#,##0.00 [$CAD]';
+  var pct   = '0.00%';
+  // Ligne 4 = taux annuel → format %
+  var rateCell = XLSX.utils.encode_cell({r:3, c:1});
+  if (ws[rateCell]) ws[rateCell].z = pct;
+  // Lignes résumé monétaires : Loan(2), Payment(7), Interest(8), Total(9) — col B
+  [2, 7, 8, 9].forEach(function(rr) {
+    var ref = XLSX.utils.encode_cell({r:rr, c:1});
+    if (ws[ref]) ws[ref].z = money;
+  });
+  // Header du tableau : ligne 11
+  var headerRow = 11;
+  for (var c = 0; c < 6; c++) {
+    var ref = XLSX.utils.encode_cell({r:headerRow, c:c});
+    if (ws[ref]) ws[ref].s = { font: { bold: true, color: { rgb: 'FFFFFF' } }, fill: { fgColor: { rgb: '1A3A5C' } } };
+  }
+  // Colonnes monétaires (C,D,E,F) pour toutes les lignes de schedule
+  var firstDataRow = 12;
+  var lastDataRow  = firstDataRow + r.schedule.length - 1;
+  for (var rr = firstDataRow; rr <= lastDataRow; rr++) {
+    for (var c = 2; c <= 5; c++) {
+      var ref = XLSX.utils.encode_cell({r:rr, c:c});
+      if (ws[ref]) ws[ref].z = money;
+    }
+  }
+  // Gel des volets sur l'en-tête de tableau
+  ws['!freeze'] = { xSplit: 0, ySplit: headerRow + 1 };
+
+  XLSX.utils.book_append_sheet(wb, ws, t.xlsSheetName);
+  var fn = t.xlsFilename + '-' + new Date().toISOString().slice(0,10) + '.xlsx';
+  XLSX.writeFile(wb, fn);
+}
+
+// Init date par défaut = aujourd'hui
+(function initDate() {
+  var d = new Date();
+  var iso = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  document.getElementById('startDate').value = iso;
+})();
+
+['principal','rate','years','freq','compounding','startDate'].forEach(function(id){
+  document.getElementById(id).addEventListener('input', calculate);
+  document.getElementById(id).addEventListener('change', calculate);
+});
+
+document.documentElement.lang = lang;
+updateLangToggleUI();
+applyTranslations();
+calculate();
+</script>
+
+<!-- Filet de sécurité : rend nav + footer + pubs si site-config se charge après -->
+<script>
+(function(){
+  function safetyRender() {
+    try {
+      if (!window.CXSite) return;
+      var curLang = (typeof lang === 'string' && lang) ? lang : ((CXSite.getStoredLang && CXSite.getStoredLang()) || 'fr');
+      var nav = document.getElementById('siteNav');
+      if (nav && nav.innerHTML.trim().length === 0) CXSite.renderNav(curLang, 'amortissement', 'siteNav');
+      var fl = document.getElementById('footerLinks');
+      if (fl && fl.innerHTML.trim().length === 0) CXSite.renderFooterLinks(curLang, 'footerLinks');
+      var ads = document.getElementById('partnersRow');
+      if (ads && ads.innerHTML.trim().length === 0) ads.innerHTML = CXSite.amazonAd(curLang) + CXSite.cfoMasqueAd(curLang) + CXSite.alchimixAd(curLang);
+      var shared = CXSite.SHARED[curLang] || CXSite.SHARED.fr;
+      var hs = document.getElementById('headerSubtitle');
+      var ft = document.getElementById('footerText');
+      if (hs) hs.textContent = shared.headerSubtitle;
+      if (ft) ft.textContent = shared.footerText;
+      if (CXSite.checkAdBlockAndNotify) CXSite.checkAdBlockAndNotify(curLang);
+    } catch(e) { console.warn('safetyRender amortissement:', e); }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', safetyRender);
+  else safetyRender();
+  window.addEventListener('load', safetyRender);
+})();
+</script>
+
+</body>
+</html>

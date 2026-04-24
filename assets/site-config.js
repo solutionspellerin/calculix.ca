@@ -12,6 +12,7 @@
     { key: 'home',          href: 'index.html',          fr: 'Accueil',                 en: 'Home',                    es: 'Inicio' },
     { key: 'pourboires',    href: 'pourboires.html',     fr: 'Pourboires',              en: 'Tip Calculator',          es: 'Propinas' },
     { key: 'investissement',href: 'investissement.html', fr: 'Investissement',          en: 'Investment',              es: 'Inversión' },
+    { key: 'amortissement', href: 'amortissement.html',  fr: 'Amortissement',           en: 'Amortization',            es: 'Amortización' },
     { key: 'about',         href: 'about.html',          fr: 'À propos',                en: 'About',                   es: 'Acerca de' },
     { key: 'privacy',       href: 'privacy-policy.html', fr: 'Politique de conf.',      en: 'Privacy Policy',          es: 'Privacidad' },
   ];
@@ -37,6 +38,18 @@
       donateBody: "Ce site est <strong>100 % gratuit</strong> et sans abonnement. Pour couvrir les frais d'hébergement et continuer à développer de nouveaux outils, tout don — même petit — est grandement apprécié. Merci de votre soutien !",
       donateCta: "M'offrir un café ☕",
       donateDismiss: 'Plus tard',
+      adblockTitle: 'Un bloqueur de publicités est actif 🛡️',
+      adblockIntro: "Calculix.ca est <strong>100 % gratuit</strong> et sans abonnement. Les quelques liens partenaires affichés en bas de page (Amazon, CFO masqué, Alchimix) nous aident à payer l'hébergement et à développer de nouveaux calculateurs.",
+      adblockAsk:   'Si vous aimez le site, pourriez-vous <strong>désactiver votre bloqueur</strong> ou <strong>ajouter calculix.ca à votre liste blanche</strong> ? Merci beaucoup !',
+      adblockHow:   'Comment faire :',
+      adblockSteps: [
+        'Cliquez sur l\'icône de votre bloqueur (uBlock, AdBlock, Brave Shield, etc.) dans la barre du navigateur.',
+        'Choisissez « Désactiver sur ce site » ou « Ne pas bloquer sur calculix.ca ».',
+        'Rechargez la page (F5 ou Ctrl+R).',
+      ],
+      adblockNoteButtons: 'Les boutons <strong>Exporter en Excel</strong> fonctionnent peu importe votre réglage — ils ne chargent rien depuis le web.',
+      adblockDismiss:  'Continuer sans désactiver',
+      adblockOk:       "J'ai compris",
     },
     en: {
       headerSubtitle: 'Free financial calculators · Québec',
@@ -57,6 +70,18 @@
       donateBody: "This site is <strong>100 % free</strong> with no subscription. To cover hosting costs and keep developing new tools, every donation — even a small one — is truly appreciated. Thank you for your support!",
       donateCta: 'Buy me a coffee ☕',
       donateDismiss: 'Maybe later',
+      adblockTitle: 'An ad blocker is active 🛡️',
+      adblockIntro: "Calculix.ca is <strong>100 % free</strong> with no subscription. The few partner links at the bottom of each page (Amazon, CFO masqué, Alchimix) help us cover hosting and keep building new calculators.",
+      adblockAsk:   'If you like the site, could you <strong>disable your blocker</strong> or <strong>whitelist calculix.ca</strong>? Thank you so much!',
+      adblockHow:   'How to do it:',
+      adblockSteps: [
+        'Click your blocker\'s icon (uBlock, AdBlock, Brave Shield, etc.) in the browser toolbar.',
+        'Select "Disable on this site" or "Don\'t block on calculix.ca".',
+        'Reload the page (F5 or Ctrl+R).',
+      ],
+      adblockNoteButtons: 'The <strong>Export to Excel</strong> buttons work regardless of your setting — they don\'t load anything from the web.',
+      adblockDismiss:  'Continue without disabling',
+      adblockOk:       'Got it',
     },
     es: {
       headerSubtitle: 'Calculadoras financieras gratuitas · Québec',
@@ -77,6 +102,18 @@
       donateBody: "Este sitio es <strong>100 % gratuito</strong>, sin suscripción. Para cubrir los gastos de alojamiento y seguir desarrollando nuevas herramientas, toda donación — por pequeña que sea — es muy apreciada. ¡Gracias por su apoyo!",
       donateCta: 'Invitarme un café ☕',
       donateDismiss: 'Más tarde',
+      adblockTitle: 'Un bloqueador de anuncios está activo 🛡️',
+      adblockIntro: "Calculix.ca es <strong>100 % gratuito</strong> y sin suscripción. Los pocos enlaces de socios al pie de página (Amazon, CFO masqué, Alchimix) nos ayudan a pagar el alojamiento y seguir creando nuevas calculadoras.",
+      adblockAsk:   '¿Podría <strong>desactivar su bloqueador</strong> o <strong>agregar calculix.ca a la lista blanca</strong>? ¡Muchas gracias!',
+      adblockHow:   'Cómo hacerlo:',
+      adblockSteps: [
+        'Haga clic en el icono de su bloqueador (uBlock, AdBlock, Brave Shield, etc.) en la barra del navegador.',
+        'Seleccione "Desactivar en este sitio" o "No bloquear en calculix.ca".',
+        'Recargue la página (F5 o Ctrl+R).',
+      ],
+      adblockNoteButtons: 'Los botones de <strong>Exportar a Excel</strong> funcionan independientemente de su configuración — no cargan nada desde la web.',
+      adblockDismiss:  'Continuar sin desactivar',
+      adblockOk:       'Entendido',
     },
   };
 
@@ -260,6 +297,146 @@
     }
   }
 
+  // ── Détection d'un bloqueur de pub ────────────────────────
+  // Crée un élément "appât" avec un nom classique que les listes de filtres
+  // ciblent (ads-banner, googleAds). Si l'élément est caché/supprimé après
+  // un court délai, on considère qu'un adblocker est actif.
+  // On teste aussi si le script Google AdSense a été bloqué au réseau.
+  function detectAdBlock(callback) {
+    var bait = document.createElement('div');
+    bait.className = 'ad-banner ads ad-box adsbox google-ad googleAds sponsored';
+    bait.style.cssText = 'position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;';
+    bait.innerHTML = '&nbsp;';
+    (document.body || document.documentElement).appendChild(bait);
+
+    setTimeout(function () {
+      var blocked = false;
+      try {
+        var cs = window.getComputedStyle(bait);
+        if (!bait.offsetParent && bait.offsetHeight === 0) blocked = true;
+        if (cs && (cs.display === 'none' || cs.visibility === 'hidden')) blocked = true;
+        if (bait.clientHeight === 0) blocked = true;
+      } catch (e) { /* noop */ }
+
+      // Vérifie aussi si le script adsbygoogle a été bloqué au niveau réseau
+      try {
+        if (typeof window.adsbygoogle === 'undefined') {
+          // Sur HTTPS en production, cela indique un adblocker
+          if (location.protocol === 'https:' || location.protocol === 'http:') blocked = true;
+        }
+      } catch (e) { /* noop */ }
+
+      try { bait.parentNode && bait.parentNode.removeChild(bait); } catch (e) {}
+      if (typeof callback === 'function') callback(blocked);
+    }, 200);
+  }
+
+  // ── Popup adblock ─────────────────────────────────────────
+  var ADBLOCK_DISMISS_KEY = 'calculix_adblock_dismissed_v1';
+
+  function getAdblockDismissed() {
+    try {
+      var v = localStorage.getItem(ADBLOCK_DISMISS_KEY);
+      if (!v) return false;
+      var until = parseInt(v, 10);
+      return (!isNaN(until) && Date.now() < until);
+    } catch (e) { return false; }
+  }
+
+  function setAdblockDismissed(days) {
+    try {
+      var until = Date.now() + (days || 7) * 24 * 60 * 60 * 1000;
+      localStorage.setItem(ADBLOCK_DISMISS_KEY, String(until));
+    } catch (e) {}
+  }
+
+  function hideAdblockNotice() {
+    var ov = document.getElementById('cxAdblockOverlay');
+    if (ov && ov.parentNode) ov.parentNode.removeChild(ov);
+  }
+
+  function showAdblockNotice(lang, opts) {
+    if (document.getElementById('cxAdblockOverlay')) return;
+    var t = SHARED[lang] || SHARED.fr;
+    opts = opts || {};
+
+    var overlay = document.createElement('div');
+    overlay.id = 'cxAdblockOverlay';
+    // Noms de classe neutres pour ne PAS être ciblés par les filtres
+    overlay.className = 'notice-overlay partner-notice-overlay';
+    overlay.style.cssText = [
+      'position:fixed','inset:0','background:rgba(26,58,92,0.55)',
+      'z-index:99999','display:flex','align-items:center','justify-content:center',
+      'padding:16px','font-family:"DM Sans",sans-serif','animation:cxFadeIn 0.2s ease'
+    ].join(';');
+
+    var steps = (t.adblockSteps || []).map(function(s, i){
+      return '<li style="margin:6px 0;line-height:1.55;color:#333;">' + s + '</li>';
+    }).join('');
+
+    var card = document.createElement('div');
+    card.style.cssText = [
+      'background:#fff','border-radius:16px','max-width:520px','width:100%',
+      'box-shadow:0 20px 60px rgba(26,58,92,0.35)','overflow:hidden',
+      'position:relative','animation:cxPopIn 0.25s ease'
+    ].join(';');
+
+    card.innerHTML =
+      '<div style="background:linear-gradient(135deg,#1a3a5c 0%,#2d6a9f 100%);padding:22px 26px;color:#fff;">' +
+        '<h2 style="font-family:\'Playfair Display\',serif;font-size:1.25rem;margin:0 0 4px 0;font-weight:700;">' + t.adblockTitle + '</h2>' +
+      '</div>' +
+      '<div style="padding:22px 26px 6px 26px;color:#333;font-size:0.92rem;line-height:1.6;">' +
+        '<p style="margin-bottom:12px;">' + t.adblockIntro + '</p>' +
+        '<p style="margin-bottom:14px;">' + t.adblockAsk + '</p>' +
+        '<div style="background:#f4f1eb;border-left:3px solid #e8c547;border-radius:6px;padding:12px 14px;margin-bottom:14px;">' +
+          '<div style="font-weight:600;color:#1a3a5c;margin-bottom:6px;">' + t.adblockHow + '</div>' +
+          '<ol style="margin:0;padding-left:22px;">' + steps + '</ol>' +
+        '</div>' +
+        '<p style="font-size:0.82rem;color:#666;margin-bottom:4px;">ℹ️ ' + t.adblockNoteButtons + '</p>' +
+      '</div>' +
+      '<div style="display:flex;gap:10px;padding:16px 26px 22px 26px;justify-content:flex-end;flex-wrap:wrap;">' +
+        '<button id="cxAdblockDismissBtn" style="background:transparent;border:1.5px solid #e8e4dc;color:#666;padding:10px 16px;border-radius:10px;font-family:inherit;font-size:0.88rem;cursor:pointer;font-weight:500;">' + t.adblockDismiss + '</button>' +
+        '<button id="cxAdblockOkBtn" style="background:linear-gradient(135deg,#1d6f42 0%,#2f8f5f 100%);border:none;color:#fff;padding:10px 20px;border-radius:10px;font-family:inherit;font-size:0.88rem;cursor:pointer;font-weight:600;box-shadow:0 4px 14px rgba(29,111,66,0.3);">' + t.adblockOk + '</button>' +
+      '</div>';
+
+    overlay.appendChild(card);
+    document.body.appendChild(overlay);
+
+    // Injecter les animations CSS une seule fois
+    if (!document.getElementById('cxAdblockCss')) {
+      var styleEl = document.createElement('style');
+      styleEl.id = 'cxAdblockCss';
+      styleEl.textContent = '@keyframes cxFadeIn{from{opacity:0}to{opacity:1}}@keyframes cxPopIn{from{opacity:0;transform:translateY(12px) scale(0.97)}to{opacity:1;transform:none}}';
+      document.head.appendChild(styleEl);
+    }
+
+    document.getElementById('cxAdblockOkBtn').onclick = function () {
+      setAdblockDismissed(7); // "J'ai compris" : on ne redemande pas pendant 7 jours
+      hideAdblockNotice();
+    };
+    document.getElementById('cxAdblockDismissBtn').onclick = function () {
+      setAdblockDismissed(30); // "Continuer sans désactiver" : pas avant 30 jours
+      hideAdblockNotice();
+    };
+    overlay.onclick = function (e) {
+      if (e.target === overlay) {
+        setAdblockDismissed(1); // fermeture en cliquant dehors : 1 jour
+        hideAdblockNotice();
+      }
+    };
+  }
+
+  function checkAdBlockAndNotify(lang, opts) {
+    opts = opts || {};
+    if (!opts.force && getAdblockDismissed()) return;
+    // Laisser à la page le temps de se charger avant de déranger l'utilisateur
+    setTimeout(function () {
+      detectAdBlock(function (blocked) {
+        if (blocked) showAdblockNotice(lang, opts);
+      });
+    }, opts.delay || 1200);
+  }
+
   // ── Exposition globale ────────────────────────────────────
   global.CXSite = {
     PAGES: PAGES,
@@ -278,5 +455,9 @@
     formatMoney: formatMoney,
     formatNumber: formatNumber,
     DONATE_URL: DONATE_URL,
+    detectAdBlock: detectAdBlock,
+    showAdblockNotice: showAdblockNotice,
+    hideAdblockNotice: hideAdblockNotice,
+    checkAdBlockAndNotify: checkAdBlockAndNotify,
   };
 })(window);
