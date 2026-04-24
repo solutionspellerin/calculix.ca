@@ -178,6 +178,31 @@
   @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
   .animate { animation: fadeUp 0.3s ease forwards; }
 
+  /* ===== Tableau de reference des bornes ===== */
+  .bornes-wrap { background: var(--fond); border-radius: 12px; border: 1px solid var(--gris-clair); padding: 4px; margin-bottom: 22px; overflow-x: auto; }
+  table.bornes { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 560px; }
+  table.bornes thead th {
+    background: var(--violet); color: var(--blanc);
+    font-weight: 600; padding: 10px 10px; font-size: 0.74rem;
+    letter-spacing: 0.04em; text-align: left;
+  }
+  table.bornes thead th.num { text-align: right; }
+  table.bornes td { padding: 8px 10px; border-bottom: 1px solid rgba(0,0,0,0.06); color: #333; vertical-align: middle; }
+  table.bornes td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  table.bornes td.num.val { font-weight: 700; color: var(--violet); }
+  table.bornes td.factor-cell { font-weight: 700; vertical-align: middle; }
+  table.bornes tbody tr.g0 td { background: rgba(106,76,147,0.06); }
+  table.bornes tbody tr.g0 td.factor-cell { background: rgba(106,76,147,0.18); color: var(--violet); }
+  table.bornes tbody tr.g1 td { background: rgba(47,143,95,0.06); }
+  table.bornes tbody tr.g1 td.factor-cell { background: rgba(47,143,95,0.18); color: var(--vert-fonce); }
+  table.bornes tbody tr.g2 td { background: rgba(232,197,71,0.08); }
+  table.bornes tbody tr.g2 td.factor-cell { background: rgba(232,197,71,0.28); color: #8a6d0a; }
+  table.bornes tbody tr.g3 td { background: rgba(45,106,159,0.06); }
+  table.bornes tbody tr.g3 td.factor-cell { background: rgba(45,106,159,0.18); color: var(--bleu); }
+  table.bornes tbody tr.subtotal td { font-weight: 700; background: rgba(0,0,0,0.03) !important; color: #555; border-top: 1.5px solid rgba(0,0,0,0.12); }
+  table.bornes tbody tr.grand-total td { font-weight: 800; background: var(--bleu) !important; color: var(--blanc) !important; font-size: 0.95rem; }
+  table.bornes tbody tr.grand-total td.num.val { color: var(--accent) !important; }
+
   @media (max-width: 1080px) { main { grid-template-columns: 1fr; } }
   @media (max-width: 640px) {
     header { padding: 14px 16px; }
@@ -211,6 +236,25 @@
       <p id="mainSubtitle">Évaluez les emplois par facteurs et sous-facteurs pondérés, comparez les salaires et détectez les écarts</p>
     </div>
     <div class="card-body">
+
+      <!-- Tableau de reference des bornes -->
+      <div class="section-divider" style="margin-top:0;border-top:none;padding-top:0;">
+        <div class="section-title" id="sectBornes">📚 Bornes generalement reconnues</div>
+      </div>
+      <p class="section-intro" id="bornesIntro">Valeurs de reference selon les pratiques habituelles d'evaluation d'emplois. Utilisez-les comme point de depart pour ponderer vos facteurs ci-dessous.</p>
+      <div class="bornes-wrap">
+        <table class="bornes" id="bornesTable">
+          <thead>
+            <tr>
+              <th id="thFactor">Facteur</th>
+              <th id="thSubfactor">Sous-facteur</th>
+              <th id="thBorne">Bornes generalement reconnues</th>
+              <th class="num" id="thValue">Valeur par sous-facteur</th>
+            </tr>
+          </thead>
+          <tbody id="bornesBody"></tbody>
+        </table>
+      </div>
 
       <!-- Facteurs -->
       <div class="section-divider" style="margin-top:0;border-top:none;padding-top:0;">
@@ -313,6 +357,30 @@
       tipsP1: 'Au Québec, la <strong>Loi sur l\'équité salariale</strong> identifie 4 facteurs : qualifications, responsabilités, efforts et conditions de travail.',
       tipsP2: 'Le <strong>total pondéré</strong> d\'un emploi = Σ (score × poids sous-facteur × poids facteur / 10 000). Un écart d\'équité positif signifie que l\'emploi est payé <strong>au-dessus</strong> de la moyenne $/point.',
       disclaimer: '⚠️ Calculix.ca fournit des outils à titre informatif uniquement. Pour un exercice d\'équité salariale conforme à la Loi, consultez un conseiller en ressources humaines ou la CNESST.',
+      sectBornes: '📚 Bornes généralement reconnues',
+      bornesIntro: 'Valeurs de référence selon les pratiques habituelles d\'évaluation d\'emplois. Utilisez-les comme point de départ pour pondérer vos facteurs ci-dessous.',
+      thFactor: 'Facteur', thSubfactor: 'Sous-facteur', thBorne: 'Bornes généralement reconnues', thValue: 'Valeur par sous-facteur',
+      totalRowLabel: 'TOTAL (doit être entre {range})', grandTotalLabel: 'GRAND TOTAL (doit être égal à 100%)',
+      bornesData: [
+        { name: 'Qualifications requises', groupRange: '20 à 35%', subs: [
+          { name: 'Formation', borne: '10 à 15%', value: 12 },
+          { name: 'Expérience', borne: '6 à 12%', value: 10 },
+          { name: 'Dextérité et coordination', borne: '4 à 8%', value: 8 }
+        ]},
+        { name: 'Responsabilités assumées', groupRange: '25 à 30%', subs: [
+          { name: 'Imputabilité', borne: '9 à 10%', value: 10 },
+          { name: 'Communications', borne: '9 à 10%', value: 10 },
+          { name: 'Supervision', borne: '7 à 10%', value: 10 }
+        ]},
+        { name: 'Efforts requis', groupRange: '20 à 40%', subs: [
+          { name: 'Effort intellectuel', borne: '8 à 14%', value: 10 },
+          { name: 'Concentration et attention sensorielle', borne: '6 à 13%', value: 10 },
+          { name: 'Effort physique', borne: '6 à 13%', value: 10 }
+        ]},
+        { name: 'Conditions de travail', groupRange: '5 à 15%', subs: [
+          { name: 'Inconvénients et risques', borne: '5 à 15%', value: 10 }
+        ]}
+      ],
       defaultFactors: [
         { name: 'Qualifications', pct: 30, subs: [
           { name: 'Formation', pct: 50 },
@@ -373,6 +441,30 @@
       tipsP1: 'In Quebec, the <strong>Pay Equity Act</strong> defines 4 factors: qualifications, responsibilities, efforts and working conditions.',
       tipsP2: 'A job\'s <strong>weighted total</strong> = Σ (score × sub-factor weight × factor weight / 10,000). A positive equity gap means the job is paid <strong>above</strong> the average $/point.',
       disclaimer: '⚠️ Calculix.ca provides tools for informational purposes only. For a pay equity exercise compliant with the Act, consult an HR advisor or CNESST.',
+      sectBornes: '📚 Generally accepted ranges',
+      bornesIntro: 'Reference values based on common job evaluation practices. Use them as a starting point for weighting your factors below.',
+      thFactor: 'Factor', thSubfactor: 'Sub-factor', thBorne: 'Generally accepted range', thValue: 'Value per sub-factor',
+      totalRowLabel: 'TOTAL (must be between {range})', grandTotalLabel: 'GRAND TOTAL (must equal 100%)',
+      bornesData: [
+        { name: 'Required qualifications', groupRange: '20 to 35%', subs: [
+          { name: 'Education', borne: '10 to 15%', value: 12 },
+          { name: 'Experience', borne: '6 to 12%', value: 10 },
+          { name: 'Dexterity and coordination', borne: '4 to 8%', value: 8 }
+        ]},
+        { name: 'Responsibilities', groupRange: '25 to 30%', subs: [
+          { name: 'Accountability', borne: '9 to 10%', value: 10 },
+          { name: 'Communication', borne: '9 to 10%', value: 10 },
+          { name: 'Supervision', borne: '7 to 10%', value: 10 }
+        ]},
+        { name: 'Required effort', groupRange: '20 to 40%', subs: [
+          { name: 'Intellectual effort', borne: '8 to 14%', value: 10 },
+          { name: 'Concentration and sensory attention', borne: '6 to 13%', value: 10 },
+          { name: 'Physical effort', borne: '6 to 13%', value: 10 }
+        ]},
+        { name: 'Working conditions', groupRange: '5 to 15%', subs: [
+          { name: 'Inconveniences and risks', borne: '5 to 15%', value: 10 }
+        ]}
+      ],
       defaultFactors: [
         { name: 'Qualifications', pct: 30, subs: [
           { name: 'Education', pct: 50 },
@@ -433,6 +525,30 @@
       tipsP1: 'En Quebec, la <strong>Ley de Equidad Salarial</strong> define 4 factores: calificaciones, responsabilidades, esfuerzos y condiciones de trabajo.',
       tipsP2: 'El <strong>total ponderado</strong> de un empleo = Σ (puntaje × peso sub-factor × peso factor / 10 000). Una brecha positiva significa que el empleo se paga <strong>por encima</strong> del promedio $/punto.',
       disclaimer: '⚠️ Calculix.ca ofrece herramientas solo con fines informativos. Para un ejercicio de equidad salarial conforme a la Ley, consulte a un asesor de RR. HH. o a la CNESST.',
+      sectBornes: '📚 Rangos generalmente reconocidos',
+      bornesIntro: 'Valores de referencia según las prácticas habituales de evaluación de empleos. Úselos como punto de partida para ponderar sus factores a continuación.',
+      thFactor: 'Factor', thSubfactor: 'Sub-factor', thBorne: 'Rango generalmente reconocido', thValue: 'Valor por sub-factor',
+      totalRowLabel: 'TOTAL (debe estar entre {range})', grandTotalLabel: 'GRAN TOTAL (debe ser igual a 100%)',
+      bornesData: [
+        { name: 'Calificaciones requeridas', groupRange: '20 a 35%', subs: [
+          { name: 'Formación', borne: '10 a 15%', value: 12 },
+          { name: 'Experiencia', borne: '6 a 12%', value: 10 },
+          { name: 'Destreza y coordinación', borne: '4 a 8%', value: 8 }
+        ]},
+        { name: 'Responsabilidades asumidas', groupRange: '25 a 30%', subs: [
+          { name: 'Responsabilización', borne: '9 a 10%', value: 10 },
+          { name: 'Comunicaciones', borne: '9 a 10%', value: 10 },
+          { name: 'Supervisión', borne: '7 a 10%', value: 10 }
+        ]},
+        { name: 'Esfuerzos requeridos', groupRange: '20 a 40%', subs: [
+          { name: 'Esfuerzo intelectual', borne: '8 a 14%', value: 10 },
+          { name: 'Concentración y atención sensorial', borne: '6 a 13%', value: 10 },
+          { name: 'Esfuerzo físico', borne: '6 a 13%', value: 10 }
+        ]},
+        { name: 'Condiciones de trabajo', groupRange: '5 a 15%', subs: [
+          { name: 'Inconvenientes y riesgos', borne: '5 a 15%', value: 10 }
+        ]}
+      ],
       defaultFactors: [
         { name: 'Calificaciones', pct: 30, subs: [
           { name: 'Formación', pct: 50 },
@@ -497,6 +613,13 @@
     document.title = t.mainTitle.replace(/^\S+\s/, '') + ' | Calculix.ca';
     setText('mainTitle', t.mainTitle);
     setText('mainSubtitle', t.mainSubtitle);
+    setText('sectBornes', t.sectBornes);
+    setText('bornesIntro', t.bornesIntro);
+    setText('thFactor', t.thFactor);
+    setText('thSubfactor', t.thSubfactor);
+    setText('thBorne', t.thBorne);
+    setText('thValue', t.thValue);
+    renderBornes();
     setText('sectFactors', t.sectFactors);
     setText('factorsIntro', t.factorsIntro);
     setText('sectPros', t.sectPros);
@@ -553,6 +676,44 @@
 
   function escapeHtml(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function renderBornes() {
+    var t = i18n[lang];
+    var tb = document.getElementById('bornesBody');
+    if (!tb || !t.bornesData) return;
+    tb.innerHTML = '';
+    var grandTotal = 0;
+    t.bornesData.forEach(function(group, gi) {
+      var groupTotal = 0;
+      group.subs.forEach(function(sub, si) {
+        var tr = document.createElement('tr');
+        tr.className = 'g' + gi;
+        var tds = '';
+        if (si === 0) {
+          tds += '<td class="factor-cell" rowspan="' + group.subs.length + '">' + group.name + '</td>';
+        }
+        tds += '<td>' + sub.name + '</td>';
+        tds += '<td>' + sub.borne + '</td>';
+        tds += '<td class="num val">' + sub.value + '%</td>';
+        tr.innerHTML = tds;
+        tb.appendChild(tr);
+        groupTotal += sub.value;
+      });
+      grandTotal += groupTotal;
+      var trTot = document.createElement('tr');
+      trTot.className = 'subtotal';
+      trTot.innerHTML =
+        '<td colspan="3" style="text-align:right;">' + t.totalRowLabel.replace('{range}', group.groupRange) + '</td>' +
+        '<td class="num val">' + groupTotal + '%</td>';
+      tb.appendChild(trTot);
+    });
+    var trG = document.createElement('tr');
+    trG.className = 'grand-total';
+    trG.innerHTML =
+      '<td colspan="3" style="text-align:right;">' + t.grandTotalLabel + '</td>' +
+      '<td class="num val">' + grandTotal + '%</td>';
+    tb.appendChild(trG);
   }
 
   function renderFactors() {
