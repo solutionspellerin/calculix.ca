@@ -6,9 +6,9 @@
 <meta name="description" content="Calculateur d'équité salariale par professionnel selon les facteurs et sous-facteurs pondérés en pourcentage. Basé sur la Loi sur l'équité salariale du Québec. Exportable en Excel.">
 <title>Équité salariale — Pay Equity | Calculix.ca</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/ads.css?v=20260424i">
+<link rel="stylesheet" href="assets/ads.css?v=20260424j">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451" crossorigin="anonymous"></script>
-<script src="assets/site-config.js?v=20260424i"></script>
+<script src="assets/site-config.js?v=20260424j"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
   :root {
@@ -210,6 +210,37 @@
     .card-body { padding: 20px 18px; }
     .factor-head { grid-template-columns: 1fr 80px 28px; }
     .subfactor-row { grid-template-columns: 20px 1fr 80px 28px; }
+  }
+  @media (max-width: 480px) {
+    main { padding: 16px 10px 48px; gap: 18px; }
+    .card-header { padding: 20px 22px 16px; }
+    .card-header h1 { font-size: 1.35rem; }
+    .card-header p { font-size: 0.82rem; }
+    .card-body { padding: 18px 14px; }
+    .section-title { font-size: 0.95rem; }
+    .factor-head { grid-template-columns: 1fr 64px 26px; gap: 6px; }
+    .subfactor-row { grid-template-columns: 16px 1fr 64px 26px; gap: 6px; padding-left: 4px; }
+    .factor-head input[type="text"], .subfactor-row input[type="text"] { padding: 9px 10px; font-size: 0.88rem; }
+    .factor-head .pct-input input, .subfactor-row .pct-input input { padding: 8px 22px 8px 8px; font-size: 0.85rem; }
+    .factor-head .pct-input::after, .subfactor-row .pct-input::after { right: 6px; font-size: 0.78rem; }
+    table.pros { font-size: 0.78rem; min-width: 720px; }
+    table.pros td { padding: 5px 5px; }
+    table.pros td input[type="text"], table.pros td input[type="number"] { padding: 6px 6px; font-size: 0.8rem; }
+    table.bornes { font-size: 0.76rem; min-width: 0; }
+    table.bornes thead th, table.bornes td { padding: 6px 6px; }
+    .pros-wrap, .bornes-wrap { box-shadow: inset -8px 0 8px -8px rgba(0,0,0,0.15); }
+    .export-btn { width: 100%; padding: 12px 16px; }
+    .section-divider { padding-top: 18px; margin: 22px 0 14px; }
+    .add-pro-btn, .add-btn { width: 100%; justify-content: center; }
+    .sum-pill { font-size: 0.78rem; }
+    .info-card { padding: 18px 18px; }
+    aside.sidebar { gap: 14px; }
+  }
+  @media (max-width: 380px) {
+    .factor-head { grid-template-columns: 1fr 56px 24px; }
+    .subfactor-row { grid-template-columns: 14px 1fr 56px 24px; }
+    .card-header h1 { font-size: 1.2rem; }
+    table.pros { min-width: 640px; }
   }
 </style>
 </head>

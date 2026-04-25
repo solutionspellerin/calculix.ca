@@ -6,9 +6,9 @@
 <meta name="description" content="Budget de couple : partagez les dépenses au prorata des salaires ou par pourcentage personnalisé. Lignes suggérées, montants par jour/semaine/mois/année. Exportable en Excel.">
 <title>Budget de couple — Couple Budget | Calculix.ca</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/ads.css?v=20260424i">
+<link rel="stylesheet" href="assets/ads.css?v=20260424j">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451" crossorigin="anonymous"></script>
-<script src="assets/site-config.js?v=20260424i"></script>
+<script src="assets/site-config.js?v=20260424j"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
   :root {
@@ -187,6 +187,35 @@
     header { padding: 14px 16px; }
     .lang-label { display: none; }
     .card-body { padding: 20px 18px; }
+  }
+  @media (max-width: 480px) {
+    main { padding: 16px 10px 48px; gap: 18px; }
+    .card-header { padding: 20px 22px 16px; }
+    .card-header h1 { font-size: 1.35rem; }
+    .card-header p { font-size: 0.82rem; }
+    .card-body { padding: 18px 14px; }
+    .section-title { font-size: 0.95rem; }
+    .partner-block { padding: 14px 14px; }
+    .mode-tabs { gap: 4px; padding: 3px; }
+    .mode-tab { padding: 9px 8px; font-size: 0.78rem; letter-spacing: 0; }
+    .result-banner { padding: 18px 20px; }
+    .result-banner-main { font-size: 1.55rem; }
+    .share-card { padding: 13px 14px; }
+    table.budget { font-size: 0.78rem; min-width: 700px; }
+    table.budget thead th, table.budget td { padding: 6px 6px; }
+    table.budget td input[type="text"], table.budget td input[type="number"], table.budget td select { padding: 7px 8px; font-size: 0.82rem; }
+    table.budget tfoot td { padding: 9px 6px; font-size: 0.85rem; }
+    .budget-table-wrap { box-shadow: inset -8px 0 8px -8px rgba(0,0,0,0.15); }
+    .export-btn { width: 100%; padding: 12px 16px; }
+    .add-row-btn { width: 100%; justify-content: center; }
+    .section-divider { padding-top: 18px; margin: 22px 0 14px; }
+    .info-card { padding: 18px 18px; }
+    aside.sidebar { gap: 14px; }
+  }
+  @media (max-width: 380px) {
+    .card-header h1 { font-size: 1.2rem; }
+    table.budget { min-width: 620px; }
+    .mode-tab { font-size: 0.72rem; padding: 8px 4px; }
   }
 </style>
 </head>
@@ -941,4 +970,11 @@
       if (CXSite.checkAdBlockAndNotify) CXSite.checkAdBlockAndNotify(curLang);
     } catch(e) { console.warn('safetyRender budget-couple:', e); }
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', safety
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', safetyRender);
+  else safetyRender();
+  window.addEventListener('load', safetyRender);
+})();
+</script>
+
+</body>
+</html>

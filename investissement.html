@@ -6,7 +6,7 @@
 <meta name="description" content="Calculateur d'investissement : combien de temps ou quelle mise pour atteindre un objectif ? Avec rendement composé, cotisations récurrentes et graphique.">
 <title>Projection d'investissement — Investment Projection | Calculix.ca</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/ads.css?v=20260424h">
+<link rel="stylesheet" href="assets/ads.css?v=20260424j">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
@@ -197,6 +197,23 @@
     .scenarios-grid { grid-template-columns: 1fr; }
     header { padding: 14px 16px; }
     .lang-label { display: none; }
+    main { padding: 16px 10px 48px; gap: 18px; }
+    .card-header { padding: 20px 22px 16px; }
+    .card-header h1 { font-size: 1.35rem; }
+    .card-header p { font-size: 0.82rem; }
+    .card-body { padding: 18px 14px; }
+    .scenarios { padding: 18px 16px; }
+    .scenarios h2 { font-size: 1.05rem; }
+    table.evo { font-size: 0.8rem; min-width: 380px; }
+    table.evo th, table.evo td { padding: 7px 8px; }
+    .export-btn { width: 100%; padding: 12px 16px; }
+    .section-divider { padding-top: 18px; margin: 22px 0 14px; }
+    .info-card { padding: 18px 18px; }
+    aside.sidebar { gap: 14px; }
+  }
+  @media (max-width: 380px) {
+    .card-header h1 { font-size: 1.2rem; }
+    table.evo { font-size: 0.76rem; min-width: 340px; }
   }
 </style>
 </head>
@@ -369,7 +386,7 @@
   </div>
 </footer>
 
-<script src="assets/site-config.js?v=20260424h"></script>
+<script src="assets/site-config.js?v=20260424j"></script>
 <script>
 const ACTIVE_PAGE = 'investissement';
 let lang = (window.CXSite && CXSite.getStoredLang()) || 'fr';
