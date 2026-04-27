@@ -187,6 +187,115 @@
     header { padding: 14px 16px; }
     .lang-label { display: none; }
     .card-body { padding: 20px 18px; }
+
+    /* === Tableau budget en cartes empilees sur mobile === */
+    .budget-table-wrap { overflow-x: visible; background: transparent; border: none; border-radius: 0; box-shadow: none; }
+    table.budget { display: block; min-width: 0; width: 100%; font-size: 0.86rem; }
+    table.budget thead { display: none; }
+    table.budget tbody { display: block; }
+    table.budget tbody tr {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        'cat     cat'
+        'amt     freq'
+        'monthly yearly'
+        'p1      p2'
+        'del     del';
+      gap: 10px 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+      background: var(--blanc);
+      border: 1.5px solid var(--gris-clair);
+      border-radius: 12px;
+    }
+    table.budget tbody td {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 0;
+      border: none;
+      text-align: left;
+    }
+    table.budget tbody td::before {
+      content: attr(data-label);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-bottom: 4px;
+    }
+    table.budget tbody td.td-cat     { grid-area: cat; }
+    table.budget tbody td.td-amount  { grid-area: amt; }
+    table.budget tbody td.td-freq    { grid-area: freq; }
+    table.budget tbody td.cx-monthly { grid-area: monthly; }
+    table.budget tbody td.cx-yearly  { grid-area: yearly; }
+    table.budget tbody td.cx-pp1     { grid-area: p1; }
+    table.budget tbody td.cx-pp2     { grid-area: p2; }
+    table.budget tbody td.td-act {
+      grid-area: del;
+      align-items: flex-end;
+      width: auto;
+    }
+    table.budget tbody td.td-act::before { display: none; }
+    table.budget td input[type="text"],
+    table.budget td input[type="number"],
+    table.budget td select {
+      width: 100%;
+      padding: 9px 12px;
+      font-size: 0.95rem;
+      background: var(--fond);
+      border: 1.5px solid var(--gris-clair);
+      border-radius: 8px;
+      text-align: left;
+    }
+    .del-btn { font-size: 1.3rem; padding: 6px 14px; min-height: 40px; }
+
+    /* Pied de tableau (TOTAL) : carte unique pleine largeur */
+    table.budget tfoot { display: block; }
+    table.budget tfoot tr {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        'lbl     lbl'
+        'monthly yearly'
+        'p1      p2';
+      gap: 6px 12px;
+      padding: 14px;
+      margin-bottom: 0;
+      background: var(--bleu);
+      color: var(--blanc);
+      border-radius: 12px;
+      font-size: 0.92rem;
+    }
+    table.budget tfoot td {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      background: transparent !important;
+      color: var(--blanc) !important;
+      text-align: left;
+    }
+    table.budget tfoot td:nth-child(1) { grid-area: lbl; font-weight: 700; }
+    table.budget tfoot td:nth-child(2),
+    table.budget tfoot td:nth-child(3),
+    table.budget tfoot td:nth-child(8) { display: none; }
+    table.budget tfoot td:nth-child(4) { grid-area: monthly; }
+    table.budget tfoot td:nth-child(5) { grid-area: yearly; }
+    table.budget tfoot td:nth-child(6) { grid-area: p1; }
+    table.budget tfoot td:nth-child(7) { grid-area: p2; }
+
+    /* Bouton « Ajouter une ligne » : pleine largeur, plus visible */
+    .add-row-btn {
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      padding: 13px 16px;
+      font-size: 0.95rem;
+      margin-top: 6px;
+      box-shadow: 0 2px 8px rgba(225,77,138,0.18);
+    }
   }
   @media (max-width: 480px) {
     main { padding: 16px 10px 48px; gap: 18px; }
@@ -201,23 +310,11 @@
     .result-banner { padding: 18px 20px; }
     .result-banner-main { font-size: 1.55rem; }
     .share-card { padding: 13px 14px; }
-    /* Mobile: hide derived columns (Annuel, Part P1, Part P2) so core inputs fit without horizontal scroll. Totaux par partenaire restent visibles dans les cartes de partage au-dessus. */
-    table.budget thead th:nth-child(5),
-    table.budget thead th:nth-child(6),
-    table.budget thead th:nth-child(7),
-    table.budget tbody td:nth-child(5),
-    table.budget tbody td:nth-child(6),
-    table.budget tbody td:nth-child(7),
-    table.budget tfoot td:nth-child(5),
-    table.budget tfoot td:nth-child(6),
-    table.budget tfoot td:nth-child(7) { display: none; }
-    table.budget { font-size: 0.82rem; min-width: 0; }
-    table.budget thead th, table.budget td { padding: 6px 5px; }
-    table.budget td input[type="text"], table.budget td input[type="number"], table.budget td select { padding: 6px 7px; font-size: 0.82rem; }
-    table.budget tfoot td { padding: 9px 5px; font-size: 0.88rem; }
-    .budget-table-wrap { box-shadow: none; overflow-x: visible; }
+    table.budget tbody tr { padding: 12px; gap: 8px 10px; }
+    table.budget td input[type="text"],
+    table.budget td input[type="number"],
+    table.budget td select { padding: 8px 10px; font-size: 0.92rem; }
     .export-btn { width: 100%; padding: 12px 16px; }
-    .add-row-btn { width: 100%; justify-content: center; margin-top: 16px; padding: 14px 18px; font-size: 0.95rem; box-shadow: 0 2px 8px rgba(225,77,138,0.18); }
     .section-divider { padding-top: 18px; margin: 22px 0 14px; }
     .info-card { padding: 18px 18px; }
     aside.sidebar { gap: 14px; }
@@ -697,9 +794,9 @@
       const tr = document.createElement('tr');
       tr.setAttribute('data-id', row.id);
       tr.innerHTML =
-        '<td class="td-cat"><input type="text" class="cx-cat" value="' + escapeHtml(row.cat) + '" /></td>' +
-        '<td><input type="number" class="cx-amount" min="0" step="1" value="' + row.amount + '" /></td>' +
-        '<td>' +
+        '<td class="td-cat" data-label="' + escapeHtml(t.tcCategory) + '"><input type="text" class="cx-cat" value="' + escapeHtml(row.cat) + '" /></td>' +
+        '<td class="td-amount" data-label="' + escapeHtml(t.tcAmount) + '"><input type="number" class="cx-amount" min="0" step="1" value="' + row.amount + '" /></td>' +
+        '<td class="td-freq" data-label="' + escapeHtml(t.tcFreq) + '">' +
           '<div class="select-wrapper"><select class="cx-freq">' +
             '<option value="daily"' + (row.freq==='daily'?' selected':'') + '>' + t.optDay + '</option>' +
             '<option value="weekly"' + (row.freq==='weekly'?' selected':'') + '>' + t.optWk + '</option>' +
@@ -708,11 +805,11 @@
             '<option value="yearly"' + (row.freq==='yearly'?' selected':'') + '>' + t.optYear + '</option>' +
           '</select></div>' +
         '</td>' +
-        '<td class="calc cx-monthly">—</td>' +
-        '<td class="calc cx-yearly">—</td>' +
-        '<td class="calc p1 cx-pp1">—</td>' +
-        '<td class="calc p2 cx-pp2">—</td>' +
-        '<td class="td-act"><button type="button" class="del-btn" title="Supprimer">✕</button></td>';
+        '<td class="calc cx-monthly" data-label="' + escapeHtml(t.tcMonthly) + '">—</td>' +
+        '<td class="calc cx-yearly" data-label="' + escapeHtml(t.tcYearly) + '">—</td>' +
+        '<td class="calc p1 cx-pp1" data-label="' + escapeHtml(t.tcPartP1) + '">—</td>' +
+        '<td class="calc p2 cx-pp2" data-label="' + escapeHtml(t.tcPartP2) + '">—</td>' +
+        '<td class="td-act"><button type="button" class="del-btn" title="Supprimer" aria-label="Supprimer">✕</button></td>';
       body.appendChild(tr);
 
       // Wire events
