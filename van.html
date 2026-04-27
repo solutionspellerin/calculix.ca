@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Calcul de la Valeur Actuelle Nette (VAN/NPV), du Taux de Rendement Interne (TRI/IRR) et de la période de récupération (payback). Évaluez vos projets d'investissement.">
+<title>VAN — Valeur Actuelle Nette (NPV/IRR) | Calculix.ca</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ads.css?v=20260426a">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451" crossorigin="anonymous"></script>
+<script src="assets/site-config.js?v=20260426a"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+  :root {
+    --bleu: #1a3a5c; --bleu-clair: #2d6a9f; --accent: #e8c547;
+    --vert: #2f8f5f; --vert-clair: #4db37f; --vert-fonce: #1f6e45;
+    --rouge: #c64545; --rouge-clair: #e57373;
+    --orange: #d97a2c; --orange-clair: #e89855;
+    --fond: #f4f1eb; --blanc: #ffffff; --gris: #8a8a8a;
+    --gris-clair: #e8e4dc; --texte: #1a1a1a;
+    --ombre: 0 4px 24px rgba(26,58,92,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--fond); color: var(--texte); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+
+  header { width: 100%; background: var(--bleu); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1.3rem; letter-spacing: 0.03em; text-decoration: none; }
+  .logo span { color: var(--blanc); font-weight: 300; }
+  .header-right { display: flex; align-items: center; gap: 14px; }
+  .lang-label { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.05em; }
+  .lang-toggle-3 {
+    display: inline-flex; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px;
+    overflow: hidden; cursor: pointer; background: rgba(255,255,255,0.04);
+    font-size: 0.78rem; letter-spacing: 0.08em;
+  }
+  .lang-toggle-3 .lang-opt { padding: 6px 12px; color: rgba(255,255,255,0.6); transition: all 0.15s; }
+  .lang-toggle-3 .lang-opt.active { color: var(--bleu); background: var(--accent); font-weight: 700; }
+
+  nav.site-nav { width: 100%; background: #142d47; border-bottom: 2px solid rgba(232,197,71,0.2); }
+  nav.site-nav .nav-inner { max-width: 1180px; margin: 0 auto; display: flex; align-items: center; padding: 0 16px; gap: 4px; overflow-x: auto; }
+  nav.site-nav .nav-link { display: inline-block; padding: 12px 16px; color: rgba(255,255,255,0.6); font-size: 0.85rem; font-weight: 500; text-decoration: none; letter-spacing: 0.03em; white-space: nowrap; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
+  nav.site-nav .nav-link:hover { color: var(--blanc); }
+  nav.site-nav .nav-link.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  main { width: 100%; max-width: 1180px; padding: 24px 16px 64px; display: grid; grid-template-columns: 1fr 320px; gap: 28px; align-items: start; }
+
+  .card { background: var(--blanc); border-radius: 16px; box-shadow: var(--ombre); overflow: hidden; }
+  .card-header { background: linear-gradient(135deg, #d97a2c 0%, #a05317 100%); padding: 24px 32px 20px; position: relative; overflow: hidden; }
+  .card-header::before { content: ''; position: absolute; right: -40px; top: -40px; width: 160px; height: 160px; border-radius: 50%; background: rgba(232,197,71,0.12); }
+  .card-header::after  { content: ''; position: absolute; right: 20px; top: 20px; width: 80px; height: 80px; border-radius: 50%; background: rgba(232,197,71,0.08); }
+  .card-header h1 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--blanc); margin-bottom: 6px; position: relative; z-index: 1; }
+  .card-header p  { color: rgba(255,255,255,0.85); font-size: 0.88rem; font-weight: 300; position: relative; z-index: 1; }
+  .card-body { padding: 28px 32px; }
+
+  .form-group { margin-bottom: 16px; }
+  label { display: block; font-size: 0.74rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gris); margin-bottom: 6px; }
+  input[type="number"], input[type="text"], select {
+    width: 100%; padding: 11px 14px;
+    border: 1.5px solid var(--gris-clair); border-radius: 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--texte);
+    background: var(--fond);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  input:focus, select:focus {
+    border-color: var(--orange); box-shadow: 0 0 0 3px rgba(217,122,44,0.18); background: var(--blanc);
+  }
+  .input-prefix, .input-suffix { position: relative; }
+  .input-prefix input { padding-left: 32px; }
+  .input-prefix::before { content: attr(data-prefix); position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--gris); font-weight: 600; pointer-events: none; }
+  .input-suffix input { padding-right: 38px; }
+  .input-suffix::after { content: attr(data-suffix); position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--gris); font-weight: 600; pointer-events: none; }
+  .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .select-wrapper { position: relative; }
+  .select-wrapper select { appearance: none; cursor: pointer; padding-right: 34px; }
+  .select-wrapper::after { content: '▾'; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--orange); pointer-events: none; font-size: 0.85rem; }
+
+  .mode-tabs { display: flex; gap: 8px; background: var(--fond); border-radius: 10px; padding: 4px; margin-bottom: 14px; }
+  .mode-tab { flex: 1; padding: 10px 14px; text-align: center; border-radius: 8px; font-size: 0.85rem; font-weight: 500; cursor: pointer; color: var(--gris); transition: all 0.15s; border: none; background: transparent; font-family: inherit; }
+  .mode-tab.active { background: var(--blanc); color: var(--orange); box-shadow: 0 2px 6px rgba(0,0,0,0.08); font-weight: 600; }
+
+  .quick-fill { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .quick-fill-btn {
+    padding: 6px 12px; background: var(--fond); border: 1px solid var(--gris-clair);
+    border-radius: 999px; font-size: 0.8rem; cursor: pointer; color: #555;
+    font-family: inherit; transition: all 0.15s;
+  }
+  .quick-fill-btn:hover { background: var(--orange); color: var(--blanc); border-color: var(--orange); }
+
+  .result-banner {
+    margin-top: 20px; background: linear-gradient(135deg, #1a3a5c 0%, #2d6a9f 100%);
+    border-radius: 14px; padding: 22px 26px; position: relative; overflow: hidden;
+  }
+  .result-banner::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--accent); border-radius: 4px 0 0 4px; }
+  .result-banner-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .result-banner-main  { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--blanc); line-height: 1.1; font-weight: 700; }
+  .result-banner-sub   { font-size: 0.95rem; color: var(--accent); margin-top: 8px; font-weight: 500; }
+  .result-banner.empty .result-banner-main { color: rgba(255,255,255,0.3); font-size: 1rem; font-family: 'DM Sans', sans-serif; font-weight: 300; padding: 6px 0; }
+  .result-banner.positive { background: linear-gradient(135deg, var(--vert-fonce) 0%, var(--vert-clair) 100%); }
+  .result-banner.negative { background: linear-gradient(135deg, #8a2828 0%, var(--rouge-clair) 100%); }
+
+  .stat-grid { margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .stat-card { padding: 16px 18px; border-radius: 12px; border: 1.5px solid var(--gris-clair); background: var(--fond); }
+  .stat-card .stat-label { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gris); margin-bottom: 6px; }
+  .stat-card .stat-value { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; line-height: 1.1; color: var(--bleu); }
+  .stat-card .stat-sub { font-size: 0.78rem; color: var(--gris); margin-top: 4px; }
+  .stat-card.tri { border-color: rgba(217,122,44,0.35); background: #fbf2e9; }
+  .stat-card.tri .stat-value { color: var(--orange); }
+  .stat-card.payback { border-color: rgba(45,106,159,0.35); background: #eaf2f9; }
+  .stat-card.payback .stat-value { color: var(--bleu-clair); }
+  .stat-card.ratio { border-color: rgba(115,85,168,0.35); background: #f0ebf8; }
+  .stat-card.ratio .stat-value { color: #7355a8; }
+
+  .verdict {
+    margin-top: 16px; padding: 18px 22px; border-radius: 12px;
+    display: flex; align-items: center; gap: 14px; font-size: 0.95rem;
+  }
+  .verdict.accept { background: #eaf6ee; color: var(--vert-fonce); border-left: 4px solid var(--vert); }
+  .verdict.reject { background: #fbeaea; color: var(--rouge); border-left: 4px solid var(--rouge); }
+  .verdict.neutral { background: #fff8e6; color: #8a6d1c; border-left: 4px solid var(--accent); }
+  .verdict-icon { font-size: 1.6rem; line-height: 1; }
+  .verdict-text strong { font-weight: 700; }
+
+  .section-divider { margin: 28px 0 16px; padding-top: 22px; border-top: 1.5px dashed var(--gris-clair); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--orange); }
+
+  .flux-table-wrap { overflow-x: auto; background: var(--fond); border-radius: 12px; border: 1px solid var(--gris-clair); }
+  table.flux { width: 100%; border-collapse: collapse; font-size: 0.86rem; min-width: 640px; }
+  table.flux thead th {
+    background: var(--bleu); color: var(--blanc);
+    font-weight: 600; padding: 11px 12px; font-size: 0.75rem;
+    letter-spacing: 0.04em; text-align: right; white-space: nowrap;
+  }
+  table.flux thead th.th-period { text-align: left; }
+  table.flux thead th.th-act { width: 42px; text-align: center; }
+  table.flux td { padding: 8px 10px; border-bottom: 1px solid rgba(0,0,0,0.05); text-align: right; color: #333; vertical-align: middle; }
+  table.flux td.td-period { text-align: left; font-weight: 600; color: var(--bleu); }
+  table.flux td.td-act { text-align: center; width: 42px; }
+  table.flux td input[type="number"], table.flux td input[type="text"] {
+    width: 100%; padding: 7px 9px; font-size: 0.88rem;
+    border: 1px solid var(--gris-clair); border-radius: 7px; background: var(--blanc); text-align: right;
+  }
+  table.flux td.calc { font-weight: 600; color: var(--bleu); }
+  table.flux td.calc.pos { color: var(--vert-fonce); }
+  table.flux td.calc.neg { color: var(--rouge); }
+  table.flux tfoot td { background: var(--bleu); color: var(--blanc); font-weight: 700; padding: 12px; font-size: 0.95rem; }
+
+  .del-btn { background: transparent; border: none; color: var(--rouge); font-size: 1.1rem; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: background 0.15s; }
+  .del-btn:hover { background: rgba(198,69,69,0.1); }
+
+  .add-row-btn {
+    margin-top: 14px; display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 18px; background: var(--blanc); color: var(--orange);
+    border: 1.5px dashed var(--orange); border-radius: 10px;
+    font-family: inherit; font-size: 0.88rem; font-weight: 600;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .add-row-btn:hover { background: #fbf2e9; }
+
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .info-card { background: var(--blanc); border-radius: 14px; box-shadow: var(--ombre); padding: 22px 24px; }
+  .info-card h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--bleu); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1.5px solid var(--gris-clair); }
+  .info-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--gris-clair); font-size: 0.88rem; }
+  .info-item:last-child { border-bottom: none; }
+  .info-item .label { color: var(--gris); }
+  .info-item .value { font-weight: 600; color: var(--bleu); }
+  .info-item .value.green { color: var(--vert-fonce); }
+  .info-item .value.red { color: var(--rouge); }
+
+  .formula-box {
+    background: var(--fond); border-radius: 8px; padding: 12px 14px;
+    font-family: 'Times New Roman', serif; font-size: 0.95rem; color: var(--bleu);
+    text-align: center; margin: 8px 0;
+  }
+
+  .disclaimer {
+    grid-column: 1 / -1; margin-top: 4px; padding: 14px 18px;
+    background: #fff8e6; border-left: 3px solid var(--accent);
+    border-radius: 8px; font-size: 0.82rem; line-height: 1.7; color: #666;
+  }
+
+  .export-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #1d6f42 0%, #2f8f5f 100%);
+    color: white; border: none; border-radius: 10px;
+    font-family: inherit; font-size: 0.9rem; font-weight: 600;
+    letter-spacing: 0.02em; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(29,111,66,0.25);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .export-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(29,111,66,0.35); }
+  .export-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  footer { width: 100%; background: var(--bleu); padding: 22px 32px; text-align: center; color: rgba(255,255,255,0.4); font-size: 0.78rem; margin-top: auto; }
+  footer a { color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 8px; }
+  footer a:hover { color: var(--accent); }
+  .footer-links { margin-bottom: 10px; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .animate { animation: fadeUp 0.3s ease forwards; }
+
+  @media (max-width: 980px) { main { grid-template-columns: 1fr; } }
+  @media (max-width: 640px) {
+    .row-2, .row-3 { grid-template-columns: 1fr; }
+    .stat-grid { grid-template-columns: 1fr; }
+    header { padding: 14px 16px; }
+    .lang-label { display: none; }
+    .card-body { padding: 20px 18px; }
+  }
+  @media (max-width: 480px) {
+    main { padding: 16px 10px 48px; gap: 18px; }
+    .card-header { padding: 20px 22px 16px; }
+    .card-header h1 { font-size: 1.35rem; }
+    .card-body { padding: 18px 14px; }
+    .result-banner-main { font-size: 1.6rem; }
+    .add-row-btn { width: 100%; justify-content: center; }
+    .export-btn { width: 100%; padding: 12px 16px; }
+    table.flux { font-size: 0.82rem; min-width: 0; }
+    table.flux thead th, table.flux td { padding: 6px 5px; }
+    table.flux td input[type="number"], table.flux td input[type="text"] { padding: 6px 7px; font-size: 0.82rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Calcul<span>ix</span>.ca</a>
+  <div class="header-right">
+    <span class="lang-label" id="headerSubtitle">Calculs financiers gratuits · Québec</span>
+    <div class="lang-toggle-3" onclick="toggleLang()" id="langToggle" title="Language">
+      <span class="lang-opt" data-lang="fr">FR</span>
+      <span class="lang-opt" data-lang="en">EN</span>
+      <span class="lang-opt" data-lang="es">ES</span>
+    </div>
+  </div>
+</header>
+
+<nav class="site-nav"><div class="nav-inner" id="siteNav"></div></nav>
+
+<main>
+  <div class="card">
+    <div class="card-header">
+      <h1 id="mainTitle">📊 Valeur Actuelle Nette (VAN)</h1>
+      <p id="mainSubtitle">Évaluez la rentabilité d'un projet d'investissement avec la VAN, le TRI et la période de récupération</p>
+    </div>
+    <div class="card-body">
+
+      <!-- Paramètres principaux -->
+      <div class="section-title" id="sectParams" style="margin-bottom:14px;">⚙️ Paramètres du projet</div>
+
+      <div class="row-3">
+        <div class="form-group">
+          <label id="initialLbl">Investissement initial</label>
+          <div class="input-prefix" data-prefix="$">
+            <input type="number" id="initial" min="0" step="100" value="50000" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label id="rateLbl">Taux d'actualisation</label>
+          <div class="input-suffix" data-suffix="%">
+            <input type="number" id="rate" min="0" max="100" step="0.1" value="8" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label id="periodTypeLbl">Type de période</label>
+          <div class="select-wrapper">
+            <select id="periodType">
+              <option value="yearly" id="ptYear" selected>Annuelle</option>
+              <option value="quarterly" id="ptQuarter">Trimestrielle</option>
+              <option value="monthly" id="ptMonth">Mensuelle</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mode de saisie des flux -->
+      <div class="section-divider">
+        <div class="section-title" id="sectFlux">💵 Flux de trésorerie nets</div>
+      </div>
+      <div class="mode-tabs">
+        <button type="button" class="mode-tab active" data-mode="custom" id="modeCustom">Flux personnalisés</button>
+        <button type="button" class="mode-tab" data-mode="constant" id="modeConstant">Flux constant</button>
+        <button type="button" class="mode-tab" data-mode="growing" id="modeGrowing">Flux croissant (g %)</button>
+      </div>
+
+      <div id="constantPanel" style="display:none;">
+        <div class="row-3">
+          <div class="form-group">
+            <label id="constAmountLbl">Flux par période</label>
+            <div class="input-prefix" data-prefix="$">
+              <input type="number" id="constAmount" step="100" value="12000" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label id="constNbLbl">Nombre de périodes</label>
+            <input type="number" id="constNb" min="1" max="100" step="1" value="6" />
+          </div>
+          <div class="form-group">
+            <label id="growLbl">Croissance par période</label>
+            <div class="input-suffix" data-suffix="%">
+              <input type="number" id="growRate" step="0.1" value="0" />
+            </div>
+          </div>
+        </div>
+        <div class="quick-fill">
+          <button type="button" class="quick-fill-btn" id="qfApply">Appliquer aux flux</button>
+        </div>
+      </div>
+
+      <!-- Résultat principal VAN -->
+      <div class="result-banner empty" id="resultBanner">
+        <div class="result-banner-label" id="resultLabel">Valeur Actuelle Nette (VAN)</div>
+        <div class="result-banner-main"  id="resultMain">Saisissez vos paramètres pour calculer la VAN</div>
+        <div class="result-banner-sub"   id="resultSub"></div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card tri">
+          <div class="stat-label" id="lblTRI">Taux de Rendement Interne (TRI)</div>
+          <div class="stat-value" id="valTRI">—</div>
+          <div class="stat-sub"   id="subTRI"></div>
+        </div>
+        <div class="stat-card payback">
+          <div class="stat-label" id="lblPayback">Période de récupération</div>
+          <div class="stat-value" id="valPayback">—</div>
+          <div class="stat-sub"   id="subPayback"></div>
+        </div>
+        <div class="stat-card ratio">
+          <div class="stat-label" id="lblRatio">Indice de rentabilité (IR)</div>
+          <div class="stat-value" id="valRatio">—</div>
+          <div class="stat-sub"   id="subRatio"></div>
+        </div>
+      </div>
+
+      <div class="verdict neutral" id="verdictBox" style="display:none;">
+        <div class="verdict-icon" id="verdictIcon">💡</div>
+        <div class="verdict-text" id="verdictText">—</div>
+      </div>
+
+      <!-- Tableau flux -->
+      <div class="section-divider">
+        <div class="section-title" id="sectTable">📋 Détail des flux</div>
+        <button type="button" class="export-btn" id="exportBtn" onclick="exportToExcel()" disabled>
+          <span>📊</span><span id="exportLbl">Exporter en Excel</span>
+        </button>
+      </div>
+
+      <div class="flux-table-wrap">
+        <table class="flux" id="fluxTable">
+          <thead><tr>
+            <th class="th-period" id="tcPeriod">Période</th>
+            <th id="tcCashFlow">Flux de trésorerie</th>
+            <th id="tcDiscFactor">Facteur d'actualisation</th>
+            <th id="tcDisc">Flux actualisé</th>
+            <th id="tcCumul">Cumul actualisé</th>
+            <th class="th-act">✕</th>
+          </tr></thead>
+          <tbody id="fluxBody"></tbody>
+          <tfoot><tr>
+            <td class="td-period" id="tfTotalLbl">VAN (somme)</td>
+            <td class="calc" id="tfTotalFlux">—</td>
+            <td></td>
+            <td class="calc" id="tfTotalDisc">—</td>
+            <td class="calc" id="tfTotalCumul">—</td>
+            <td></td>
+          </tr></tfoot>
+        </table>
+      </div>
+
+      <button type="button" class="add-row-btn" id="addRowBtn" onclick="addFluxRow()">
+        <span>➕</span><span id="addRowLbl">Ajouter une période</span>
+      </button>
+
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="info-card">
+      <h3 id="infoTitle">📋 Résumé</h3>
+      <div class="info-item"><span class="label" id="lblI1">Investissement initial</span><span class="value red" id="infoInitial">—</span></div>
+      <div class="info-item"><span class="label" id="lblI2">Somme des flux nets</span><span class="value" id="infoSum">—</span></div>
+      <div class="info-item"><span class="label" id="lblI3">Somme actualisée</span><span class="value" id="infoSumDisc">—</span></div>
+      <div class="info-item"><span class="label" id="lblI4">VAN</span><span class="value" id="infoVAN">—</span></div>
+      <div class="info-item"><span class="label" id="lblI5">TRI annualisé</span><span class="value" id="infoTRI">—</span></div>
+      <div class="info-item"><span class="label" id="lblI6">Période de récupération</span><span class="value" id="infoPayback">—</span></div>
+    </div>
+
+    <div class="info-card">
+      <h3 id="formulaTitle">📐 Formule VAN</h3>
+      <div class="formula-box">
+        VAN = −I₀ + Σ <sup>n</sup><sub>t=1</sub> CF<sub>t</sub> / (1+r)<sup>t</sup>
+      </div>
+      <p id="formulaIntro" style="font-size:0.82rem;color:#555;line-height:1.55;">
+        <strong>I₀</strong> = investissement initial · <strong>CF<sub>t</sub></strong> = flux à la période t · <strong>r</strong> = taux d'actualisation par période.
+      </p>
+    </div>
+
+    <div class="info-card">
+      <h3 id="tipsTitle">💡 Comment décider ?</h3>
+      <p id="tipsP1" style="font-size:0.86rem; color:#555; line-height:1.6; margin-bottom:8px;">
+        <strong>VAN &gt; 0</strong> → le projet crée de la valeur. <strong>VAN &lt; 0</strong> → il en détruit.
+      </p>
+      <p id="tipsP2" style="font-size:0.86rem; color:#555; line-height:1.6; margin-bottom:8px;">
+        <strong>TRI &gt; taux d'actualisation</strong> → le projet est rentable.
+      </p>
+      <p id="tipsP3" style="font-size:0.86rem; color:#555; line-height:1.6;">
+        Si vous comparez des projets de tailles différentes, regardez aussi l'<strong>indice de rentabilité (IR)</strong>.
+      </p>
+    </div>
+
+    <div class="partners-stack" id="partnersRow"></div>
+  </aside>
+
+  <div class="disclaimer" id="disclaimerText">
+    ⚠️ Calculix.ca fournit des outils à titre informatif uniquement. Ces calculs ne remplacent pas un conseil personnalisé d'un planificateur financier ou d'un comptable.
+  </div>
+</main>
+
+<footer>
+  <div class="footer-links" id="footerLinks"></div>
+  <div id="footerText">© 2026 Calculix.ca — Outil informatif uniquement.</div>
+</footer>
+
+<script>
+  // ========== i18n ==========
+  const i18n = {
+    fr: {
+      mainTitle: '📊 Valeur Actuelle Nette (VAN)',
+      mainSubtitle: 'Évaluez la rentabilité d\'un projet d\'investissement avec la VAN, le TRI et la période de récupération',
+      sectParams: '⚙️ Paramètres du projet',
+      initialLbl: 'Investissement initial',
+      rateLbl: 'Taux d\'actualisation',
+      periodTypeLbl: 'Type de période',
+      ptYear: 'Annuelle', ptQuarter: 'Trimestrielle', ptMonth: 'Mensuelle',
+      sectFlux: '💵 Flux de trésorerie nets',
+      modeCustom: 'Flux personnalisés', modeConstant: 'Flux constant', modeGrowing: 'Flux croissant (g %)',
+      constAmountLbl: 'Flux par période',
+      constNbLbl: 'Nombre de périodes',
+      growLbl: 'Croissance par période',
+      qfApply: 'Appliquer aux flux',
+      resultLabel: 'Valeur Actuelle Nette (VAN)',
+      resultEmpty: 'Saisissez vos paramètres pour calculer la VAN',
+      resultSubPos: function(pct){ return 'Le projet crée de la valeur (' + pct + ' au-dessus du seuil)'; },
+      resultSubNeg: function(pct){ return 'Le projet détruit de la valeur (' + pct + ' sous le seuil)'; },
+      resultSubZero: 'Le projet est à l\'équilibre (au seuil de rentabilité)',
+      lblTRI: 'Taux de Rendement Interne (TRI)',
+      lblPayback: 'Période de récupération',
+      lblRatio: 'Indice de rentabilité (IR)',
+      paybackNever: 'Jamais récupéré',
+      paybackPeriods: function(n, type){
+        var lbl = type==='yearly'?'an':(type==='quarterly'?'trim.':'mois');
+        var pl  = type==='yearly'?'ans':(type==='quarterly'?'trim.':'mois');
+        return n + ' ' + (n>=2?pl:lbl);
+      },
+      paybackSub: 'Temps avant remboursement (actualisé)',
+      ratioNote: 'IR = (VAN + I₀) / I₀',
+      triNote: 'Taux qui rend la VAN nulle',
+      sectTable: '📋 Détail des flux',
+      exportLbl: 'Exporter en Excel',
+      tcPeriod: 'Période', tcCashFlow: 'Flux de trésorerie',
+      tcDiscFactor: 'Facteur d\'actualisation', tcDisc: 'Flux actualisé', tcCumul: 'Cumul actualisé',
+      tfTotalLbl: 'VAN (somme)',
+      addRowLbl: 'Ajouter une période',
+      infoTitle: '📋 Résumé',
+      infoInitial: 'Investissement initial', infoSum: 'Somme des flux nets',
+      infoSumDisc: 'Somme actualisée', infoVAN: 'VAN', infoTRI: 'TRI annualisé', infoPayback: 'Période de récupération',
+      formulaTitle: '📐 Formule VAN',
+      formulaIntro: '<strong>I₀</strong> = investissement initial · <strong>CF<sub>t</sub></strong> = flux à la période t · <strong>r</strong> = taux d\'actualisation par période.',
+      tipsTitle: '💡 Comment décider ?',
+      tipsP1: '<strong>VAN &gt; 0</strong> → le projet crée de la valeur. <strong>VAN &lt; 0</strong> → il en détruit.',
+      tipsP2: '<strong>TRI &gt; taux d\'actualisation</strong> → le projet est rentable.',
+      tipsP3: 'Si vous comparez des projets de tailles différentes, regardez aussi l\'<strong>indice de rentabilité (IR)</strong>.',
+      verdictAccept: '<strong>Projet recommandé.</strong> La VAN est positive : le projet génère plus de valeur que le coût du capital ne l\'exige.',
+      verdictReject: '<strong>Projet à rejeter (en l\'état).</strong> La VAN est négative : le projet ne couvre pas le coût du capital exigé.',
+      verdictNeutral: '<strong>Projet à l\'équilibre.</strong> La VAN est très proche de zéro — le projet rapporte exactement le taux d\'actualisation.',
+      disclaimer: '⚠️ Calculix.ca fournit des outils à titre informatif uniquement. Ces calculs ne remplacent pas un conseil personnalisé d\'un planificateur financier ou d\'un comptable.',
+      periodLbl: function(t){ return t==='yearly'?'Année':(t==='quarterly'?'Trimestre':'Mois'); },
+      perPeriod: function(t){ return t==='yearly'?'an':(t==='quarterly'?'trimestre':'mois'); },
+      noTRI: 'Non calculable',
+      xlsSheetName: 'VAN',
+      xlsTitle: 'Valeur Actuelle Nette — Calculix.ca',
+      xlsRowInitial: 'Investissement initial',
+      xlsRowRate: 'Taux d\'actualisation par période (%)',
+      xlsRowPeriodType: 'Type de période',
+      xlsRowVAN: 'VAN',
+      xlsRowTRI: 'TRI (par période %)',
+      xlsRowTRIYr: 'TRI annualisé (%)',
+      xlsRowPayback: 'Période de récupération actualisée',
+      xlsRowIR: 'Indice de rentabilité',
+      xlsColPeriod: 'Période', xlsColCF: 'Flux ($)', xlsColDF: 'Facteur d\'actualisation',
+      xlsColDisc: 'Flux actualisé ($)', xlsColCumul: 'Cumul actualisé ($)',
+      xlsRowTotal: 'Total / VAN',
+      xlsFooter: 'Calculix.ca · Outil informatif',
+      xlsFilename: 'van',
+    },
+    en: {
+      mainTitle: '📊 Net Present Value (NPV)',
+      mainSubtitle: 'Assess project profitability with NPV, IRR and discounted payback period',
+      sectParams: '⚙️ Project parameters',
+      initialLbl: 'Initial investment',
+      rateLbl: 'Discount rate',
+      periodTypeLbl: 'Period type',
+      ptYear: 'Yearly', ptQuarter: 'Quarterly', ptMonth: 'Monthly',
+      sectFlux: '💵 Net cash flows',
+      modeCustom: 'Custom flows', modeConstant: 'Constant flow', modeGrowing: 'Growing flow (g %)',
+      constAmountLbl: 'Flow per period',
+      constNbLbl: 'Number of periods',
+      growLbl: 'Growth per period',
+      qfApply: 'Apply to flows',
+      resultLabel: 'Net Present Value (NPV)',
+      resultEmpty: 'Set your parameters to compute the NPV',
+      resultSubPos: function(pct){ return 'Project creates value (' + pct + ' above the bar)'; },
+      resultSubNeg: function(pct){ return 'Project destroys value (' + pct + ' below the bar)'; },
+      resultSubZero: 'Break-even (right at the hurdle rate)',
+      lblTRI: 'Internal Rate of Return (IRR)',
+      lblPayback: 'Payback period',
+      lblRatio: 'Profitability Index (PI)',
+      paybackNever: 'Never recovered',
+      paybackPeriods: function(n, type){
+        var lbl = type==='yearly'?'yr':(type==='quarterly'?'qtr':'mo');
+        return n + ' ' + lbl;
+      },
+      paybackSub: 'Time to break even (discounted)',
+      ratioNote: 'PI = (NPV + I₀) / I₀',
+      triNote: 'Rate that makes NPV zero',
+      sectTable: '📋 Flow details',
+      exportLbl: 'Export to Excel',
+      tcPeriod: 'Period', tcCashFlow: 'Cash flow',
+      tcDiscFactor: 'Discount factor', tcDisc: 'Discounted flow', tcCumul: 'Cumulative discounted',
+      tfTotalLbl: 'NPV (sum)',
+      addRowLbl: 'Add a period',
+      infoTitle: '📋 Summary',
+      infoInitial: 'Initial investment', infoSum: 'Sum of net flows',
+      infoSumDisc: 'Discounted sum', infoVAN: 'NPV', infoTRI: 'Annualized IRR', infoPayback: 'Payback period',
+      formulaTitle: '📐 NPV formula',
+      formulaIntro: '<strong>I₀</strong> = initial investment · <strong>CF<sub>t</sub></strong> = flow at period t · <strong>r</strong> = discount rate per period.',
+      tipsTitle: '💡 How to decide?',
+      tipsP1: '<strong>NPV &gt; 0</strong> → project creates value. <strong>NPV &lt; 0</strong> → it destroys value.',
+      tipsP2: '<strong>IRR &gt; discount rate</strong> → project is profitable.',
+      tipsP3: 'When comparing projects of different sizes, also look at the <strong>Profitability Index (PI)</strong>.',
+      verdictAccept: '<strong>Recommended project.</strong> NPV is positive: the project earns more than the cost of capital.',
+      verdictReject: '<strong>Reject project (as-is).</strong> NPV is negative: it does not cover the required cost of capital.',
+      verdictNeutral: '<strong>Break-even project.</strong> NPV is very close to zero — the project returns exactly the discount rate.',
+      disclaimer: '⚠️ Calculix.ca provides tools for informational purposes only. These calculations do not replace personalized advice from a financial planner or accountant.',
+      periodLbl: function(t){ return t==='yearly'?'Year':(t==='quarterly'?'Quarter':'Month'); },
+      perPeriod: function(t){ return t==='yearly'?'year':(t==='quarterly'?'quarter':'month'); },
+      noTRI: 'Not computable',
+      xlsSheetName: 'NPV',
+      xlsTitle: 'Net Present Value — Calculix.ca',
+      xlsRowInitial: 'Initial investment',
+      xlsRowRate: 'Discount rate per period (%)',
+      xlsRowPeriodType: 'Period type',
+      xlsRowVAN: 'NPV',
+      xlsRowTRI: 'IRR (per period %)',
+      xlsRowTRIYr: 'Annualized IRR (%)',
+      xlsRowPayback: 'Discounted payback period',
+      xlsRowIR: 'Profitability Index',
+      xlsColPeriod: 'Period', xlsColCF: 'Flow ($)', xlsColDF: 'Discount factor',
+      xlsColDisc: 'Discounted flow ($)', xlsColCumul: 'Cumulative discounted ($)',
+      xlsRowTotal: 'Total / NPV',
+      xlsFooter: 'Calculix.ca · Informational tool',
+      xlsFilename: 'npv',
+    },
+    es: {
+      mainTitle: '📊 Valor Actual Neto (VAN)',
+      mainSubtitle: 'Evalúa la rentabilidad de un proyecto con VAN, TIR y período de recuperación',
+      sectParams: '⚙️ Parámetros del proyecto',
+      initialLbl: 'Inversión inicial',
+      rateLbl: 'Tasa de descuento',
+      periodTypeLbl: 'Tipo de período',
+      ptYear: 'Anual', ptQuarter: 'Trimestral', ptMonth: 'Mensual',
+      sectFlux: '💵 Flujos de caja netos',
+      modeCustom: 'Flujos personalizados', modeConstant: 'Flujo constante', modeGrowing: 'Flujo creciente (g %)',
+      constAmountLbl: 'Flujo por período',
+      constNbLbl: 'Número de períodos',
+      growLbl: 'Crecimiento por período',
+      qfApply: 'Aplicar a los flujos',
+      resultLabel: 'Valor Actual Neto (VAN)',
+      resultEmpty: 'Ingrese los parámetros para calcular el VAN',
+      resultSubPos: function(pct){ return 'El proyecto crea valor (' + pct + ' sobre el umbral)'; },
+      resultSubNeg: function(pct){ return 'El proyecto destruye valor (' + pct + ' bajo el umbral)'; },
+      resultSubZero: 'En equilibrio (justo en el umbral de rentabilidad)',
+      lblTRI: 'Tasa Interna de Retorno (TIR)',
+      lblPayback: 'Período de recuperación',
+      lblRatio: 'Índice de rentabilidad (IR)',
+      paybackNever: 'Nunca recuperado',
+      paybackPeriods: function(n, type){
+        var lbl = type==='yearly'?'año':(type==='quarterly'?'trim.':'mes');
+        var pl  = type==='yearly'?'años':(type==='quarterly'?'trim.':'meses');
+        return n + ' ' + (n>=2?pl:lbl);
+      },
+      paybackSub: 'Tiempo hasta recuperar (descontado)',
+      ratioNote: 'IR = (VAN + I₀) / I₀',
+      triNote: 'Tasa que hace que el VAN sea cero',
+      sectTable: '📋 Detalle de flujos',
+      exportLbl: 'Exportar a Excel',
+      tcPeriod: 'Período', tcCashFlow: 'Flujo de caja',
+      tcDiscFactor: 'Factor de descuento', tcDisc: 'Flujo descontado', tcCumul: 'Acumulado descontado',
+      tfTotalLbl: 'VAN (suma)',
+      addRowLbl: 'Añadir un período',
+      infoTitle: '📋 Resumen',
+      infoInitial: 'Inversión inicial', infoSum: 'Suma de flujos netos',
+      infoSumDisc: 'Suma descontada', infoVAN: 'VAN', infoTRI: 'TIR anualizada', infoPayback: 'Período de recuperación',
+      formulaTitle: '📐 Fórmula VAN',
+      formulaIntro: '<strong>I₀</strong> = inversión inicial · <strong>CF<sub>t</sub></strong> = flujo en el período t · <strong>r</strong> = tasa de descuento por período.',
+      tipsTitle: '💡 ¿Cómo decidir?',
+      tipsP1: '<strong>VAN &gt; 0</strong> → el proyecto crea valor. <strong>VAN &lt; 0</strong> → lo destruye.',
+      tipsP2: '<strong>TIR &gt; tasa de descuento</strong> → el proyecto es rentable.',
+      tipsP3: 'Si comparas proyectos de tamaños diferentes, mira también el <strong>Índice de rentabilidad (IR)</strong>.',
+      verdictAccept: '<strong>Proyecto recomendado.</strong> El VAN es positivo: el proyecto genera más valor que el costo del capital.',
+      verdictReject: '<strong>Proyecto a rechazar (tal cual).</strong> El VAN es negativo: no cubre el costo del capital exigido.',
+      verdictNeutral: '<strong>Proyecto en equilibrio.</strong> El VAN está muy cerca de cero — rinde exactamente la tasa de descuento.',
+      disclaimer: '⚠️ Calculix.ca proporciona herramientas solo con fines informativos. Estos cálculos no reemplazan el consejo personalizado de un planificador financiero o contador.',
+      periodLbl: function(t){ return t==='yearly'?'Año':(t==='quarterly'?'Trimestre':'Mes'); },
+      perPeriod: function(t){ return t==='yearly'?'año':(t==='quarterly'?'trimestre':'mes'); },
+      noTRI: 'No calculable',
+      xlsSheetName: 'VAN',
+      xlsTitle: 'Valor Actual Neto — Calculix.ca',
+      xlsRowInitial: 'Inversión inicial',
+      xlsRowRate: 'Tasa de descuento por período (%)',
+      xlsRowPeriodType: 'Tipo de período',
+      xlsRowVAN: 'VAN',
+      xlsRowTRI: 'TIR (por período %)',
+      xlsRowTRIYr: 'TIR anualizada (%)',
+      xlsRowPayback: 'Período de recuperación descontado',
+      xlsRowIR: 'Índice de rentabilidad',
+      xlsColPeriod: 'Período', xlsColCF: 'Flujo ($)', xlsColDF: 'Factor de descuento',
+      xlsColDisc: 'Flujo descontado ($)', xlsColCumul: 'Acumulado descontado ($)',
+      xlsRowTotal: 'Total / VAN',
+      xlsFooter: 'Calculix.ca · Herramienta informativa',
+      xlsFilename: 'van',
+    }
+  };
+
+  // ========== Langue ==========
+  let lang = (window.CXSite && CXSite.getStoredLang) ? CXSite.getStoredLang() : 'fr';
+
+  function updateLangToggleUI() {
+    document.querySelectorAll('.lang-opt').forEach(function(el){
+      el.classList.toggle('active', el.getAttribute('data-lang') === lang);
+    });
+  }
+  function toggleLang() {
+    if (window.CXSite && CXSite.cycleLang) { lang = CXSite.cycleLang(lang); CXSite.setStoredLang(lang); }
+    else { lang = lang === 'fr' ? 'en' : lang === 'en' ? 'es' : 'fr'; }
+    document.documentElement.lang = lang;
+    updateLangToggleUI();
+    applyTranslations();
+    renderFluxTable();
+    calculate();
+  }
+
+  function applyTranslations() {
+    const t = i18n[lang];
+    function setText(id, v) { const el = document.getElementById(id); if (el) el.textContent = v; }
+    function setHTML(id, v) { const el = document.getElementById(id); if (el) el.innerHTML = v; }
+
+    document.title = t.mainTitle.replace(/^\S+\s/, '') + ' | Calculix.ca';
+    setText('mainTitle', t.mainTitle);
+    setText('mainSubtitle', t.mainSubtitle);
+    setText('sectParams', t.sectParams);
+    setText('initialLbl', t.initialLbl);
+    setText('rateLbl', t.rateLbl);
+    setText('periodTypeLbl', t.periodTypeLbl);
+    setText('ptYear', t.ptYear);
+    setText('ptQuarter', t.ptQuarter);
+    setText('ptMonth', t.ptMonth);
+    setText('sectFlux', t.sectFlux);
+    setText('modeCustom', t.modeCustom);
+    setText('modeConstant', t.modeConstant);
+    setText('modeGrowing', t.modeGrowing);
+    setText('constAmountLbl', t.constAmountLbl);
+    setText('constNbLbl', t.constNbLbl);
+    setText('growLbl', t.growLbl);
+    setText('qfApply', t.qfApply);
+    setText('resultLabel', t.resultLabel);
+    setText('lblTRI', t.lblTRI);
+    setText('lblPayback', t.lblPayback);
+    setText('lblRatio', t.lblRatio);
+    setText('subPayback', t.paybackSub);
+    setText('subRatio', t.ratioNote);
+    setText('subTRI', t.triNote);
+    setText('sectTable', t.sectTable);
+    setText('exportLbl', t.exportLbl);
+    setText('tcPeriod', t.tcPeriod);
+    setText('tcCashFlow', t.tcCashFlow);
+    setText('tcDiscFactor', t.tcDiscFactor);
+    setText('tcDisc', t.tcDisc);
+    setText('tcCumul', t.tcCumul);
+    setText('tfTotalLbl', t.tfTotalLbl);
+    setText('addRowLbl', t.addRowLbl);
+    setText('infoTitle', t.infoTitle);
+    setText('lblI1', t.infoInitial);
+    setText('lblI2', t.infoSum);
+    setText('lblI3', t.infoSumDisc);
+    setText('lblI4', t.infoVAN);
+    setText('lblI5', t.infoTRI);
+    setText('lblI6', t.infoPayback);
+    setText('formulaTitle', t.formulaTitle);
+    setHTML('formulaIntro', t.formulaIntro);
+    setText('tipsTitle', t.tipsTitle);
+    setHTML('tipsP1', t.tipsP1);
+    setHTML('tipsP2', t.tipsP2);
+    setHTML('tipsP3', t.tipsP3);
+    setText('disclaimerText', t.disclaimer);
+
+    if (window.CXSite) {
+      var shared = CXSite.SHARED[lang];
+      if (shared) {
+        setText('headerSubtitle', shared.headerSubtitle);
+        setText('footerText', shared.footerText);
+      }
+      CXSite.renderNav(lang, 'van', 'siteNav');
+      CXSite.renderFooterLinks(lang, 'footerLinks');
+      var ads = document.getElementById('partnersRow');
+      if (ads) ads.innerHTML = CXSite.amazonAd(lang) + CXSite.cfoMasqueAd(lang) + CXSite.alchimixAd(lang);
+    }
+  }
+
+  // ========== Flux ==========
+  let fluxLines = []; // tableau de montants
+  let nextRowId = 1;
+
+  function initFluxLines() {
+    fluxLines = [
+      { id: nextRowId++, amount: 12000 },
+      { id: nextRowId++, amount: 14000 },
+      { id: nextRowId++, amount: 15000 },
+      { id: nextRowId++, amount: 16000 },
+      { id: nextRowId++, amount: 13000 },
+      { id: nextRowId++, amount: 8000 },
+    ];
+  }
+
+  function renderFluxTable() {
+    const t = i18n[lang];
+    const periodType = document.getElementById('periodType').value;
+    const body = document.getElementById('fluxBody');
+    body.innerHTML = '';
+
+    fluxLines.forEach(function(row, idx) {
+      const tr = document.createElement('tr');
+      tr.setAttribute('data-id', row.id);
+      tr.innerHTML =
+        '<td class="td-period">' + t.periodLbl(periodType) + ' ' + (idx + 1) + '</td>' +
+        '<td><input type="number" class="cx-amount" step="100" value="' + row.amount + '" /></td>' +
+        '<td class="cx-df">—</td>' +
+        '<td class="calc cx-disc">—</td>' +
+        '<td class="calc cx-cumul">—</td>' +
+        '<td class="td-act"><button type="button" class="del-btn" title="Supprimer">✕</button></td>';
+      body.appendChild(tr);
+
+      tr.querySelector('.cx-amount').addEventListener('input', function(e){ row.amount = parseFloat(e.target.value) || 0; calculate(); });
+      tr.querySelector('.del-btn').addEventListener('click', function(){ removeFluxRow(row.id); });
+    });
+  }
+
+  function addFluxRow() {
+    fluxLines.push({ id: nextRowId++, amount: 0 });
+    renderFluxTable();
+    calculate();
+  }
+
+  function removeFluxRow(id) {
+    fluxLines = fluxLines.filter(function(r){ return r.id !== id; });
+    renderFluxTable();
+    calculate();
+  }
+
+  // ========== Calculs financiers ==========
+  // VAN: -I0 + sum( CFt / (1+r)^t )
+  function computeNPV(initial, rate, flows) {
+    let npv = -initial;
+    for (let t = 0; t < flows.length; t++) {
+      npv += flows[t] / Math.pow(1 + rate, t + 1);
+    }
+    return npv;
+  }
+
+  // TRI : recherche bisection puis Newton-Raphson
+  function computeIRR(initial, flows) {
+    // Validation : il doit y avoir au moins un changement de signe
+    let sumFlows = flows.reduce(function(s, v){ return s + v; }, 0);
+    if (sumFlows <= initial) return null; // rendement négatif ou nul si somme < initial
+    if (initial <= 0) return null;
+
+    // Bisection 0% à 1000%
+    let lo = -0.99, hi = 10.0;
+    let fLo = computeNPV(initial, lo, flows);
+    let fHi = computeNPV(initial, hi, flows);
+    if (fLo * fHi > 0) {
+      // pas de racine dans [lo, hi]
+      return null;
+    }
+    for (let i = 0; i < 100; i++) {
+      const mid = (lo + hi) / 2;
+      const fMid = computeNPV(initial, mid, flows);
+      if (Math.abs(fMid) < 0.0001) return mid;
+      if (fLo * fMid < 0) { hi = mid; fHi = fMid; }
+      else { lo = mid; fLo = fMid; }
+    }
+    return (lo + hi) / 2;
+  }
+
+  // Période de récupération actualisée : n + (montant restant à récupérer) / (flux actualisé année n+1)
+  function computeDiscountedPayback(initial, rate, flows) {
+    let cumul = 0;
+    for (let t = 0; t < flows.length; t++) {
+      const disc = flows[t] / Math.pow(1 + rate, t + 1);
+      const newCumul = cumul + disc;
+      if (cumul < initial && newCumul >= initial) {
+        const reste = initial - cumul;
+        return t + (reste / disc); // période fractionnaire
+      }
+      cumul = newCumul;
+    }
+    return null; // jamais récupéré
+  }
+
+  // ========== Modes de génération de flux ==========
+  let currentMode = 'custom';
+  function setMode(m) {
+    currentMode = m;
+    document.querySelectorAll('.mode-tab').forEach(function(el){
+      el.classList.toggle('active', el.getAttribute('data-mode') === m);
+    });
+    document.getElementById('constantPanel').style.display = (m === 'custom') ? 'none' : 'block';
+    if (m === 'constant') {
+      document.getElementById('growRate').value = 0;
+    }
+  }
+
+  function applyConstantOrGrowing() {
+    const amount = parseFloat(document.getElementById('constAmount').value) || 0;
+    const nb = Math.max(1, Math.min(100, parseInt(document.getElementById('constNb').value) || 1));
+    const grow = (parseFloat(document.getElementById('growRate').value) || 0) / 100;
+    fluxLines = [];
+    let curr = amount;
+    for (let i = 0; i < nb; i++) {
+      fluxLines.push({ id: nextRowId++, amount: Math.round(curr * 100) / 100 });
+      curr = curr * (1 + grow);
+    }
+    renderFluxTable();
+    calculate();
+  }
+
+  // ========== Calcul global ==========
+  let lastResult = null;
+
+  function calculate() {
+    const t = i18n[lang];
+    const initial = parseFloat(document.getElementById('initial').value) || 0;
+    const ratePct = parseFloat(document.getElementById('rate').value) || 0;
+    const rate = ratePct / 100;
+    const periodType = document.getElementById('periodType').value;
+    const flows = fluxLines.map(function(r){ return r.amount; });
+
+    // Mise à jour du tableau (libellé période)
+    const ptLbl = t.periodLbl(periodType);
+    const periodCells = document.querySelectorAll('#fluxBody tr td.td-period');
+    periodCells.forEach(function(td, i){ td.textContent = ptLbl + ' ' + (i + 1); });
+
+    // Calculs ligne par ligne
+    let cumul = 0;
+    let sumFlows = 0;
+    let sumDisc = 0;
+    const bodyRows = document.querySelectorAll('#fluxBody tr');
+    flows.forEach(function(cf, i) {
+      const df = 1 / Math.pow(1 + rate, i + 1);
+      const disc = cf * df;
+      cumul += disc;
+      sumFlows += cf;
+      sumDisc += disc;
+      const tr = bodyRows[i];
+      if (tr) {
+        tr.querySelector('.cx-df').textContent = CXSite.formatNumber(df, lang, 4);
+        const dEl = tr.querySelector('.cx-disc');
+        dEl.textContent = CXSite.formatMoney(disc, lang);
+        dEl.classList.remove('pos','neg');
+        dEl.classList.add(disc >= 0 ? 'pos' : 'neg');
+        const cEl = tr.querySelector('.cx-cumul');
+        const cumulVsInitial = cumul - initial;
+        cEl.textContent = CXSite.formatMoney(cumul, lang);
+        cEl.classList.remove('pos','neg');
+        cEl.classList.add(cumulVsInitial >= 0 ? 'pos' : 'neg');
+      }
+    });
+
+    const van = sumDisc - initial;
+    document.getElementById('tfTotalFlux').textContent = CXSite.formatMoney(sumFlows, lang);
+    document.getElementById('tfTotalDisc').textContent = CXSite.formatMoney(sumDisc, lang);
+    document.getElementById('tfTotalCumul').textContent = CXSite.formatMoney(van, lang);
+
+    // TRI
+    const tri = computeIRR(initial, flows);
+    let triPctTxt = '—';
+    let triAnnualizedPct = null;
+    if (tri !== null && isFinite(tri)) {
+      triPctTxt = CXSite.formatNumber(tri * 100, lang, 2) + ' %';
+      // annualiser selon le type de période
+      if (periodType === 'yearly') triAnnualizedPct = tri * 100;
+      else if (periodType === 'quarterly') triAnnualizedPct = (Math.pow(1 + tri, 4) - 1) * 100;
+      else triAnnualizedPct = (Math.pow(1 + tri, 12) - 1) * 100;
+    }
+
+    // Période de récupération
+    const payback = computeDiscountedPayback(initial, rate, flows);
+
+    // Indice de rentabilité = (VAN + I0) / I0 = sumDisc / I0 (pour I0 > 0)
+    const ir = initial > 0 ? sumDisc / initial : null;
+
+    // Affichage stat cards
+    document.getElementById('valTRI').textContent = (tri === null || !isFinite(tri)) ? t.noTRI : triPctTxt;
+    document.getElementById('subTRI').textContent = (tri === null || !isFinite(tri)) ? '' : t.triNote;
+
+    if (payback === null) {
+      document.getElementById('valPayback').textContent = t.paybackNever;
+    } else {
+      const intPart = Math.floor(payback);
+      const decimals = payback - intPart;
+      let displayN;
+      if (decimals < 0.05) displayN = String(intPart);
+      else displayN = CXSite.formatNumber(payback, lang, 2);
+      document.getElementById('valPayback').textContent = t.paybackPeriods(displayN, periodType);
+    }
+    document.getElementById('valRatio').textContent = (ir === null) ? '—' : CXSite.formatNumber(ir, lang, 3);
+
+    // Sidebar
+    document.getElementById('infoInitial').textContent = CXSite.formatMoney(initial, lang);
+    document.getElementById('infoSum').textContent = CXSite.formatMoney(sumFlows, lang);
+    document.getElementById('infoSumDisc').textContent = CXSite.formatMoney(sumDisc, lang);
+    const elVAN = document.getElementById('infoVAN');
+    elVAN.textContent = CXSite.formatMoney(van, lang);
+    elVAN.className = 'value ' + (van >= 0 ? 'green' : 'red');
+    document.getElementById('infoTRI').textContent = (triAnnualizedPct === null) ? '—' : CXSite.formatNumber(triAnnualizedPct, lang, 2) + ' %';
+    document.getElementById('infoPayback').textContent = (payback === null) ? t.paybackNever : t.paybackPeriods(CXSite.formatNumber(payback, lang, 2), periodType);
+
+    // Bannière principale
+    const banner = document.getElementById('resultBanner');
+    banner.classList.remove('empty', 'positive', 'negative');
+    if (initial <= 0 && sumFlows === 0) {
+      banner.classList.add('empty');
+      document.getElementById('resultMain').textContent = t.resultEmpty;
+      document.getElementById('resultSub').textContent = '';
+      document.getElementById('exportBtn').disabled = true;
+      document.getElementById('verdictBox').style.display = 'none';
+      lastResult = null;
+      return;
+    }
+    document.getElementById('resultMain').textContent = CXSite.formatMoney(van, lang);
+    document.getElementById('exportBtn').disabled = false;
+
+    // Calcul du % de la VAN par rapport à l'investissement (pour l'évaluation)
+    let pctOfInitial = initial > 0 ? Math.abs(van / initial) * 100 : 0;
+    let pctTxt = CXSite.formatNumber(pctOfInitial, lang, 1) + ' %';
+
+    const verdictBox = document.getElementById('verdictBox');
+    const verdictIcon = document.getElementById('verdictIcon');
+    const verdictText = document.getElementById('verdictText');
+    verdictBox.style.display = 'flex';
+    verdictBox.classList.remove('accept','reject','neutral');
+
+    const tolerance = Math.max(1, initial * 0.001); // tolérance pour "à l'équilibre"
+    if (van > tolerance) {
+      banner.classList.add('positive');
+      document.getElementById('resultSub').textContent = t.resultSubPos(pctTxt);
+      verdictBox.classList.add('accept');
+      verdictIcon.textContent = '✅';
+      verdictText.innerHTML = t.verdictAccept;
+    } else if (van < -tolerance) {
+      banner.classList.add('negative');
+      document.getElementById('resultSub').textContent = t.resultSubNeg(pctTxt);
+      verdictBox.classList.add('reject');
+      verdictIcon.textContent = '⛔';
+      verdictText.innerHTML = t.verdictReject;
+    } else {
+      document.getElementById('resultSub').textContent = t.resultSubZero;
+      verdictBox.classList.add('neutral');
+      verdictIcon.textContent = '⚖️';
+      verdictText.innerHTML = t.verdictNeutral;
+    }
+    banner.classList.add('animate'); setTimeout(function(){ banner.classList.remove('animate'); }, 400);
+
+    lastResult = {
+      initial: initial, ratePct: ratePct, periodType: periodType,
+      flows: flows.slice(), van: van, sumFlows: sumFlows, sumDisc: sumDisc,
+      triPerPeriod: tri, triAnnualized: triAnnualizedPct,
+      payback: payback, ir: ir
+    };
+  }
+
+  // ========== Export Excel ==========
+  function exportToExcel() {
+    if (!lastResult || typeof XLSX === 'undefined') return;
+    const t = i18n[lang];
+    const r = lastResult;
+    const ptLbl = t.periodLbl(r.periodType);
+
+    const wb = XLSX.utils.book_new();
+    const aoa = [];
+    aoa.push([t.xlsTitle]);
+    aoa.push([]);
+    aoa.push([t.xlsRowInitial, r.initial]);
+    aoa.push([t.xlsRowRate, r.ratePct / 100]);
+    aoa.push([t.xlsRowPeriodType, ptLbl]);
+    aoa.push([t.xlsRowVAN, r.van]);
+    aoa.push([t.xlsRowTRI, r.triPerPeriod === null ? t.noTRI : r.triPerPeriod]);
+    aoa.push([t.xlsRowTRIYr, r.triAnnualized === null ? t.noTRI : (r.triAnnualized / 100)]);
+    aoa.push([t.xlsRowPayback, r.payback === null ? t.paybackNever : r.payback]);
+    aoa.push([t.xlsRowIR, r.ir === null ? '—' : r.ir]);
+    aoa.push([]);
+    const headerRowIdx = aoa.length;
+    aoa.push([t.xlsColPeriod, t.xlsColCF, t.xlsColDF, t.xlsColDisc, t.xlsColCumul]);
+    let cumul = 0;
+    const rate = r.ratePct / 100;
+    r.flows.forEach(function(cf, i) {
+      const df = 1 / Math.pow(1 + rate, i + 1);
+      const disc = cf * df;
+      cumul += disc;
+      aoa.push([ptLbl + ' ' + (i + 1), cf, df, disc, cumul]);
+    });
+    const totalRowIdx = aoa.length;
+    aoa.push([t.xlsRowTotal, r.sumFlows, '', r.sumDisc, r.van]);
+    aoa.push([]);
+    aoa.push([t.xlsFooter]);
+
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    ws['!cols'] = [{wch:24},{wch:14},{wch:18},{wch:16},{wch:16}];
+    ws['!merges'] = [{ s:{r:0,c:0}, e:{r:0,c:4} }];
+
+    const money = '#,##0.00 [$CAD]';
+    const pct = '0.00%';
+    const fac = '0.0000';
+
+    // Format des cellules de résumé
+    if (ws['B3']) ws['B3'].z = money;
+    if (ws['B4']) ws['B4'].z = pct;
+    if (ws['B6']) ws['B6'].z = money;
+    if (ws['B7'] && typeof ws['B7'].v === 'number') ws['B7'].z = pct;
+    if (ws['B8'] && typeof ws['B8'].v === 'number') ws['B8'].z = pct;
+    if (ws['B10'] && typeof ws['B10'].v === 'number') ws['B10'].z = '0.000';
+
+    // En-tête tableau
+    for (let c = 0; c < 5; c++) {
+      const ref = XLSX.utils.encode_cell({r:headerRowIdx, c:c});
+      if (ws[ref]) ws[ref].s = { font: { bold: true, color: { rgb: 'FFFFFF' } }, fill: { fgColor: { rgb: '1A3A5C' } } };
+    }
+    for (let rr = headerRowIdx + 1; rr < totalRowIdx; rr++) {
+      const refCF = XLSX.utils.encode_cell({r:rr, c:1});
+      const refDF = XLSX.utils.encode_cell({r:rr, c:2});
+      const refDisc = XLSX.utils.encode_cell({r:rr, c:3});
+      const refCum = XLSX.utils.encode_cell({r:rr, c:4});
+      if (ws[refCF]) ws[refCF].z = money;
+      if (ws[refDF]) ws[refDF].z = fac;
+      if (ws[refDisc]) ws[refDisc].z = money;
+      if (ws[refCum]) ws[refCum].z = money;
+    }
+    [1, 3, 4].forEach(function(c){
+      const ref = XLSX.utils.encode_cell({r:totalRowIdx, c:c});
+      if (ws[ref]) { ws[ref].z = money; ws[ref].s = { font: { bold: true } }; }
+    });
+
+    XLSX.utils.book_append_sheet(wb, ws, t.xlsSheetName);
+    const fn = t.xlsFilename + '-' + new Date().toISOString().slice(0,10) + '.xlsx';
+    XLSX.writeFile(wb, fn);
+  }
+
+  // ========== Event listeners ==========
+  document.querySelectorAll('.mode-tab').forEach(function(el){
+    el.addEventListener('click', function(){ setMode(el.getAttribute('data-mode')); });
+  });
+  document.getElementById('qfApply').addEventListener('click', applyConstantOrGrowing);
+  ['initial', 'rate', 'periodType', 'constAmount', 'constNb', 'growRate'].forEach(function(id){
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('input', function(){
+        if (id === 'initial' || id === 'rate' || id === 'periodType') calculate();
+      });
+      el.addEventListener('change', function(){
+        if (id === 'periodType') { renderFluxTable(); calculate(); }
+        else if (id === 'initial' || id === 'rate') calculate();
+      });
+    }
+  });
+
+  // ========== Init ==========
+  document.documentElement.lang = lang;
+  updateLangToggleUI();
+  initFluxLines();
+  applyTranslations();
+  renderFluxTable();
+  calculate();
+</script>
+
+<!-- Filet de sécurité -->
+<script>
+(function(){
+  function safetyRender() {
+    try {
+      if (!window.CXSite) return;
+      var curLang = (typeof lang === 'string' && lang) ? lang : ((CXSite.getStoredLang && CXSite.getStoredLang()) || 'fr');
+      var nav = document.getElementById('siteNav');
+      if (nav && nav.innerHTML.trim().length === 0) CXSite.renderNav(curLang, 'van', 'siteNav');
+      var fl = document.getElementById('footerLinks');
+      if (fl && fl.innerHTML.trim().length === 0) CXSite.renderFooterLinks(curLang, 'footerLinks');
+      var ads = document.getElementById('partnersRow');
+      if (ads && ads.innerHTML.trim().length === 0) ads.innerHTML = CXSite.amazonAd(curLang) + CXSite.cfoMasqueAd(curLang) + CXSite.alchimixAd(curLang);
+      var shared = CXSite.SHARED[curLang] || CXSite.SHARED.fr;
+      var hs = document.getElementById('headerSubtitle');
+      var ft = document.getElementById('footerText');
+      if (hs) hs.textContent = shared.headerSubtitle;
+      if (ft) ft.textContent = shared.footerText;
+      if (CXSite.checkAdBlockAndNotify) CXSite.checkAdBlockAndNotify(curLang);
+    } catch(e) { console.warn('safetyRender van:', e); }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', safetyRender);
+  else safetyRender();
+  window.addEventListener('load', safetyRender);
+})();
+</script>
+
+</body>
+</html>

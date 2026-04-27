@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Calculix.ca — calculateurs financiers gratuits : séparation de pourboires (équitable ou selon les heures) et projection d'investissement avec rendement composé.">
+<meta name="description" content="Calculix.ca — calculateurs financiers gratuits au Québec : pourboires, investissement, VAN/TRI, amortissement, budget couple et personne seule, équité salariale, générateur de factures et reçus conformes Revenu Québec.">
 <title>Calculix.ca — Calculateurs financiers gratuits | Québec</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/ads.css?v=20260424j">
@@ -88,6 +88,12 @@
   }
   .tool-card.tip .tool-head  { background: linear-gradient(135deg, #2f8f5f 0%, #4db37f 100%); }
   .tool-card.inv .tool-head  { background: linear-gradient(135deg, #1a3a5c 0%, #2d6a9f 100%); }
+  .tool-card.van .tool-head  { background: linear-gradient(135deg, #d97a2c 0%, #a05317 100%); }
+  .tool-card.amo .tool-head  { background: linear-gradient(135deg, #5b3a8f 0%, #8a5fb8 100%); }
+  .tool-card.bcp .tool-head  { background: linear-gradient(135deg, #b8336a 0%, #e84e8a 100%); }
+  .tool-card.bps .tool-head  { background: linear-gradient(135deg, #7355a8 0%, #4d3a72 100%); }
+  .tool-card.eqs .tool-head  { background: linear-gradient(135deg, #1d6f7f 0%, #339eb3 100%); }
+  .tool-card.fac .tool-head  { background: linear-gradient(135deg, #2d8a8a 0%, #1d5e5e 100%); }
   .tool-card .tool-icon {
     font-size: 2.2rem; line-height: 1; margin-bottom: 10px; display: inline-block;
     position: relative; z-index: 1;
@@ -231,6 +237,102 @@
         </div>
       </a>
 
+      <a href="van.html" class="tool-card van">
+        <div class="tool-head">
+          <div class="tool-icon">💼</div>
+          <div class="tool-title" id="vanTitle">VAN / TRI</div>
+          <div class="tool-subtitle" id="vanSubtitle">Valeur actuelle nette et taux de rendement interne</div>
+        </div>
+        <div class="tool-body">
+          <ul class="tool-features">
+            <li id="vanF1">Évaluez la rentabilité d'un projet d'investissement</li>
+            <li id="vanF2">Flux libres, constants ou avec croissance</li>
+            <li id="vanF3">TRI, période de récupération et indice de rentabilité</li>
+          </ul>
+          <div class="tool-cta" id="vanCTA">Ouvrir le calculateur <span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a href="amortissement.html" class="tool-card amo">
+        <div class="tool-head">
+          <div class="tool-icon">🏠</div>
+          <div class="tool-title" id="amoTitle">Amortissement de prêt</div>
+          <div class="tool-subtitle" id="amoSubtitle">Hypothèque, prêt auto ou personnel</div>
+        </div>
+        <div class="tool-body">
+          <ul class="tool-features">
+            <li id="amoF1">Paiement périodique et intérêts totaux</li>
+            <li id="amoF2">Calendrier complet d'amortissement</li>
+            <li id="amoF3">Comparaison avec versements supplémentaires</li>
+          </ul>
+          <div class="tool-cta" id="amoCTA">Ouvrir le calculateur <span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a href="budget-couple.html" class="tool-card bcp">
+        <div class="tool-head">
+          <div class="tool-icon">💑</div>
+          <div class="tool-title" id="bcpTitle">Budget couple</div>
+          <div class="tool-subtitle" id="bcpSubtitle">Revenus, dépenses et partage équitable</div>
+        </div>
+        <div class="tool-body">
+          <ul class="tool-features">
+            <li id="bcpF1">Comparez les revenus des deux conjoints</li>
+            <li id="bcpF2">Partage des dépenses au prorata</li>
+            <li id="bcpF3">Règle 50/30/20 et taux d'épargne</li>
+          </ul>
+          <div class="tool-cta" id="bcpCTA">Ouvrir le calculateur <span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a href="budget-personne-seule.html" class="tool-card bps">
+        <div class="tool-head">
+          <div class="tool-icon">🧍</div>
+          <div class="tool-title" id="bpsTitle">Budget personne seule</div>
+          <div class="tool-subtitle" id="bpsSubtitle">Suivi mensuel des revenus et dépenses</div>
+        </div>
+        <div class="tool-body">
+          <ul class="tool-features">
+            <li id="bpsF1">Toutes les fréquences (jour, semaine, 2 sem., mois, an)</li>
+            <li id="bpsF2">Règle 50/30/20 — besoins, désirs, épargne</li>
+            <li id="bpsF3">Indicateur de santé financière et taux d'épargne</li>
+          </ul>
+          <div class="tool-cta" id="bpsCTA">Ouvrir le calculateur <span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a href="equite-salariale.html" class="tool-card eqs">
+        <div class="tool-head">
+          <div class="tool-icon">⚖️</div>
+          <div class="tool-title" id="eqsTitle">Équité salariale</div>
+          <div class="tool-subtitle" id="eqsSubtitle">Comparez votre salaire au marché</div>
+        </div>
+        <div class="tool-body">
+          <ul class="tool-features">
+            <li id="eqsF1">Analyse par poste, secteur et expérience</li>
+            <li id="eqsF2">Détection des écarts salariaux</li>
+            <li id="eqsF3">Recommandations pour la négociation</li>
+          </ul>
+          <div class="tool-cta" id="eqsCTA">Ouvrir le calculateur <span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a href="factures-recus.html" class="tool-card fac">
+        <div class="tool-head">
+          <div class="tool-icon">🧾</div>
+          <div class="tool-title" id="facTitle">Factures &amp; reçus</div>
+          <div class="tool-subtitle" id="facSubtitle">Conforme Revenu Québec — TPS &amp; TVQ</div>
+        </div>
+        <div class="tool-body">
+          <ul class="tool-features">
+            <li id="facF1">Factures, reçus et soumissions professionnels</li>
+            <li id="facF2">Mémorise les infos de votre entreprise</li>
+            <li id="facF3">Historique sauvegardé et export PDF</li>
+          </ul>
+          <div class="tool-cta" id="facCTA">Ouvrir le calculateur <span class="arrow">→</span></div>
+        </div>
+      </a>
+
     </div>
   </div>
 
@@ -289,6 +391,42 @@ const i18n = {
     invF2: 'Cotisations quotidiennes, hebdo, mensuelles ou annuelles',
     invF3: "Tableau et graphique d'évolution",
     invCTA: 'Ouvrir le calculateur',
+    vanTitle: 'VAN / TRI',
+    vanSubtitle: 'Valeur actuelle nette et taux de rendement interne',
+    vanF1: "Évaluez la rentabilité d'un projet d'investissement",
+    vanF2: 'Flux libres, constants ou avec croissance',
+    vanF3: 'TRI, période de récupération et indice de rentabilité',
+    vanCTA: 'Ouvrir le calculateur',
+    amoTitle: 'Amortissement de prêt',
+    amoSubtitle: 'Hypothèque, prêt auto ou personnel',
+    amoF1: 'Paiement périodique et intérêts totaux',
+    amoF2: "Calendrier complet d'amortissement",
+    amoF3: 'Comparaison avec versements supplémentaires',
+    amoCTA: 'Ouvrir le calculateur',
+    bcpTitle: 'Budget couple',
+    bcpSubtitle: 'Revenus, dépenses et partage équitable',
+    bcpF1: 'Comparez les revenus des deux conjoints',
+    bcpF2: 'Partage des dépenses au prorata',
+    bcpF3: "Règle 50/30/20 et taux d'épargne",
+    bcpCTA: 'Ouvrir le calculateur',
+    bpsTitle: 'Budget personne seule',
+    bpsSubtitle: 'Suivi mensuel des revenus et dépenses',
+    bpsF1: 'Toutes les fréquences (jour, semaine, 2 sem., mois, an)',
+    bpsF2: 'Règle 50/30/20 — besoins, désirs, épargne',
+    bpsF3: "Indicateur de santé financière et taux d'épargne",
+    bpsCTA: 'Ouvrir le calculateur',
+    eqsTitle: 'Équité salariale',
+    eqsSubtitle: 'Comparez votre salaire au marché',
+    eqsF1: 'Analyse par poste, secteur et expérience',
+    eqsF2: 'Détection des écarts salariaux',
+    eqsF3: 'Recommandations pour la négociation',
+    eqsCTA: 'Ouvrir le calculateur',
+    facTitle: 'Factures & reçus',
+    facSubtitle: 'Conforme Revenu Québec — TPS & TVQ',
+    facF1: 'Factures, reçus et soumissions professionnels',
+    facF2: 'Mémorise les infos de votre entreprise',
+    facF3: 'Historique sauvegardé et export PDF',
+    facCTA: 'Ouvrir le calculateur',
     whyTitle: 'Pourquoi Calculix.ca ?',
     why1T: '100 % gratuit',
     why1P: 'Aucune inscription, aucun frais caché. Nos outils sont financés par quelques annonces discrètes.',
@@ -314,6 +452,42 @@ const i18n = {
     invF2: 'Daily, weekly, monthly or yearly contributions',
     invF3: 'Evolution table and chart',
     invCTA: 'Open calculator',
+    vanTitle: 'NPV / IRR',
+    vanSubtitle: 'Net present value and internal rate of return',
+    vanF1: 'Assess the profitability of an investment project',
+    vanF2: 'Custom, constant or growing cash flows',
+    vanF3: 'IRR, payback period and profitability index',
+    vanCTA: 'Open calculator',
+    amoTitle: 'Loan amortization',
+    amoSubtitle: 'Mortgage, auto or personal loan',
+    amoF1: 'Periodic payment and total interest',
+    amoF2: 'Complete amortization schedule',
+    amoF3: 'Comparison with extra payments',
+    amoCTA: 'Open calculator',
+    bcpTitle: 'Couple Budget',
+    bcpSubtitle: 'Income, expenses and fair sharing',
+    bcpF1: 'Compare both partners\' income',
+    bcpF2: 'Pro-rated expense sharing',
+    bcpF3: '50/30/20 rule and savings rate',
+    bcpCTA: 'Open calculator',
+    bpsTitle: 'Personal Budget',
+    bpsSubtitle: 'Monthly tracking of income and expenses',
+    bpsF1: 'All frequencies (daily, weekly, bi-weekly, monthly, yearly)',
+    bpsF2: '50/30/20 rule — needs, wants, savings',
+    bpsF3: 'Financial health indicator and savings rate',
+    bpsCTA: 'Open calculator',
+    eqsTitle: 'Pay Equity',
+    eqsSubtitle: 'Compare your salary to the market',
+    eqsF1: 'Analysis by position, industry and experience',
+    eqsF2: 'Detect pay gaps',
+    eqsF3: 'Recommendations for negotiation',
+    eqsCTA: 'Open calculator',
+    facTitle: 'Invoices & Receipts',
+    facSubtitle: 'Revenu Québec compliant — GST & QST',
+    facF1: 'Professional invoices, receipts and quotes',
+    facF2: 'Remembers your company info',
+    facF3: 'Saved history and PDF export',
+    facCTA: 'Open calculator',
     whyTitle: 'Why Calculix.ca?',
     why1T: '100 % free',
     why1P: 'No sign-up, no hidden fees. Our tools are funded by a few discreet ads.',
@@ -339,6 +513,42 @@ const i18n = {
     invF2: 'Aportes diarios, semanales, mensuales o anuales',
     invF3: 'Tabla y gráfico de evolución',
     invCTA: 'Abrir calculadora',
+    vanTitle: 'VAN / TIR',
+    vanSubtitle: 'Valor actual neto y tasa interna de retorno',
+    vanF1: 'Evalúe la rentabilidad de un proyecto de inversión',
+    vanF2: 'Flujos libres, constantes o con crecimiento',
+    vanF3: 'TIR, período de recuperación e índice de rentabilidad',
+    vanCTA: 'Abrir calculadora',
+    amoTitle: 'Amortización de préstamo',
+    amoSubtitle: 'Hipoteca, préstamo de auto o personal',
+    amoF1: 'Pago periódico e intereses totales',
+    amoF2: 'Calendario completo de amortización',
+    amoF3: 'Comparación con pagos extra',
+    amoCTA: 'Abrir calculadora',
+    bcpTitle: 'Presupuesto de pareja',
+    bcpSubtitle: 'Ingresos, gastos y reparto justo',
+    bcpF1: 'Compare los ingresos de ambos cónyuges',
+    bcpF2: 'Reparto de gastos a prorrata',
+    bcpF3: 'Regla 50/30/20 y tasa de ahorro',
+    bcpCTA: 'Abrir calculadora',
+    bpsTitle: 'Presupuesto personal',
+    bpsSubtitle: 'Seguimiento mensual de ingresos y gastos',
+    bpsF1: 'Todas las frecuencias (día, semana, quincena, mes, año)',
+    bpsF2: 'Regla 50/30/20 — necesidades, deseos, ahorro',
+    bpsF3: 'Indicador de salud financiera y tasa de ahorro',
+    bpsCTA: 'Abrir calculadora',
+    eqsTitle: 'Equidad salarial',
+    eqsSubtitle: 'Compare su salario con el mercado',
+    eqsF1: 'Análisis por puesto, sector y experiencia',
+    eqsF2: 'Detección de brechas salariales',
+    eqsF3: 'Recomendaciones para la negociación',
+    eqsCTA: 'Abrir calculadora',
+    facTitle: 'Facturas y recibos',
+    facSubtitle: 'Conforme Revenu Québec — GST y QST',
+    facF1: 'Facturas, recibos y cotizaciones profesionales',
+    facF2: 'Recuerda los datos de su empresa',
+    facF3: 'Historial guardado y exportación PDF',
+    facCTA: 'Abrir calculadora',
     whyTitle: '¿Por qué Calculix.ca?',
     why1T: '100 % gratis',
     why1P: 'Sin registro, sin costos ocultos. Nuestras herramientas se financian con algunos anuncios discretos.',
@@ -386,6 +596,17 @@ function applyTranslations() {
   setText('invF2', t.invF2);
   setText('invF3', t.invF3);
   setHtml('invCTA', t.invCTA + ' <span class="arrow">→</span>');
+
+  var cards = ['van', 'amo', 'bcp', 'bps', 'eqs', 'fac'];
+  cards.forEach(function(k){
+    setText(k + 'Title', t[k + 'Title']);
+    setText(k + 'Subtitle', t[k + 'Subtitle']);
+    setText(k + 'F1', t[k + 'F1']);
+    setText(k + 'F2', t[k + 'F2']);
+    setText(k + 'F3', t[k + 'F3']);
+    setHtml(k + 'CTA', t[k + 'CTA'] + ' <span class="arrow">→</span>');
+  });
+
   setText('whyTitle', t.whyTitle);
   setText('why1T', t.why1T); setText('why1P', t.why1P);
   setText('why2T', t.why2T); setText('why2P', t.why2P);

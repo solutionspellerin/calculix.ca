@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Budget personne seule : calculez vos revenus et dépenses, normalisé par jour/semaine/mois/année. Indicateurs santé financière (taux d'épargne, règle 50/30/20). Exportable en Excel.">
+<title>Budget personne seule — Personal Budget | Calculix.ca</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ads.css?v=20260426a">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451" crossorigin="anonymous"></script>
+<script src="assets/site-config.js?v=20260426a"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+  :root {
+    --bleu: #1a3a5c; --bleu-clair: #2d6a9f; --accent: #e8c547;
+    --vert: #2f8f5f; --vert-clair: #4db37f; --vert-fonce: #1f6e45;
+    --rouge: #c64545; --rouge-clair: #e57373;
+    --violet: #7355a8; --violet-clair: #9477c2;
+    --fond: #f4f1eb; --blanc: #ffffff; --gris: #8a8a8a;
+    --gris-clair: #e8e4dc; --texte: #1a1a1a;
+    --ombre: 0 4px 24px rgba(26,58,92,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--fond); color: var(--texte); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+
+  header { width: 100%; background: var(--bleu); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1.3rem; letter-spacing: 0.03em; text-decoration: none; }
+  .logo span { color: var(--blanc); font-weight: 300; }
+  .header-right { display: flex; align-items: center; gap: 14px; }
+  .lang-label { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.05em; }
+  .lang-toggle-3 {
+    display: inline-flex; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px;
+    overflow: hidden; cursor: pointer; background: rgba(255,255,255,0.04);
+    font-size: 0.78rem; letter-spacing: 0.08em;
+  }
+  .lang-toggle-3 .lang-opt { padding: 6px 12px; color: rgba(255,255,255,0.6); transition: all 0.15s; }
+  .lang-toggle-3 .lang-opt.active { color: var(--bleu); background: var(--accent); font-weight: 700; }
+
+  nav.site-nav { width: 100%; background: #142d47; border-bottom: 2px solid rgba(232,197,71,0.2); }
+  nav.site-nav .nav-inner { max-width: 1180px; margin: 0 auto; display: flex; align-items: center; padding: 0 16px; gap: 4px; overflow-x: auto; }
+  nav.site-nav .nav-link { display: inline-block; padding: 12px 16px; color: rgba(255,255,255,0.6); font-size: 0.85rem; font-weight: 500; text-decoration: none; letter-spacing: 0.03em; white-space: nowrap; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
+  nav.site-nav .nav-link:hover { color: var(--blanc); }
+  nav.site-nav .nav-link.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  main { width: 100%; max-width: 1180px; padding: 24px 16px 64px; display: grid; grid-template-columns: 1fr 320px; gap: 28px; align-items: start; }
+
+  .card { background: var(--blanc); border-radius: 16px; box-shadow: var(--ombre); overflow: hidden; }
+  .card-header { background: linear-gradient(135deg, #7355a8 0%, #4d3a72 100%); padding: 24px 32px 20px; position: relative; overflow: hidden; }
+  .card-header::before { content: ''; position: absolute; right: -40px; top: -40px; width: 160px; height: 160px; border-radius: 50%; background: rgba(232,197,71,0.12); }
+  .card-header::after  { content: ''; position: absolute; right: 20px; top: 20px; width: 80px; height: 80px; border-radius: 50%; background: rgba(232,197,71,0.08); }
+  .card-header h1 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--blanc); margin-bottom: 6px; position: relative; z-index: 1; }
+  .card-header p  { color: rgba(255,255,255,0.85); font-size: 0.88rem; font-weight: 300; position: relative; z-index: 1; }
+  .card-body { padding: 28px 32px; }
+
+  .form-group { margin-bottom: 16px; }
+  label { display: block; font-size: 0.74rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gris); margin-bottom: 6px; }
+  input[type="number"], input[type="text"], select {
+    width: 100%; padding: 11px 14px;
+    border: 1.5px solid var(--gris-clair); border-radius: 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--texte);
+    background: var(--fond);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  input:focus, select:focus {
+    border-color: var(--violet); box-shadow: 0 0 0 3px rgba(115,85,168,0.16); background: var(--blanc);
+  }
+  .input-prefix { position: relative; }
+  .input-prefix input { padding-left: 32px; }
+  .input-prefix::before { content: attr(data-prefix); position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--gris); font-weight: 600; pointer-events: none; }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .select-wrapper { position: relative; }
+  .select-wrapper select { appearance: none; cursor: pointer; padding-right: 34px; }
+  .select-wrapper::after { content: '▾'; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--violet); pointer-events: none; font-size: 0.85rem; }
+
+  .income-block { background: var(--fond); border-radius: 14px; padding: 18px 20px; border: 1.5px solid rgba(115,85,168,0.35); }
+  .income-block .blk-label { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--violet); margin-bottom: 10px; }
+
+  .result-banner {
+    margin-top: 20px; background: linear-gradient(135deg, #1a3a5c 0%, #2d6a9f 100%);
+    border-radius: 14px; padding: 22px 26px; position: relative; overflow: hidden;
+  }
+  .result-banner::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--accent); border-radius: 4px 0 0 4px; }
+  .result-banner-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .result-banner-main  { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--blanc); line-height: 1.1; font-weight: 700; }
+  .result-banner-sub   { font-size: 0.88rem; color: var(--accent); margin-top: 8px; font-weight: 500; }
+  .result-banner.empty .result-banner-main { color: rgba(255,255,255,0.3); font-size: 1rem; font-family: 'DM Sans', sans-serif; font-weight: 300; padding: 6px 0; }
+
+  .stat-grid { margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .stat-card { padding: 16px 18px; border-radius: 12px; border: 1.5px solid var(--gris-clair); background: var(--fond); }
+  .stat-card.green { border-color: rgba(47,143,95,0.35); background: #eaf6ee; }
+  .stat-card.red { border-color: rgba(198,69,69,0.35); background: #fbeaea; }
+  .stat-card.violet { border-color: rgba(115,85,168,0.35); background: #f0ebf8; }
+  .stat-label { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gris); margin-bottom: 6px; }
+  .stat-value { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; line-height: 1.1; }
+  .stat-card.green .stat-value { color: var(--vert-fonce); }
+  .stat-card.red .stat-value { color: var(--rouge); }
+  .stat-card.violet .stat-value { color: var(--violet); }
+  .stat-sub { font-size: 0.78rem; color: var(--gris); margin-top: 4px; }
+
+  .section-divider { margin: 28px 0 16px; padding-top: 22px; border-top: 1.5px dashed var(--gris-clair); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--violet); }
+
+  .budget-table-wrap { overflow-x: auto; background: var(--fond); border-radius: 12px; border: 1px solid var(--gris-clair); }
+  table.budget { width: 100%; border-collapse: collapse; font-size: 0.86rem; min-width: 700px; }
+  table.budget thead th {
+    background: var(--bleu); color: var(--blanc);
+    font-weight: 600; padding: 11px 12px; font-size: 0.75rem;
+    letter-spacing: 0.04em; text-align: right; white-space: nowrap;
+  }
+  table.budget thead th.th-cat { text-align: left; }
+  table.budget thead th.th-act { width: 42px; text-align: center; }
+  table.budget thead th.th-type { text-align: center; }
+  table.budget td { padding: 8px 10px; border-bottom: 1px solid rgba(0,0,0,0.05); text-align: right; color: #333; vertical-align: middle; }
+  table.budget td.td-cat { text-align: left; }
+  table.budget td.td-act { text-align: center; width: 42px; }
+  table.budget td.td-type { text-align: center; }
+  table.budget td input[type="text"], table.budget td input[type="number"], table.budget td select {
+    width: 100%; padding: 7px 9px; font-size: 0.88rem;
+    border: 1px solid var(--gris-clair); border-radius: 7px; background: var(--blanc);
+  }
+  table.budget td.calc { font-weight: 600; color: var(--bleu); }
+  table.budget td.calc.income { color: var(--vert-fonce); }
+  table.budget td.calc.expense { color: var(--rouge); }
+  table.budget tfoot td { background: var(--bleu); color: var(--blanc); font-weight: 700; padding: 12px; font-size: 0.95rem; }
+
+  .type-pill {
+    display: inline-block; padding: 3px 10px; font-size: 0.72rem; font-weight: 600;
+    border-radius: 999px; letter-spacing: 0.04em;
+  }
+  .type-pill.income { background: #eaf6ee; color: var(--vert-fonce); border: 1px solid rgba(47,143,95,0.35); }
+  .type-pill.expense { background: #fbeaea; color: var(--rouge); border: 1px solid rgba(198,69,69,0.35); }
+
+  .del-btn { background: transparent; border: none; color: var(--rouge); font-size: 1.1rem; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: background 0.15s; }
+  .del-btn:hover { background: rgba(198,69,69,0.1); }
+
+  .add-row-btns { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  .add-row-btn {
+    flex: 1; min-width: 200px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 10px 18px; background: var(--blanc); border-radius: 10px;
+    font-family: inherit; font-size: 0.88rem; font-weight: 600;
+    cursor: pointer; transition: all 0.15s;
+    border: 1.5px dashed;
+  }
+  .add-row-btn.income { color: var(--vert-fonce); border-color: var(--vert); }
+  .add-row-btn.income:hover { background: #eaf6ee; }
+  .add-row-btn.expense { color: var(--rouge); border-color: var(--rouge); }
+  .add-row-btn.expense:hover { background: #fbeaea; }
+
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .info-card { background: var(--blanc); border-radius: 14px; box-shadow: var(--ombre); padding: 22px 24px; }
+  .info-card h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--bleu); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1.5px solid var(--gris-clair); }
+  .info-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--gris-clair); font-size: 0.88rem; }
+  .info-item:last-child { border-bottom: none; }
+  .info-item .label { color: var(--gris); }
+  .info-item .value { font-weight: 600; color: var(--bleu); }
+  .info-item .value.green { color: var(--vert-fonce); }
+  .info-item .value.red { color: var(--rouge); }
+  .info-item .value.violet { color: var(--violet); }
+
+  .health-bar { margin-top: 8px; background: var(--fond); border-radius: 999px; height: 12px; overflow: hidden; position: relative; }
+  .health-bar-fill { height: 100%; transition: width 0.3s, background 0.3s; }
+  .health-bar-fill.good { background: linear-gradient(90deg, var(--vert) 0%, var(--vert-clair) 100%); }
+  .health-bar-fill.ok { background: linear-gradient(90deg, var(--accent) 0%, #f0d569 100%); }
+  .health-bar-fill.bad { background: linear-gradient(90deg, var(--rouge) 0%, var(--rouge-clair) 100%); }
+
+  .rule-503020 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .rule-cell { padding: 10px 8px; border-radius: 8px; text-align: center; }
+  .rule-cell.needs { background: #eaf2f9; color: var(--bleu-clair); }
+  .rule-cell.wants { background: #f0ebf8; color: var(--violet); }
+  .rule-cell.savings { background: #eaf6ee; color: var(--vert-fonce); }
+  .rule-cell .rule-pct { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; line-height: 1; }
+  .rule-cell .rule-actual { font-size: 0.72rem; margin-top: 4px; opacity: 0.8; }
+  .rule-cell .rule-name { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; opacity: 0.7; margin-top: 2px; }
+
+  .disclaimer {
+    grid-column: 1 / -1; margin-top: 4px; padding: 14px 18px;
+    background: #fff8e6; border-left: 3px solid var(--accent);
+    border-radius: 8px; font-size: 0.82rem; line-height: 1.7; color: #666;
+  }
+
+  .export-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #1d6f42 0%, #2f8f5f 100%);
+    color: white; border: none; border-radius: 10px;
+    font-family: inherit; font-size: 0.9rem; font-weight: 600;
+    letter-spacing: 0.02em; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(29,111,66,0.25);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .export-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(29,111,66,0.35); }
+  .export-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  footer { width: 100%; background: var(--bleu); padding: 22px 32px; text-align: center; color: rgba(255,255,255,0.4); font-size: 0.78rem; margin-top: auto; }
+  footer a { color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 8px; }
+  footer a:hover { color: var(--accent); }
+  .footer-links { margin-bottom: 10px; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .animate { animation: fadeUp 0.3s ease forwards; }
+
+  @media (max-width: 980px) { main { grid-template-columns: 1fr; } }
+  @media (max-width: 640px) {
+    .row-2 { grid-template-columns: 1fr; }
+    .stat-grid { grid-template-columns: 1fr; }
+    header { padding: 14px 16px; }
+    .lang-label { display: none; }
+    .card-body { padding: 20px 18px; }
+  }
+  @media (max-width: 480px) {
+    main { padding: 16px 10px 48px; gap: 18px; }
+    .card-header { padding: 20px 22px 16px; }
+    .card-header h1 { font-size: 1.35rem; }
+    .card-body { padding: 18px 14px; }
+    table.budget thead th:nth-child(5),
+    table.budget tbody td:nth-child(5),
+    table.budget tfoot td:nth-child(5) { display: none; }
+    table.budget { font-size: 0.82rem; min-width: 0; }
+    table.budget thead th, table.budget td { padding: 6px 5px; }
+    table.budget td input[type="text"], table.budget td input[type="number"], table.budget td select { padding: 6px 7px; font-size: 0.82rem; }
+    .add-row-btn { width: 100%; min-width: 0; padding: 12px; }
+    .export-btn { width: 100%; padding: 12px 16px; }
+    .rule-503020 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Calcul<span>ix</span>.ca</a>
+  <div class="header-right">
+    <span class="lang-label" id="headerSubtitle">Calculs financiers gratuits · Québec</span>
+    <div class="lang-toggle-3" onclick="toggleLang()" id="langToggle" title="Language">
+      <span class="lang-opt" data-lang="fr">FR</span>
+      <span class="lang-opt" data-lang="en">EN</span>
+      <span class="lang-opt" data-lang="es">ES</span>
+    </div>
+  </div>
+</header>
+
+<nav class="site-nav"><div class="nav-inner" id="siteNav"></div></nav>
+
+<main>
+  <div class="card">
+    <div class="card-header">
+      <h1 id="mainTitle">🧍 Budget personne seule</h1>
+      <p id="mainSubtitle">Suivez vos revenus et dépenses, peu importe leur fréquence — vue mensuelle et annuelle automatique</p>
+    </div>
+    <div class="card-body">
+
+      <!-- Profil -->
+      <div class="section-title" id="sectProfile" style="margin-bottom:14px;">👤 Mon profil</div>
+      <div class="row-2">
+        <div class="form-group">
+          <label id="nameLbl">Nom (optionnel)</label>
+          <input type="text" id="userName" value="Moi" />
+        </div>
+        <div class="form-group">
+          <label id="cityLbl">Ville (optionnel)</label>
+          <input type="text" id="userCity" value="" placeholder="Montréal, Québec, Sherbrooke..." />
+        </div>
+      </div>
+
+      <!-- Résultat principal -->
+      <div class="result-banner empty" id="resultBanner">
+        <div class="result-banner-label" id="resultLabel">Reste à la fin du mois</div>
+        <div class="result-banner-main"  id="resultMain">Ajoutez vos revenus et dépenses ci-dessous</div>
+        <div class="result-banner-sub"   id="resultSub"></div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card green">
+          <div class="stat-label" id="lblRev">Revenus mensuels</div>
+          <div class="stat-value" id="valRev">—</div>
+          <div class="stat-sub"   id="subRev"></div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-label" id="lblDep">Dépenses mensuelles</div>
+          <div class="stat-value" id="valDep">—</div>
+          <div class="stat-sub"   id="subDep"></div>
+        </div>
+        <div class="stat-card violet">
+          <div class="stat-label" id="lblTaux">Taux d'épargne</div>
+          <div class="stat-value" id="valTaux">—</div>
+          <div class="stat-sub"   id="subTaux"></div>
+        </div>
+      </div>
+
+      <!-- Table budget -->
+      <div class="section-divider">
+        <div class="section-title" id="sectBudget">📋 Mes lignes de budget</div>
+        <button type="button" class="export-btn" id="exportBtn" onclick="exportToExcel()" disabled>
+          <span>📊</span><span id="exportLbl">Exporter en Excel</span>
+        </button>
+      </div>
+
+      <div class="budget-table-wrap">
+        <table class="budget" id="budgetTable">
+          <thead><tr>
+            <th class="th-type" id="tcType">Type</th>
+            <th class="th-cat" id="tcCategory">Catégorie</th>
+            <th id="tcAmount">Montant</th>
+            <th id="tcFreq">Fréquence</th>
+            <th id="tcMonthly">Mensuel</th>
+            <th id="tcYearly">Annuel</th>
+            <th class="th-act">✕</th>
+          </tr></thead>
+          <tbody id="budgetBody"></tbody>
+          <tfoot>
+            <tr>
+              <td colspan="4" class="td-cat" id="tfRevLbl">TOTAL REVENUS</td>
+              <td class="calc income" id="tfRevMonthly">—</td>
+              <td class="calc income" id="tfRevYearly">—</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td colspan="4" class="td-cat" id="tfDepLbl">TOTAL DÉPENSES</td>
+              <td class="calc expense" id="tfDepMonthly">—</td>
+              <td class="calc expense" id="tfDepYearly">—</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td colspan="4" class="td-cat" id="tfNetLbl">NET (reste)</td>
+              <td class="calc" id="tfNetMonthly">—</td>
+              <td class="calc" id="tfNetYearly">—</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="add-row-btns">
+        <button type="button" class="add-row-btn income" onclick="addBudgetRow('income')">
+          <span>➕</span><span id="addIncomeLbl">Ajouter un revenu</span>
+        </button>
+        <button type="button" class="add-row-btn expense" onclick="addBudgetRow('expense')">
+          <span>➕</span><span id="addExpenseLbl">Ajouter une dépense</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="info-card">
+      <h3 id="infoTitle">📋 Résumé</h3>
+      <div class="info-item"><span class="label" id="lblI1">Revenu mensuel</span><span class="value green" id="infoRev">—</span></div>
+      <div class="info-item"><span class="label" id="lblI2">Dépense mensuelle</span><span class="value red" id="infoDep">—</span></div>
+      <div class="info-item"><span class="label" id="lblI3">Reste à la fin du mois</span><span class="value" id="infoNet">—</span></div>
+      <div class="info-item"><span class="label" id="lblI4">Reste annuel projeté</span><span class="value" id="infoNetYear">—</span></div>
+      <div class="info-item"><span class="label" id="lblI5">Taux d'endettement (dépenses/revenus)</span><span class="value violet" id="infoRatio">—</span></div>
+    </div>
+
+    <div class="info-card">
+      <h3 id="healthTitle">❤️ Santé financière</h3>
+      <p id="healthMsg" style="font-size:0.86rem;color:#555;line-height:1.55;margin-bottom:8px;">—</p>
+      <div class="health-bar"><div class="health-bar-fill" id="healthBar" style="width:0%;"></div></div>
+    </div>
+
+    <div class="info-card">
+      <h3 id="ruleTitle">📐 Règle 50 / 30 / 20</h3>
+      <p id="ruleIntro" style="font-size:0.82rem;color:#555;line-height:1.55;margin-bottom:6px;">
+        Une règle d'orientation populaire : <strong>50 %</strong> besoins, <strong>30 %</strong> envies, <strong>20 %</strong> épargne/dette.
+      </p>
+      <div class="rule-503020">
+        <div class="rule-cell needs">
+          <div class="rule-pct">50 %</div>
+          <div class="rule-name" id="ruleNeedsLbl">Besoins</div>
+          <div class="rule-actual" id="ruleNeedsTarget">—</div>
+        </div>
+        <div class="rule-cell wants">
+          <div class="rule-pct">30 %</div>
+          <div class="rule-name" id="ruleWantsLbl">Envies</div>
+          <div class="rule-actual" id="ruleWantsTarget">—</div>
+        </div>
+        <div class="rule-cell savings">
+          <div class="rule-pct">20 %</div>
+          <div class="rule-name" id="ruleSavingsLbl">Épargne</div>
+          <div class="rule-actual" id="ruleSavingsTarget">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h3 id="tipsTitle">💡 Bon à savoir</h3>
+      <p id="tipsP1" style="font-size:0.86rem; color:#555; line-height:1.6; margin-bottom:8px;">
+        Tous vos chiffres sont normalisés au <strong>mensuel</strong> : 365,25 j/an, 52 sem/an, 26 périodes bi-hebdo, 12 mois/an.
+      </p>
+      <p id="tipsP2" style="font-size:0.86rem; color:#555; line-height:1.6;">
+        Aucune donnée n'est envoyée — tout se passe dans votre navigateur.
+      </p>
+    </div>
+
+    <div class="partners-stack" id="partnersRow"></div>
+  </aside>
+
+  <div class="disclaimer" id="disclaimerText">
+    ⚠️ Calculix.ca fournit des outils à titre informatif uniquement. Ces calculs ne remplacent pas un conseil personnalisé d'un planificateur financier.
+  </div>
+</main>
+
+<footer>
+  <div class="footer-links" id="footerLinks"></div>
+  <div id="footerText">© 2026 Calculix.ca — Outil informatif uniquement.</div>
+</footer>
+
+<script>
+  // ========== i18n ==========
+  const i18n = {
+    fr: {
+      mainTitle: '🧍 Budget personne seule',
+      mainSubtitle: 'Suivez vos revenus et dépenses, peu importe leur fréquence — vue mensuelle et annuelle automatique',
+      sectProfile: '👤 Mon profil',
+      nameLbl: 'Nom (optionnel)', cityLbl: 'Ville (optionnel)',
+      cityPlaceholder: 'Montréal, Québec, Sherbrooke...',
+      optYear: 'Par année', optMonth: 'Par mois', optBiwk: 'Aux 2 semaines', optWk: 'Par semaine', optDay: 'Par jour', optOnce: 'Ponctuel (1×/an)',
+      typeIncome: 'Revenu', typeExpense: 'Dépense',
+      resultLabel: 'Reste à la fin du mois', resultEmpty: 'Ajoutez vos revenus et dépenses ci-dessous',
+      resultSubMonthly: function(y){ return 'soit ' + y + ' par année'; },
+      lblRev: 'Revenus mensuels', lblDep: 'Dépenses mensuelles', lblTaux: 'Taux d\'épargne',
+      subRevYear: function(y){ return y + ' / an'; },
+      subDepYear: function(y){ return y + ' / an'; },
+      subTauxNote: 'du revenu épargné',
+      sectBudget: '📋 Mes lignes de budget',
+      exportLbl: 'Exporter en Excel',
+      tcType: 'Type', tcCategory: 'Catégorie', tcAmount: 'Montant', tcFreq: 'Fréquence',
+      tcMonthly: 'Mensuel', tcYearly: 'Annuel',
+      tfRevLbl: 'TOTAL REVENUS', tfDepLbl: 'TOTAL DÉPENSES', tfNetLbl: 'NET (reste)',
+      addIncomeLbl: 'Ajouter un revenu', addExpenseLbl: 'Ajouter une dépense',
+      infoTitle: '📋 Résumé',
+      infoRev: 'Revenu mensuel', infoDep: 'Dépense mensuelle',
+      infoNet: 'Reste à la fin du mois', infoNetYear: 'Reste annuel projeté',
+      infoRatio: 'Taux d\'endettement (dépenses/revenus)',
+      healthTitle: '❤️ Santé financière',
+      healthGood: 'Excellent ! Vous épargnez plus de 20 % de votre revenu — c\'est l\'objectif recommandé.',
+      healthOk: 'Bon équilibre. Visez un taux d\'épargne de 20 % pour bâtir un coussin de sécurité.',
+      healthLow: 'Attention : votre taux d\'épargne est faible. Repérez des dépenses à réduire.',
+      healthNeg: 'Vous dépensez plus que vos revenus. Une révision du budget s\'impose.',
+      healthEmpty: 'Saisissez vos revenus et dépenses pour évaluer votre santé financière.',
+      ruleTitle: '📐 Règle 50 / 30 / 20',
+      ruleIntro: 'Une règle d\'orientation populaire : <strong>50 %</strong> besoins, <strong>30 %</strong> envies, <strong>20 %</strong> épargne/dette.',
+      ruleNeedsLbl: 'Besoins', ruleWantsLbl: 'Envies', ruleSavingsLbl: 'Épargne',
+      ruleTargetMo: function(m){ return 'Cible : ' + m; },
+      tipsTitle: '💡 Bon à savoir',
+      tipsP1: 'Tous vos chiffres sont normalisés au <strong>mensuel</strong> : 365,25 j/an, 52 sem/an, 26 périodes bi-hebdo, 12 mois/an.',
+      tipsP2: 'Aucune donnée n\'est envoyée — tout se passe dans votre navigateur.',
+      disclaimer: '⚠️ Calculix.ca fournit des outils à titre informatif uniquement. Ces calculs ne remplacent pas un conseil personnalisé d\'un planificateur financier.',
+      newIncomeLine: 'Nouveau revenu',
+      newExpenseLine: 'Nouvelle dépense',
+      suggestedLines: [
+        { type: 'income',  cat: '💼 Salaire net',                 amount: 1850, freq: 'biweekly' },
+        { type: 'income',  cat: '🎁 Autres revenus',              amount: 0,    freq: 'monthly' },
+        { type: 'expense', cat: '🏠 Loyer / Hypothèque',          amount: 1100, freq: 'monthly' },
+        { type: 'expense', cat: '⚡ Hydro-Québec',                amount: 80,   freq: 'monthly' },
+        { type: 'expense', cat: '🌐 Internet',                    amount: 70,   freq: 'monthly' },
+        { type: 'expense', cat: '📱 Téléphone',                   amount: 55,   freq: 'monthly' },
+        { type: 'expense', cat: '🛒 Épicerie',                    amount: 110,  freq: 'weekly' },
+        { type: 'expense', cat: '🚗 Transport (essence/pass)',    amount: 200,  freq: 'monthly' },
+        { type: 'expense', cat: '🛡️ Assurances',                  amount: 90,   freq: 'monthly' },
+        { type: 'expense', cat: '💰 Épargne / REER / CELI',       amount: 300,  freq: 'monthly' },
+        { type: 'expense', cat: '🎬 Loisirs / Abonnements',       amount: 50,   freq: 'monthly' },
+        { type: 'expense', cat: '🍽️ Restaurants',                 amount: 80,   freq: 'monthly' },
+        { type: 'expense', cat: '🎄 Cadeaux annuels',             amount: 600,  freq: 'yearly' },
+      ],
+      xlsSheetName: 'Budget',
+      xlsTitle: 'Budget personne seule — Calculix.ca',
+      xlsRowName: 'Nom', xlsRowCity: 'Ville',
+      xlsRowRev: 'Revenu mensuel total', xlsRowDep: 'Dépense mensuelle totale',
+      xlsRowNet: 'Reste mensuel net', xlsRowNetYr: 'Reste annuel projeté',
+      xlsRowSavingsRate: 'Taux d\'épargne (%)',
+      xlsColType: 'Type', xlsColCategory: 'Catégorie', xlsColAmount: 'Montant',
+      xlsColFreq: 'Fréquence', xlsColMonthly: 'Mensuel ($)', xlsColYearly: 'Annuel ($)',
+      xlsRowTotalRev: 'TOTAL REVENUS', xlsRowTotalDep: 'TOTAL DÉPENSES',
+      xlsFooter: 'Calculix.ca · Outil informatif',
+      xlsFilename: 'budget-personne-seule',
+    },
+    en: {
+      mainTitle: '🧍 Personal Budget',
+      mainSubtitle: 'Track your income and expenses at any frequency — automatic monthly and yearly view',
+      sectProfile: '👤 My profile',
+      nameLbl: 'Name (optional)', cityLbl: 'City (optional)',
+      cityPlaceholder: 'Montreal, Quebec City, Sherbrooke...',
+      optYear: 'Per year', optMonth: 'Per month', optBiwk: 'Bi-weekly', optWk: 'Per week', optDay: 'Per day', optOnce: 'One-time (1×/yr)',
+      typeIncome: 'Income', typeExpense: 'Expense',
+      resultLabel: 'Money left at month-end', resultEmpty: 'Add your income and expenses below',
+      resultSubMonthly: function(y){ return 'i.e. ' + y + ' per year'; },
+      lblRev: 'Monthly income', lblDep: 'Monthly expenses', lblTaux: 'Savings rate',
+      subRevYear: function(y){ return y + ' / yr'; },
+      subDepYear: function(y){ return y + ' / yr'; },
+      subTauxNote: 'of income saved',
+      sectBudget: '📋 My budget lines',
+      exportLbl: 'Export to Excel',
+      tcType: 'Type', tcCategory: 'Category', tcAmount: 'Amount', tcFreq: 'Frequency',
+      tcMonthly: 'Monthly', tcYearly: 'Yearly',
+      tfRevLbl: 'TOTAL INCOME', tfDepLbl: 'TOTAL EXPENSES', tfNetLbl: 'NET (left over)',
+      addIncomeLbl: 'Add income', addExpenseLbl: 'Add expense',
+      infoTitle: '📋 Summary',
+      infoRev: 'Monthly income', infoDep: 'Monthly expense',
+      infoNet: 'Money left at month-end', infoNetYear: 'Projected yearly leftover',
+      infoRatio: 'Burden ratio (expenses/income)',
+      healthTitle: '❤️ Financial health',
+      healthGood: 'Excellent! You save more than 20 % of your income — the recommended target.',
+      healthOk: 'Good balance. Aim for a 20 % savings rate to build a safety cushion.',
+      healthLow: 'Watch out: your savings rate is low. Look for expenses to trim.',
+      healthNeg: 'You spend more than you earn. A budget review is needed.',
+      healthEmpty: 'Enter your income and expenses to assess your financial health.',
+      ruleTitle: '📐 50 / 30 / 20 rule',
+      ruleIntro: 'A popular guideline: <strong>50 %</strong> needs, <strong>30 %</strong> wants, <strong>20 %</strong> savings/debt.',
+      ruleNeedsLbl: 'Needs', ruleWantsLbl: 'Wants', ruleSavingsLbl: 'Savings',
+      ruleTargetMo: function(m){ return 'Target: ' + m; },
+      tipsTitle: '💡 Good to know',
+      tipsP1: 'All values are normalized to <strong>monthly</strong>: 365.25 d/yr, 52 wk/yr, 26 bi-weekly periods, 12 months/yr.',
+      tipsP2: 'No data is sent — everything happens in your browser.',
+      disclaimer: '⚠️ Calculix.ca provides tools for informational purposes only. These calculations do not replace personalized advice from a financial planner.',
+      newIncomeLine: 'New income',
+      newExpenseLine: 'New expense',
+      suggestedLines: [
+        { type: 'income',  cat: '💼 Net salary',                  amount: 1850, freq: 'biweekly' },
+        { type: 'income',  cat: '🎁 Other income',                amount: 0,    freq: 'monthly' },
+        { type: 'expense', cat: '🏠 Rent / Mortgage',             amount: 1100, freq: 'monthly' },
+        { type: 'expense', cat: '⚡ Electricity',                 amount: 80,   freq: 'monthly' },
+        { type: 'expense', cat: '🌐 Internet',                    amount: 70,   freq: 'monthly' },
+        { type: 'expense', cat: '📱 Phone',                       amount: 55,   freq: 'monthly' },
+        { type: 'expense', cat: '🛒 Groceries',                   amount: 110,  freq: 'weekly' },
+        { type: 'expense', cat: '🚗 Transport (gas/transit)',     amount: 200,  freq: 'monthly' },
+        { type: 'expense', cat: '🛡️ Insurance',                   amount: 90,   freq: 'monthly' },
+        { type: 'expense', cat: '💰 Savings / RRSP / TFSA',       amount: 300,  freq: 'monthly' },
+        { type: 'expense', cat: '🎬 Entertainment / Subs',        amount: 50,   freq: 'monthly' },
+        { type: 'expense', cat: '🍽️ Restaurants',                 amount: 80,   freq: 'monthly' },
+        { type: 'expense', cat: '🎄 Yearly gifts',                amount: 600,  freq: 'yearly' },
+      ],
+      xlsSheetName: 'Budget',
+      xlsTitle: 'Personal Budget — Calculix.ca',
+      xlsRowName: 'Name', xlsRowCity: 'City',
+      xlsRowRev: 'Total monthly income', xlsRowDep: 'Total monthly expenses',
+      xlsRowNet: 'Net monthly leftover', xlsRowNetYr: 'Projected yearly leftover',
+      xlsRowSavingsRate: 'Savings rate (%)',
+      xlsColType: 'Type', xlsColCategory: 'Category', xlsColAmount: 'Amount',
+      xlsColFreq: 'Frequency', xlsColMonthly: 'Monthly ($)', xlsColYearly: 'Yearly ($)',
+      xlsRowTotalRev: 'TOTAL INCOME', xlsRowTotalDep: 'TOTAL EXPENSES',
+      xlsFooter: 'Calculix.ca · Informational tool',
+      xlsFilename: 'personal-budget',
+    },
+    es: {
+      mainTitle: '🧍 Presupuesto personal',
+      mainSubtitle: 'Lleva tus ingresos y gastos a cualquier frecuencia — vista mensual y anual automática',
+      sectProfile: '👤 Mi perfil',
+      nameLbl: 'Nombre (opcional)', cityLbl: 'Ciudad (opcional)',
+      cityPlaceholder: 'Montreal, Quebec, Sherbrooke...',
+      optYear: 'Por año', optMonth: 'Por mes', optBiwk: 'Cada 2 semanas', optWk: 'Por semana', optDay: 'Por día', optOnce: 'Único (1×/año)',
+      typeIncome: 'Ingreso', typeExpense: 'Gasto',
+      resultLabel: 'Saldo a fin de mes', resultEmpty: 'Añade tus ingresos y gastos abajo',
+      resultSubMonthly: function(y){ return 'es decir ' + y + ' por año'; },
+      lblRev: 'Ingresos mensuales', lblDep: 'Gastos mensuales', lblTaux: 'Tasa de ahorro',
+      subRevYear: function(y){ return y + ' / año'; },
+      subDepYear: function(y){ return y + ' / año'; },
+      subTauxNote: 'del ingreso ahorrado',
+      sectBudget: '📋 Mis líneas de presupuesto',
+      exportLbl: 'Exportar a Excel',
+      tcType: 'Tipo', tcCategory: 'Categoría', tcAmount: 'Monto', tcFreq: 'Frecuencia',
+      tcMonthly: 'Mensual', tcYearly: 'Anual',
+      tfRevLbl: 'TOTAL INGRESOS', tfDepLbl: 'TOTAL GASTOS', tfNetLbl: 'NETO (sobra)',
+      addIncomeLbl: 'Añadir ingreso', addExpenseLbl: 'Añadir gasto',
+      infoTitle: '📋 Resumen',
+      infoRev: 'Ingreso mensual', infoDep: 'Gasto mensual',
+      infoNet: 'Saldo a fin de mes', infoNetYear: 'Sobra anual proyectada',
+      infoRatio: 'Tasa de carga (gastos/ingresos)',
+      healthTitle: '❤️ Salud financiera',
+      healthGood: '¡Excelente! Ahorras más del 20 % de tu ingreso — el objetivo recomendado.',
+      healthOk: 'Buen equilibrio. Apunta a una tasa de ahorro del 20 % para crear un colchón de seguridad.',
+      healthLow: 'Atención: tu tasa de ahorro es baja. Busca gastos que recortar.',
+      healthNeg: 'Gastas más de lo que ganas. Es necesario revisar el presupuesto.',
+      healthEmpty: 'Ingresa tus ingresos y gastos para evaluar tu salud financiera.',
+      ruleTitle: '📐 Regla 50 / 30 / 20',
+      ruleIntro: 'Una guía popular: <strong>50 %</strong> necesidades, <strong>30 %</strong> deseos, <strong>20 %</strong> ahorro/deuda.',
+      ruleNeedsLbl: 'Necesidades', ruleWantsLbl: 'Deseos', ruleSavingsLbl: 'Ahorro',
+      ruleTargetMo: function(m){ return 'Objetivo: ' + m; },
+      tipsTitle: '💡 Bueno saber',
+      tipsP1: 'Todos los valores se normalizan a <strong>mensual</strong>: 365,25 d/año, 52 sem/año, 26 períodos quincenales, 12 meses/año.',
+      tipsP2: 'No se envía ningún dato — todo ocurre en tu navegador.',
+      disclaimer: '⚠️ Calculix.ca proporciona herramientas solo con fines informativos. Estos cálculos no reemplazan el consejo personalizado de un planificador financiero.',
+      newIncomeLine: 'Nuevo ingreso',
+      newExpenseLine: 'Nuevo gasto',
+      suggestedLines: [
+        { type: 'income',  cat: '💼 Salario neto',                amount: 1850, freq: 'biweekly' },
+        { type: 'income',  cat: '🎁 Otros ingresos',              amount: 0,    freq: 'monthly' },
+        { type: 'expense', cat: '🏠 Alquiler / Hipoteca',         amount: 1100, freq: 'monthly' },
+        { type: 'expense', cat: '⚡ Electricidad',                amount: 80,   freq: 'monthly' },
+        { type: 'expense', cat: '🌐 Internet',                    amount: 70,   freq: 'monthly' },
+        { type: 'expense', cat: '📱 Teléfono',                    amount: 55,   freq: 'monthly' },
+        { type: 'expense', cat: '🛒 Supermercado',                amount: 110,  freq: 'weekly' },
+        { type: 'expense', cat: '🚗 Transporte (gasolina/pase)',  amount: 200,  freq: 'monthly' },
+        { type: 'expense', cat: '🛡️ Seguros',                    amount: 90,   freq: 'monthly' },
+        { type: 'expense', cat: '💰 Ahorro / RRSP / TFSA',        amount: 300,  freq: 'monthly' },
+        { type: 'expense', cat: '🎬 Ocio / Suscripciones',        amount: 50,   freq: 'monthly' },
+        { type: 'expense', cat: '🍽️ Restaurantes',                amount: 80,   freq: 'monthly' },
+        { type: 'expense', cat: '🎄 Regalos anuales',             amount: 600,  freq: 'yearly' },
+      ],
+      xlsSheetName: 'Presupuesto',
+      xlsTitle: 'Presupuesto personal — Calculix.ca',
+      xlsRowName: 'Nombre', xlsRowCity: 'Ciudad',
+      xlsRowRev: 'Ingreso mensual total', xlsRowDep: 'Gasto mensual total',
+      xlsRowNet: 'Sobra mensual neta', xlsRowNetYr: 'Sobra anual proyectada',
+      xlsRowSavingsRate: 'Tasa de ahorro (%)',
+      xlsColType: 'Tipo', xlsColCategory: 'Categoría', xlsColAmount: 'Monto',
+      xlsColFreq: 'Frecuencia', xlsColMonthly: 'Mensual ($)', xlsColYearly: 'Anual ($)',
+      xlsRowTotalRev: 'TOTAL INGRESOS', xlsRowTotalDep: 'TOTAL GASTOS',
+      xlsFooter: 'Calculix.ca · Herramienta informativa',
+      xlsFilename: 'presupuesto-personal',
+    }
+  };
+
+  // ========== Langue ==========
+  let lang = (window.CXSite && CXSite.getStoredLang) ? CXSite.getStoredLang() : 'fr';
+
+  function updateLangToggleUI() {
+    document.querySelectorAll('.lang-opt').forEach(function(el){
+      el.classList.toggle('active', el.getAttribute('data-lang') === lang);
+    });
+  }
+  function toggleLang() {
+    if (window.CXSite && CXSite.cycleLang) { lang = CXSite.cycleLang(lang); CXSite.setStoredLang(lang); }
+    else { lang = lang === 'fr' ? 'en' : lang === 'en' ? 'es' : 'fr'; }
+    document.documentElement.lang = lang;
+    updateLangToggleUI();
+    applyTranslations();
+    renderBudgetTable();
+    calculate();
+  }
+
+  function applyTranslations() {
+    const t = i18n[lang];
+    function setText(id, v) { const el = document.getElementById(id); if (el) el.textContent = v; }
+    function setHTML(id, v) { const el = document.getElementById(id); if (el) el.innerHTML = v; }
+    function setAttr(id, attr, v) { const el = document.getElementById(id); if (el) el.setAttribute(attr, v); }
+
+    document.title = t.mainTitle.replace(/^\S+\s/, '') + ' | Calculix.ca';
+    setText('mainTitle', t.mainTitle);
+    setText('mainSubtitle', t.mainSubtitle);
+    setText('sectProfile', t.sectProfile);
+    setText('nameLbl', t.nameLbl);
+    setText('cityLbl', t.cityLbl);
+    setAttr('userCity', 'placeholder', t.cityPlaceholder);
+    setText('resultLabel', t.resultLabel);
+    setText('lblRev', t.lblRev);
+    setText('lblDep', t.lblDep);
+    setText('lblTaux', t.lblTaux);
+    setText('sectBudget', t.sectBudget);
+    setText('exportLbl', t.exportLbl);
+    setText('tcType', t.tcType);
+    setText('tcCategory', t.tcCategory);
+    setText('tcAmount', t.tcAmount);
+    setText('tcFreq', t.tcFreq);
+    setText('tcMonthly', t.tcMonthly);
+    setText('tcYearly', t.tcYearly);
+    setText('tfRevLbl', t.tfRevLbl);
+    setText('tfDepLbl', t.tfDepLbl);
+    setText('tfNetLbl', t.tfNetLbl);
+    setText('addIncomeLbl', t.addIncomeLbl);
+    setText('addExpenseLbl', t.addExpenseLbl);
+    setText('infoTitle', t.infoTitle);
+    setText('lblI1', t.infoRev);
+    setText('lblI2', t.infoDep);
+    setText('lblI3', t.infoNet);
+    setText('lblI4', t.infoNetYear);
+    setText('lblI5', t.infoRatio);
+    setText('healthTitle', t.healthTitle);
+    setText('ruleTitle', t.ruleTitle);
+    setHTML('ruleIntro', t.ruleIntro);
+    setText('ruleNeedsLbl', t.ruleNeedsLbl);
+    setText('ruleWantsLbl', t.ruleWantsLbl);
+    setText('ruleSavingsLbl', t.ruleSavingsLbl);
+    setText('tipsTitle', t.tipsTitle);
+    setHTML('tipsP1', t.tipsP1);
+    setHTML('tipsP2', t.tipsP2);
+    setText('disclaimerText', t.disclaimer);
+
+    if (window.CXSite) {
+      var shared = CXSite.SHARED[lang];
+      if (shared) {
+        setText('headerSubtitle', shared.headerSubtitle);
+        setText('footerText', shared.footerText);
+      }
+      CXSite.renderNav(lang, 'budget-solo', 'siteNav');
+      CXSite.renderFooterLinks(lang, 'footerLinks');
+      var ads = document.getElementById('partnersRow');
+      if (ads) ads.innerHTML = CXSite.amazonAd(lang) + CXSite.cfoMasqueAd(lang) + CXSite.alchimixAd(lang);
+    }
+  }
+
+  // ========== Lignes de budget ==========
+  let budgetLines = []; // { id, type, cat, amount, freq }
+  let nextRowId = 1;
+
+  function initBudgetLines() {
+    const t = i18n[lang];
+    budgetLines = t.suggestedLines.map(function(line) {
+      return { id: nextRowId++, type: line.type, cat: line.cat, amount: line.amount, freq: line.freq };
+    });
+  }
+
+  function renderBudgetTable() {
+    const t = i18n[lang];
+    const body = document.getElementById('budgetBody');
+    body.innerHTML = '';
+
+    budgetLines.forEach(function(row) {
+      const tr = document.createElement('tr');
+      tr.setAttribute('data-id', row.id);
+      tr.innerHTML =
+        '<td class="td-type"><span class="type-pill ' + row.type + '">' + (row.type === 'income' ? t.typeIncome : t.typeExpense) + '</span></td>' +
+        '<td class="td-cat"><input type="text" class="cx-cat" value="' + escapeHtml(row.cat) + '" /></td>' +
+        '<td><input type="number" class="cx-amount" min="0" step="1" value="' + row.amount + '" /></td>' +
+        '<td>' +
+          '<div class="select-wrapper"><select class="cx-freq">' +
+            '<option value="daily"' + (row.freq==='daily'?' selected':'') + '>' + t.optDay + '</option>' +
+            '<option value="weekly"' + (row.freq==='weekly'?' selected':'') + '>' + t.optWk + '</option>' +
+            '<option value="biweekly"' + (row.freq==='biweekly'?' selected':'') + '>' + t.optBiwk + '</option>' +
+            '<option value="monthly"' + (row.freq==='monthly'?' selected':'') + '>' + t.optMonth + '</option>' +
+            '<option value="yearly"' + (row.freq==='yearly'?' selected':'') + '>' + t.optYear + '</option>' +
+          '</select></div>' +
+        '</td>' +
+        '<td class="calc cx-monthly ' + row.type + '">—</td>' +
+        '<td class="calc cx-yearly ' + row.type + '">—</td>' +
+        '<td class="td-act"><button type="button" class="del-btn" title="Supprimer">✕</button></td>';
+      body.appendChild(tr);
+
+      tr.querySelector('.cx-cat').addEventListener('input', function(e){ row.cat = e.target.value; calculate(); });
+      tr.querySelector('.cx-amount').addEventListener('input', function(e){ row.amount = parseFloat(e.target.value) || 0; calculate(); });
+      tr.querySelector('.cx-freq').addEventListener('change', function(e){ row.freq = e.target.value; calculate(); });
+      tr.querySelector('.del-btn').addEventListener('click', function(){ removeBudgetRow(row.id); });
+    });
+  }
+
+  function addBudgetRow(type) {
+    const t = i18n[lang];
+    const newCat = type === 'income' ? t.newIncomeLine : t.newExpenseLine;
+    budgetLines.push({ id: nextRowId++, type: type, cat: newCat, amount: 0, freq: 'monthly' });
+    renderBudgetTable();
+    calculate();
+  }
+
+  function removeBudgetRow(id) {
+    budgetLines = budgetLines.filter(function(r){ return r.id !== id; });
+    renderBudgetTable();
+    calculate();
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  // ========== Calculs ==========
+  function toMonthly(amount, freq) {
+    switch (freq) {
+      case 'daily':    return amount * 365.25 / 12;
+      case 'weekly':   return amount * 52 / 12;
+      case 'biweekly': return amount * 26 / 12;
+      case 'monthly':  return amount;
+      case 'yearly':   return amount / 12;
+      default: return amount;
+    }
+  }
+
+  let lastResult = null;
+
+  function calculate() {
+    const t = i18n[lang];
+    const banner = document.getElementById('resultBanner');
+
+    let totalRev = 0, totalDep = 0;
+    const bodyRows = document.querySelectorAll('#budgetBody tr');
+    budgetLines.forEach(function(row, idx) {
+      const monthly = toMonthly(row.amount, row.freq);
+      if (row.type === 'income') totalRev += monthly;
+      else totalDep += monthly;
+      const tr = bodyRows[idx];
+      if (tr) {
+        tr.querySelector('.cx-monthly').textContent = CXSite.formatMoney(monthly, lang);
+        tr.querySelector('.cx-yearly').textContent  = CXSite.formatMoney(monthly * 12, lang);
+      }
+    });
+
+    const net = totalRev - totalDep;
+    const tauxEpargne = totalRev > 0 ? (net / totalRev) * 100 : 0;
+    const ratioBurden = totalRev > 0 ? (totalDep / totalRev) * 100 : 0;
+
+    // Footer totaux
+    document.getElementById('tfRevMonthly').textContent = CXSite.formatMoney(totalRev, lang);
+    document.getElementById('tfRevYearly').textContent  = CXSite.formatMoney(totalRev * 12, lang);
+    document.getElementById('tfDepMonthly').textContent = CXSite.formatMoney(totalDep, lang);
+    document.getElementById('tfDepYearly').textContent  = CXSite.formatMoney(totalDep * 12, lang);
+    document.getElementById('tfNetMonthly').textContent = CXSite.formatMoney(net, lang);
+    document.getElementById('tfNetYearly').textContent  = CXSite.formatMoney(net * 12, lang);
+    var tfNetMo = document.getElementById('tfNetMonthly');
+    var tfNetYr = document.getElementById('tfNetYearly');
+    tfNetMo.style.color = net >= 0 ? '#7ee0a3' : '#ffb1b1';
+    tfNetYr.style.color = net >= 0 ? '#7ee0a3' : '#ffb1b1';
+
+    if (totalRev > 0 || totalDep > 0) {
+      lastResult = {
+        userName: document.getElementById('userName').value || '',
+        userCity: document.getElementById('userCity').value || '',
+        totalRev: totalRev, totalDep: totalDep, net: net,
+        tauxEpargne: tauxEpargne, lines: budgetLines.slice()
+      };
+      document.getElementById('exportBtn').disabled = false;
+
+      banner.classList.remove('empty');
+      document.getElementById('resultMain').textContent = CXSite.formatMoney(net, lang);
+      document.getElementById('resultSub').textContent  = t.resultSubMonthly(CXSite.formatMoney(net * 12, lang));
+      document.getElementById('valRev').textContent = CXSite.formatMoney(totalRev, lang);
+      document.getElementById('subRev').textContent = t.subRevYear(CXSite.formatMoney(totalRev * 12, lang));
+      document.getElementById('valDep').textContent = CXSite.formatMoney(totalDep, lang);
+      document.getElementById('subDep').textContent = t.subDepYear(CXSite.formatMoney(totalDep * 12, lang));
+      document.getElementById('valTaux').textContent = totalRev > 0 ? CXSite.formatNumber(tauxEpargne, lang, 1) + ' %' : '—';
+      document.getElementById('subTaux').textContent = totalRev > 0 ? t.subTauxNote : '';
+      banner.classList.add('animate'); setTimeout(function(){ banner.classList.remove('animate'); }, 400);
+    } else {
+      lastResult = null;
+      document.getElementById('exportBtn').disabled = true;
+      banner.classList.add('empty');
+      document.getElementById('resultMain').textContent = t.resultEmpty;
+      document.getElementById('resultSub').textContent = '';
+      document.getElementById('valRev').textContent = '—';
+      document.getElementById('valDep').textContent = '—';
+      document.getElementById('valTaux').textContent = '—';
+      document.getElementById('subRev').textContent = '';
+      document.getElementById('subDep').textContent = '';
+      document.getElementById('subTaux').textContent = '';
+    }
+
+    // Sidebar info
+    document.getElementById('infoRev').textContent = CXSite.formatMoney(totalRev, lang);
+    document.getElementById('infoDep').textContent = CXSite.formatMoney(totalDep, lang);
+    const elNet = document.getElementById('infoNet');
+    elNet.textContent = CXSite.formatMoney(net, lang);
+    elNet.className = 'value ' + (net >= 0 ? 'green' : 'red');
+    const elNetYr = document.getElementById('infoNetYear');
+    elNetYr.textContent = CXSite.formatMoney(net * 12, lang);
+    elNetYr.className = 'value ' + (net >= 0 ? 'green' : 'red');
+    document.getElementById('infoRatio').textContent = totalRev > 0 ? CXSite.formatNumber(ratioBurden, lang, 1) + ' %' : '—';
+
+    // Santé financière
+    const healthMsg = document.getElementById('healthMsg');
+    const healthBar = document.getElementById('healthBar');
+    if (totalRev <= 0) {
+      healthMsg.textContent = t.healthEmpty;
+      healthBar.style.width = '0%';
+      healthBar.className = 'health-bar-fill';
+    } else if (tauxEpargne < 0) {
+      healthMsg.textContent = t.healthNeg;
+      healthBar.style.width = '100%';
+      healthBar.className = 'health-bar-fill bad';
+    } else if (tauxEpargne < 10) {
+      healthMsg.textContent = t.healthLow;
+      healthBar.style.width = Math.max(8, tauxEpargne / 20 * 100) + '%';
+      healthBar.className = 'health-bar-fill bad';
+    } else if (tauxEpargne < 20) {
+      healthMsg.textContent = t.healthOk;
+      healthBar.style.width = (tauxEpargne / 20 * 100) + '%';
+      healthBar.className = 'health-bar-fill ok';
+    } else {
+      healthMsg.textContent = t.healthGood;
+      healthBar.style.width = '100%';
+      healthBar.className = 'health-bar-fill good';
+    }
+
+    // Règle 50/30/20 — cibles basées sur le revenu mensuel
+    if (totalRev > 0) {
+      document.getElementById('ruleNeedsTarget').textContent = t.ruleTargetMo(CXSite.formatMoney(totalRev * 0.50, lang));
+      document.getElementById('ruleWantsTarget').textContent = t.ruleTargetMo(CXSite.formatMoney(totalRev * 0.30, lang));
+      document.getElementById('ruleSavingsTarget').textContent = t.ruleTargetMo(CXSite.formatMoney(totalRev * 0.20, lang));
+    } else {
+      document.getElementById('ruleNeedsTarget').textContent = '—';
+      document.getElementById('ruleWantsTarget').textContent = '—';
+      document.getElementById('ruleSavingsTarget').textContent = '—';
+    }
+  }
+
+  // ========== Export Excel ==========
+  function exportToExcel() {
+    if (!lastResult || typeof XLSX === 'undefined') return;
+    const t = i18n[lang];
+    const r = lastResult;
+    const freqLbl = { daily:t.optDay, weekly:t.optWk, biweekly:t.optBiwk, monthly:t.optMonth, yearly:t.optYear };
+    const typeLbl = { income: t.typeIncome, expense: t.typeExpense };
+
+    const wb = XLSX.utils.book_new();
+    const aoa = [];
+    aoa.push([t.xlsTitle]);
+    aoa.push([]);
+    if (r.userName) aoa.push([t.xlsRowName, r.userName]);
+    if (r.userCity) aoa.push([t.xlsRowCity, r.userCity]);
+    aoa.push([t.xlsRowRev, r.totalRev]);
+    aoa.push([t.xlsRowDep, r.totalDep]);
+    aoa.push([t.xlsRowNet, r.net]);
+    aoa.push([t.xlsRowNetYr, r.net * 12]);
+    aoa.push([t.xlsRowSavingsRate, r.tauxEpargne / 100]);
+    aoa.push([]);
+    const headerRowIdx = aoa.length;
+    aoa.push([t.xlsColType, t.xlsColCategory, t.xlsColAmount, t.xlsColFreq, t.xlsColMonthly, t.xlsColYearly]);
+    r.lines.forEach(function(line) {
+      const monthly = toMonthly(line.amount, line.freq);
+      aoa.push([typeLbl[line.type] || line.type, line.cat, line.amount, freqLbl[line.freq] || line.freq, monthly, monthly * 12]);
+    });
+    const totalRevRow = aoa.length;
+    aoa.push([t.xlsRowTotalRev, '', '', '', r.totalRev, r.totalRev * 12]);
+    aoa.push([t.xlsRowTotalDep, '', '', '', r.totalDep, r.totalDep * 12]);
+    aoa.push([t.xlsRowNet, '', '', '', r.net, r.net * 12]);
+    aoa.push([]);
+    aoa.push([t.xlsFooter]);
+
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    ws['!cols'] = [{wch:14},{wch:30},{wch:14},{wch:16},{wch:14},{wch:14}];
+    ws['!merges'] = [{ s:{r:0,c:0}, e:{r:0,c:5} }];
+
+    const money = '#,##0.00 [$CAD]';
+    const pct   = '0.0%';
+
+    // Format des cellules monétaires dans la section résumé
+    for (let rr = 2; rr < headerRowIdx - 1; rr++) {
+      const ref = XLSX.utils.encode_cell({r:rr, c:1});
+      if (ws[ref] && typeof ws[ref].v === 'number') {
+        ws[ref].z = (rr === headerRowIdx - 2) ? pct : money;
+      }
+    }
+
+    // En-tête tableau
+    for (let c = 0; c < 6; c++) {
+      const ref = XLSX.utils.encode_cell({r:headerRowIdx, c:c});
+      if (ws[ref]) ws[ref].s = { font: { bold: true, color: { rgb: 'FFFFFF' } }, fill: { fgColor: { rgb: '1A3A5C' } } };
+    }
+    // Lignes de données
+    for (let rr = headerRowIdx + 1; rr < totalRevRow; rr++) {
+      [4, 5].forEach(function(c) {
+        const ref = XLSX.utils.encode_cell({r:rr, c:c});
+        if (ws[ref]) ws[ref].z = money;
+      });
+      const refAmount = XLSX.utils.encode_cell({r:rr, c:2});
+      if (ws[refAmount]) ws[refAmount].z = money;
+    }
+    // Lignes totaux
+    [totalRevRow, totalRevRow + 1, totalRevRow + 2].forEach(function(rr) {
+      [4, 5].forEach(function(c) {
+        const ref = XLSX.utils.encode_cell({r:rr, c:c});
+        if (ws[ref]) { ws[ref].z = money; ws[ref].s = { font: { bold: true } }; }
+      });
+    });
+
+    XLSX.utils.book_append_sheet(wb, ws, t.xlsSheetName);
+    const fn = t.xlsFilename + '-' + new Date().toISOString().slice(0,10) + '.xlsx';
+    XLSX.writeFile(wb, fn);
+  }
+
+  // ========== Event listeners ==========
+  ['userName', 'userCity'].forEach(function(id){
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', calculate);
+  });
+
+  // ========== Init ==========
+  document.documentElement.lang = lang;
+  updateLangToggleUI();
+  initBudgetLines();
+  applyTranslations();
+  renderBudgetTable();
+  calculate();
+</script>
+
+<!-- Filet de sécurité -->
+<script>
+(function(){
+  function safetyRender() {
+    try {
+      if (!window.CXSite) return;
+      var curLang = (typeof lang === 'string' && lang) ? lang : ((CXSite.getStoredLang && CXSite.getStoredLang()) || 'fr');
+      var nav = document.getElementById('siteNav');
+      if (nav && nav.innerHTML.trim().length === 0) CXSite.renderNav(curLang, 'budget-solo', 'siteNav');
+      var fl = document.getElementById('footerLinks');
+      if (fl && fl.innerHTML.trim().length === 0) CXSite.renderFooterLinks(curLang, 'footerLinks');
+      var ads = document.getElementById('partnersRow');
+      if (ads && ads.innerHTML.trim().length === 0) ads.innerHTML = CXSite.amazonAd(curLang) + CXSite.cfoMasqueAd(curLang) + CXSite.alchimixAd(curLang);
+      var shared = CXSite.SHARED[curLang] || CXSite.SHARED.fr;
+      var hs = document.getElementById('headerSubtitle');
+      var ft = document.getElementById('footerText');
+      if (hs) hs.textContent = shared.headerSubtitle;
+      if (ft) ft.textContent = shared.footerText;
+      if (CXSite.checkAdBlockAndNotify) CXSite.checkAdBlockAndNotify(curLang);
+    } catch(e) { console.warn('safetyRender budget-personne-seule:', e); }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', safetyRender);
+  else safetyRender();
+  window.addEventListener('load', safetyRender);
+})();
+</script>
+
+</body>
+</html>

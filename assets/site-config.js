@@ -9,14 +9,17 @@
   // ── Liste des pages du site ───────────────────────────────
   // Pour ajouter une page : ajouter une entrée ici + un fichier .html
   const PAGES = [
-    { key: 'home',          href: 'index.html',          fr: 'Accueil',                 en: 'Home',                    es: 'Inicio' },
-    { key: 'pourboires',    href: 'pourboires.html',     fr: 'Pourboires',              en: 'Tip Calculator',          es: 'Propinas' },
-    { key: 'investissement',href: 'investissement.html', fr: 'Investissement',          en: 'Investment',              es: 'Inversión' },
-    { key: 'amortissement', href: 'amortissement.html',  fr: 'Amortissement',           en: 'Amortization',            es: 'Amortización' },
-    { key: 'budget',        href: 'budget-couple.html',  fr: 'Budget couple',           en: 'Couple Budget',           es: 'Presupuesto pareja' },
-    { key: 'equite',        href: 'equite-salariale.html', fr: 'Équité salariale',      en: 'Pay Equity',              es: 'Equidad salarial' },
-    { key: 'about',         href: 'about.html',          fr: 'À propos',                en: 'About',                   es: 'Acerca de' },
-    { key: 'privacy',       href: 'privacy-policy.html', fr: 'Politique de conf.',      en: 'Privacy Policy',          es: 'Privacidad' },
+    { key: 'home',          href: 'index.html',                   fr: 'Accueil',                 en: 'Home',                    es: 'Inicio' },
+    { key: 'pourboires',    href: 'pourboires.html',              fr: 'Pourboires',              en: 'Tip Calculator',          es: 'Propinas' },
+    { key: 'investissement',href: 'investissement.html',          fr: 'Investissement',          en: 'Investment',              es: 'Inversión' },
+    { key: 'van',           href: 'van.html',                     fr: 'VAN / TRI',               en: 'NPV / IRR',               es: 'VAN / TIR' },
+    { key: 'amortissement', href: 'amortissement.html',           fr: 'Amortissement',           en: 'Amortization',            es: 'Amortización' },
+    { key: 'budget',        href: 'budget-couple.html',           fr: 'Budget couple',           en: 'Couple Budget',           es: 'Presupuesto pareja' },
+    { key: 'budget-solo',   href: 'budget-personne-seule.html',   fr: 'Budget perso',            en: 'Personal Budget',         es: 'Presupuesto personal' },
+    { key: 'equite',        href: 'equite-salariale.html',        fr: 'Équité salariale',        en: 'Pay Equity',              es: 'Equidad salarial' },
+    { key: 'factures',      href: 'factures-recus.html',          fr: 'Factures & reçus',        en: 'Invoices & Receipts',     es: 'Facturas y recibos' },
+    { key: 'about',         href: 'about.html',                   fr: 'À propos',                en: 'About',                   es: 'Acerca de' },
+    { key: 'privacy',       href: 'privacy-policy.html',          fr: 'Politique de conf.',      en: 'Privacy Policy',          es: 'Privacidad' },
   ];
 
   // ── Textes partagés (header, pied de page, boutons pub) ──
