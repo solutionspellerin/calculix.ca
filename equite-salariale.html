@@ -212,6 +212,66 @@
   table.bornes tbody tr.grand-total td { font-weight: 800; background: var(--bleu) !important; color: var(--blanc) !important; font-size: 0.95rem; }
   table.bornes tbody tr.grand-total td.num.val { color: var(--accent) !important; }
 
+  /* ===== Callout Formulaire d'evaluation ===== */
+  .form-callout {
+    margin: 0 0 22px;
+    padding: 18px 22px;
+    background: linear-gradient(135deg, rgba(106,76,147,0.08) 0%, rgba(232,197,71,0.10) 100%);
+    border: 1.5px solid rgba(106,76,147,0.25);
+    border-left: 4px solid var(--violet);
+    border-radius: 12px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: center;
+  }
+  .form-callout .fc-text { min-width: 0; }
+  .form-callout .fc-title { font-family: 'Playfair Display', serif; font-size: 1.02rem; color: var(--violet); margin-bottom: 4px; }
+  .form-callout .fc-desc { font-size: 0.86rem; color: #555; line-height: 1.55; }
+  .form-callout .fc-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 18px;
+    background: linear-gradient(135deg, var(--violet) 0%, var(--violet-clair) 100%);
+    color: white; border: none; border-radius: 10px;
+    font-family: inherit; font-size: 0.88rem; font-weight: 600;
+    text-decoration: none; letter-spacing: 0.02em;
+    box-shadow: 0 4px 14px rgba(106,76,147,0.25);
+    transition: transform 0.15s, box-shadow 0.15s;
+    white-space: nowrap;
+  }
+  .form-callout .fc-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(106,76,147,0.35); }
+  .form-callout .fc-btn .fc-icon { font-size: 1.05rem; }
+
+  .form-info-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+    width: 100%; padding: 10px 14px; margin-top: 12px;
+    background: linear-gradient(135deg, var(--violet) 0%, var(--violet-clair) 100%);
+    color: white; border: none; border-radius: 9px;
+    font-family: inherit; font-size: 0.85rem; font-weight: 600;
+    text-decoration: none; letter-spacing: 0.02em;
+    box-shadow: 0 3px 10px rgba(106,76,147,0.20);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .form-info-btn:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(106,76,147,0.30); }
+
+  .reset-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 8px; margin-left: 8px;
+    padding: 8px 14px;
+    background: transparent; color: var(--rouge);
+    border: 1.5px dashed var(--rouge); border-radius: 8px;
+    font-family: inherit; font-size: 0.82rem; font-weight: 600;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .reset-btn:hover { background: rgba(198,69,69,0.08); }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 0; align-items: center; }
+  .info-card .fc-desc-side { font-size: 0.86rem; color: #555; line-height: 1.55; }
+
+  @media (max-width: 700px) {
+    .form-callout { grid-template-columns: 1fr; }
+    .form-callout .fc-btn { width: 100%; justify-content: center; }
+  }
+
   @media (max-width: 1080px) { main { grid-template-columns: 1fr; } }
   @media (max-width: 640px) {
     header { padding: 14px 16px; }
@@ -277,6 +337,17 @@
     </div>
     <div class="card-body">
 
+      <!-- Callout : Formulaire d'evaluation a telecharger -->
+      <div class="form-callout">
+        <div class="fc-text">
+          <div class="fc-title" id="formCalloutTitle">✍️ Formulaire d'évaluation des catégories d'emploi</div>
+          <div class="fc-desc" id="formCalloutDesc">Avant de pondérer les facteurs, évaluez chaque catégorie d'emploi à l'aide de notre formulaire PDF remplissable. Il reprend les mêmes 4 facteurs et 10 sous-facteurs que ce calculateur, avec les niveaux et descriptions habituellement utilisés au Québec.</div>
+        </div>
+        <a class="fc-btn" id="formCalloutBtn" href="assets/formulaire-evaluation-categories-emploi.pdf" download="formulaire-evaluation-categories-emploi.pdf" target="_blank" rel="noopener">
+          <span class="fc-icon">⬇️</span><span id="formCalloutBtnLbl">Télécharger le formulaire (PDF)</span>
+        </a>
+      </div>
+
       <!-- Tableau de reference des bornes -->
       <div class="section-divider" style="margin-top:0;border-top:none;padding-top:0;">
         <div class="section-title" id="sectBornes">📚 Bornes generalement reconnues</div>
@@ -323,9 +394,14 @@
         </table>
       </div>
 
-      <button type="button" class="add-btn" id="addProBtn" onclick="addPro()">
-        <span>➕</span><span id="addProLbl">Ajouter un professionnel</span>
-      </button>
+      <div class="btn-row">
+        <button type="button" class="add-btn" id="addProBtn" onclick="addPro()">
+          <span>➕</span><span id="addProLbl">Ajouter un professionnel</span>
+        </button>
+        <button type="button" class="reset-btn" id="resetBtn" onclick="resetAll()">
+          <span>🗑️</span><span id="resetLbl">Tout remettre à zéro</span>
+        </button>
+      </div>
 
       <!-- Résultat -->
       <div class="result-banner empty" id="resultBanner">
@@ -344,6 +420,14 @@
       <div class="info-item"><span class="label" id="lblI2">Nombre de sous-facteurs</span><span class="value" id="infoNbSub">—</span></div>
       <div class="info-item"><span class="label" id="lblI3">Nombre de professionnels</span><span class="value" id="infoNbPro">—</span></div>
       <div class="info-item"><span class="label" id="lblI4">Salaire par point moyen</span><span class="value" id="infoAvgRate">—</span></div>
+    </div>
+
+    <div class="info-card">
+      <h3 id="formSidebarTitle">✍️ Formulaire à remplir</h3>
+      <p class="fc-desc-side" id="formSidebarDesc">Évaluez vos catégories d'emploi sur les 4 facteurs et 10 sous-facteurs avec un PDF remplissable, puis reportez les niveaux ici.</p>
+      <a class="form-info-btn" id="formSidebarBtn" href="assets/formulaire-evaluation-categories-emploi.pdf" download="formulaire-evaluation-categories-emploi.pdf" target="_blank" rel="noopener">
+        <span>⬇️</span><span id="formSidebarBtnLbl">Télécharger le PDF</span>
+      </a>
     </div>
 
     <div class="info-card">
@@ -456,6 +540,14 @@
       xlsRowAvg: 'Moyenne',
       xlsFooter: 'Calculix.ca · Outil informatif — Loi sur l\'équité salariale (Québec)',
       xlsFilename: 'equite-salariale',
+      formCalloutTitle: '✍️ Formulaire d\'évaluation des catégories d\'emploi',
+      formCalloutDesc: 'Avant de pondérer les facteurs, évaluez chaque catégorie d\'emploi à l\'aide de notre formulaire PDF remplissable. Il reprend les mêmes 4 facteurs et 10 sous-facteurs que ce calculateur, avec les niveaux et descriptions habituellement utilisés au Québec.',
+      formCalloutBtn: 'Télécharger le formulaire (PDF)',
+      formSidebarTitle: '✍️ Formulaire à remplir',
+      formSidebarDesc: 'Évaluez vos catégories d\'emploi sur les 4 facteurs et 10 sous-facteurs avec un PDF remplissable, puis reportez les niveaux ici.',
+      formSidebarBtn: 'Télécharger le PDF',
+      resetLbl: 'Tout remettre à zéro',
+      resetConfirm: 'Effacer toutes les pondérations et tous les professionnels ? Le calculateur sera réinitialisé aux valeurs par défaut.',
     },
     en: {
       mainTitle: '⚖️ Pay Equity',
@@ -541,6 +633,14 @@
       xlsRowAvg: 'Average',
       xlsFooter: 'Calculix.ca · Informational tool — Pay Equity Act (Quebec)',
       xlsFilename: 'pay-equity',
+      formCalloutTitle: '✍️ Job category evaluation form',
+      formCalloutDesc: 'Before weighting the factors, evaluate each job category using our fillable PDF form. It mirrors the same 4 factors and 10 sub-factors as this calculator, with the levels and descriptions commonly used in Quebec (form is in French).',
+      formCalloutBtn: 'Download the form (PDF)',
+      formSidebarTitle: '✍️ Fillable form',
+      formSidebarDesc: 'Evaluate your job categories across the 4 factors and 10 sub-factors using a fillable PDF, then transfer the levels here.',
+      formSidebarBtn: 'Download the PDF',
+      resetLbl: 'Reset everything',
+      resetConfirm: 'Clear all weights and all professionals ? The calculator will be reset to default values.',
     },
     es: {
       mainTitle: '⚖️ Equidad salarial',
@@ -626,6 +726,14 @@
       xlsRowAvg: 'Promedio',
       xlsFooter: 'Calculix.ca · Herramienta informativa — Ley de Equidad Salarial (Quebec)',
       xlsFilename: 'equidad-salarial',
+      formCalloutTitle: '✍️ Formulario de evaluación de categorías de empleo',
+      formCalloutDesc: 'Antes de ponderar los factores, evalúe cada categoría de empleo con nuestro formulario PDF rellenable. Refleja los mismos 4 factores y 10 sub-factores que esta calculadora, con los niveles y descripciones comúnmente utilizados en Quebec (formulario en francés).',
+      formCalloutBtn: 'Descargar el formulario (PDF)',
+      formSidebarTitle: '✍️ Formulario rellenable',
+      formSidebarDesc: 'Evalúe sus categorías de empleo sobre los 4 factores y 10 sub-factores con un PDF rellenable, luego transfiera los niveles aquí.',
+      formSidebarBtn: 'Descargar el PDF',
+      resetLbl: 'Restablecer todo',
+      resetConfirm: '¿Borrar todas las ponderaciones y todos los profesionales? La calculadora se restablecerá a los valores predeterminados.',
     }
   };
 
@@ -679,6 +787,13 @@
     setHTML('tipsP1', t.tipsP1);
     setHTML('tipsP2', t.tipsP2);
     setText('disclaimerText', t.disclaimer);
+    setText('formCalloutTitle', t.formCalloutTitle);
+    setText('formCalloutDesc', t.formCalloutDesc);
+    setText('formCalloutBtnLbl', t.formCalloutBtn);
+    setText('formSidebarTitle', t.formSidebarTitle);
+    setText('formSidebarDesc', t.formSidebarDesc);
+    setText('formSidebarBtnLbl', t.formSidebarBtn);
+    setText('resetLbl', t.resetLbl);
 
     if (window.CXSite) {
       var shared = CXSite.SHARED[lang];
@@ -716,6 +831,32 @@
       return { id: nextProId++, name: p.name, salary: p.salary, scores: scoresObj };
     });
   }
+
+  function resetAll() {
+    var t = i18n[lang];
+    if (!confirm(t.resetConfirm)) return;
+    // Reset IDs and re-init structure with defaults but blank scores/salaries
+    nextFactorId = 1; nextSubId = 1; nextProId = 1;
+    factors = t.defaultFactors.map(function(f) {
+      return {
+        id: nextFactorId++,
+        name: f.name,
+        pct: f.pct,
+        subs: f.subs.map(function(s) { return { id: nextSubId++, name: s.name, pct: s.pct }; })
+      };
+    });
+    // Single blank professional row to start with
+    var scoresObj = {};
+    factors.forEach(function(fac) {
+      fac.subs.forEach(function(sub) { scoresObj[sub.id] = 0; });
+    });
+    pros = [{ id: nextProId++, name: '', salary: 0, scores: scoresObj }];
+    renderFactors();
+    renderProsTable();
+    calculate();
+  }
+  // Expose for inline onclick handlers
+  window.resetAll = resetAll;
 
   function escapeHtml(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
