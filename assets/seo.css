@@ -1,0 +1,189 @@
+/* ============================================================
+   Calculix.ca — Sections SEO / contenu éditorial
+   Affichées sous chaque calculateur, multilingue par data-lang
+   ============================================================ */
+
+/* Visibilité par langue : body[data-lang="fr|en|es"] */
+.cx-seo > [lang]      { display: none; }
+body[data-lang="fr"] .cx-seo > [lang="fr"],
+body:not([data-lang]) .cx-seo > [lang="fr"] { display: block; }
+body[data-lang="en"] .cx-seo > [lang="en"] { display: block; }
+body[data-lang="es"] .cx-seo > [lang="es"] { display: block; }
+
+.cx-seo {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto 64px;
+  padding: 0 16px;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--texte, #1a1a1a);
+}
+
+.cx-seo .cx-seo-intro {
+  background: var(--blanc, #fff);
+  border-radius: 18px;
+  box-shadow: var(--ombre, 0 4px 24px rgba(26,58,92,0.10));
+  padding: 32px 36px;
+  margin-bottom: 18px;
+  border-left: 4px solid var(--accent, #e8c547);
+}
+
+.cx-seo .cx-seo-intro h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  color: var(--bleu, #1a3a5c);
+  margin-bottom: 14px;
+  line-height: 1.2;
+}
+
+.cx-seo .cx-seo-intro p {
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.cx-seo .cx-seo-intro p:last-child { margin-bottom: 0; }
+.cx-seo .cx-seo-intro strong { color: var(--bleu, #1a3a5c); }
+
+.cx-seo details {
+  background: var(--blanc, #fff);
+  border-radius: 14px;
+  box-shadow: 0 2px 14px rgba(26,58,92,0.06);
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.cx-seo details[open] {
+  box-shadow: 0 6px 24px rgba(26,58,92,0.12);
+}
+
+.cx-seo details > summary {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  color: var(--bleu, #1a3a5c);
+  padding: 18px 24px;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  user-select: none;
+  transition: background 0.15s;
+}
+
+.cx-seo details > summary:hover {
+  background: rgba(232,197,71,0.06);
+}
+
+.cx-seo details > summary::-webkit-details-marker { display: none; }
+
+.cx-seo details > summary::after {
+  content: '+';
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: var(--accent, #e8c547);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.cx-seo details[open] > summary::after {
+  content: '–';
+}
+
+.cx-seo .cx-seo-body {
+  padding: 4px 28px 24px;
+  font-size: 0.94rem;
+  line-height: 1.75;
+  color: #2a2a2a;
+}
+
+.cx-seo .cx-seo-body p {
+  margin-bottom: 12px;
+}
+
+.cx-seo .cx-seo-body p:last-child { margin-bottom: 0; }
+
+.cx-seo .cx-seo-body strong {
+  color: var(--bleu, #1a3a5c);
+}
+
+.cx-seo .cx-seo-body ul,
+.cx-seo .cx-seo-body ol {
+  margin: 8px 0 14px 22px;
+}
+
+.cx-seo .cx-seo-body li {
+  margin-bottom: 6px;
+}
+
+.cx-seo .cx-seo-body h3 {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  color: var(--bleu, #1a3a5c);
+  margin: 18px 0 8px;
+  font-weight: 600;
+}
+
+.cx-seo .cx-seo-body .cx-example {
+  background: #f4f1eb;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 12px 0;
+  font-size: 0.92rem;
+  border-left: 3px solid var(--vert, #2f8f5f);
+}
+
+.cx-seo .cx-seo-body .cx-example strong {
+  color: var(--vert, #2f8f5f);
+}
+
+.cx-seo .cx-seo-body .cx-formula {
+  display: block;
+  background: #1a3a5c;
+  color: #fff;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.94rem;
+  margin: 14px 0;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.cx-seo .cx-faq-q {
+  font-weight: 600;
+  color: var(--bleu, #1a3a5c);
+  margin-top: 14px;
+  margin-bottom: 4px;
+}
+
+.cx-seo .cx-faq-q:first-child { margin-top: 0; }
+
+.cx-seo .cx-sources {
+  font-size: 0.82rem;
+  color: #666;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #e8e4dc;
+}
+
+.cx-seo .cx-sources a {
+  color: var(--bleu-clair, #2d6a9f);
+  text-decoration: none;
+}
+
+.cx-seo .cx-sources a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .cx-seo { padding: 0 10px; margin-bottom: 40px; }
+  .cx-seo .cx-seo-intro { padding: 24px 22px; }
+  .cx-seo .cx-seo-intro h2 { font-size: 1.35rem; }
+  .cx-seo details > summary { padding: 16px 18px; font-size: 1.05rem; }
+  .cx-seo .cx-seo-body { padding: 4px 20px 20px; font-size: 0.92rem; }
+}

@@ -16,6 +16,7 @@
 <title>Calculateur d'amortissement — Loan Schedule | Calculix.ca</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/ads.css?v=20260424j">
+<link rel="stylesheet" href="assets/seo.css?v=20260510a">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451" crossorigin="anonymous"></script>
 <script src="assets/site-config.js?v=20260424j"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -334,6 +335,329 @@
   <div style="grid-column: 1 / -1;">
     <div class="partners-row" id="partnersRow"></div>
   </div>
+
+  <section class="cx-seo" aria-label="Guide amortissement" style="grid-column: 1 / -1;">
+    <div lang="fr">
+      <div class="cx-seo-intro">
+        <h2>Tout savoir sur l'amortissement hypothécaire au Québec</h2>
+        <p>L'amortissement hypothécaire est le processus par lequel vous remboursez progressivement le capital emprunté pour l'achat d'une propriété, en effectuant des versements périodiques qui couvrent à la fois le <strong>capital</strong> et les <strong>intérêts</strong>. Au Québec, comme partout au Canada, le calcul de l'amortissement obéit à des règles précises encadrées par la <em>Loi sur l'intérêt</em>, qui impose une composition <strong>semi-annuelle</strong> pour les prêts hypothécaires garantis par un immeuble résidentiel.</p>
+        <p>Comprendre comment se décompose chaque versement, comment la fréquence de paiement influence le coût total, et quelles règles s'appliquent à votre situation peut vous faire économiser des dizaines de milliers de dollars sur la durée de votre prêt. Ce guide pratique vous aide à interpréter les résultats du calculateur ci-dessus et à prendre des décisions financières éclairées avec votre courtier hypothécaire ou votre conseiller chez Desjardins, à la Banque Nationale, à la Banque Royale ou ailleurs.</p>
+      </div>
+
+      <details open><summary>Comment fonctionne l'amortissement hypothécaire</summary>
+        <div class="cx-seo-body">
+          <p>L'amortissement repose sur une formule mathématique classique qui calcule un paiement périodique constant permettant de rembourser intégralement le capital sur la durée prévue, tout en payant les intérêts dus à chaque période sur le solde restant. La formule de base est :</p>
+          <span class="cx-formula">Paiement = P × r ÷ (1 − (1 + r)^−n)</span>
+          <p>où <strong>P</strong> est le capital emprunté, <strong>r</strong> est le taux d'intérêt par période et <strong>n</strong> est le nombre total de paiements. Pour une hypothèque canadienne, le taux par période doit être ajusté à partir du taux nominal annuel composé semi-annuellement, ce qui donne <span class="cx-formula">r = (1 + i/2)^(2/m) − 1</span>, où <strong>i</strong> est le taux annuel affiché et <strong>m</strong> est le nombre de paiements par année (12 pour mensuel, 26 pour aux deux semaines, 52 pour hebdomadaire).</p>
+          <h3>Décomposition capital / intérêts</h3>
+          <p>Chaque versement contient deux parts : la portion <strong>intérêt</strong> est calculée sur le solde restant en début de période (solde × r), et la portion <strong>capital</strong> est ce qui reste du paiement après avoir payé les intérêts. Au début de l'amortissement, le solde est élevé, donc les intérêts dominent ; à mesure que le solde diminue, la portion capital augmente et la portion intérêt diminue. C'est pourquoi vos premiers paiements semblent peu réduire votre solde — la majorité va aux intérêts.</p>
+          <h3>Plus tu paies tôt, moins tu paies d'intérêts</h3>
+          <p>Tout dollar versé en remboursement anticipé du capital élimine les intérêts qui auraient été calculés sur ce dollar pendant toutes les années restantes. Un versement forfaitaire de 5 000 $ effectué en début de prêt peut faire économiser plusieurs milliers de dollars en intérêts cumulés. C'est l'effet de la <strong>capitalisation inversée</strong> : moins de capital, moins d'intérêts, donc une plus grande part des paiements suivants attaque le capital, ce qui accélère le remboursement.</p>
+        </div>
+      </details>
+
+      <details><summary>Exemple chiffré : maison de 450 000 $ à Québec</summary>
+        <div class="cx-seo-body">
+          <p>Prenons un cas réaliste pour illustrer le fonctionnement du calculateur. Une famille achète une maison à Québec au prix de <strong>450 000 $</strong>, avec une mise de fonds de 20 % (90 000 $) et donc une hypothèque de <strong>360 000 $</strong>. Le taux affiché par leur institution financière est de <strong>5,25 %</strong> sur un terme de 5 ans, et l'amortissement est étalé sur <strong>25 ans</strong>.</p>
+          <div class="cx-example">
+            <strong>Données du prêt</strong><br>
+            Capital emprunté : 360 000 $<br>
+            Taux annuel : 5,25 % (composé semi-annuellement)<br>
+            Amortissement : 25 ans (300 paiements mensuels)<br>
+            Taux périodique effectif : (1 + 0,0525/2)^(2/12) − 1 ≈ 0,4327 % par mois<br><br>
+            <strong>Résultats calculés</strong><br>
+            Paiement mensuel : <strong>≈ 2 154,33 $</strong><br>
+            Total des paiements sur 25 ans : ≈ 646 300 $<br>
+            Intérêts totaux payés : <strong>≈ 286 300 $</strong><br>
+            Ratio intérêts / capital : environ 80 %
+          </div>
+          <p>Ce résultat surprend souvent : pour emprunter 360 000 $, on paie au final près de 646 000 $, soit presque le double. C'est la réalité d'un amortissement long à un taux moyennement élevé. Les premiers paiements contiennent environ <strong>1 558 $ d'intérêts</strong> et seulement <strong>596 $ de capital</strong>. Vers le milieu du prêt (paiement 150), les deux portions s'équilibrent. Au dernier paiement, presque tout va au capital.</p>
+          <h3>Que se passe-t-il après le terme de 5 ans ?</h3>
+          <p>Au Québec comme dans le reste du Canada, le <em>terme</em> hypothécaire est plus court que l'amortissement. Après 5 ans, l'emprunteur devra renouveler son hypothèque au taux du marché en vigueur, ce qui peut modifier le paiement mensuel à la hausse ou à la baisse. Si les taux montent à 6,5 %, le paiement passerait à environ 2 350 $/mois ; s'ils baissent à 4 %, il descendrait à 1 880 $/mois.</p>
+        </div>
+      </details>
+
+      <details><summary>Fréquence de paiement et économies réelles</summary>
+        <div class="cx-seo-body">
+          <p>La fréquence de paiement choisie a un impact majeur sur le coût total de votre hypothèque. Le calculateur Calculix vous permet de comparer cinq options : <strong>mensuel</strong>, <strong>aux deux semaines</strong>, <strong>hebdomadaire</strong>, <strong>accéléré aux deux semaines</strong> et <strong>accéléré hebdomadaire</strong>. La distinction entre paiement régulier et paiement accéléré est cruciale.</p>
+          <h3>Paiement aux 2 semaines vs accéléré aux 2 semaines</h3>
+          <p>Un paiement <strong>régulier aux 2 semaines</strong> divise simplement votre paiement mensuel en deux parts égales étalées sur 26 versements par an (52 semaines ÷ 2). Le total annuel est identique au mode mensuel : 12 paiements mensuels = 26 demi-paiements bi-mensuels. Aucune économie réelle n'en résulte.</p>
+          <p>Un paiement <strong>accéléré aux 2 semaines</strong>, par contre, prend votre paiement mensuel entier, le divise par 2, et l'effectue 26 fois par an. Vous payez donc l'équivalent de <strong>13 paiements mensuels par année</strong> au lieu de 12. Ce paiement supplémentaire annuel s'attaque directement au capital et raccourcit l'amortissement de plusieurs années.</p>
+          <div class="cx-example">
+            <strong>Comparaison sur notre exemple (360 000 $ à 5,25 %, 25 ans)</strong><br>
+            Mensuel : 2 154 $ × 300 = 646 300 $ total — durée 25 ans<br>
+            Aux 2 semaines (régulier) : 1 077 $ × 650 = 700 050 $ — durée 25 ans<br>
+            <strong>Accéléré aux 2 semaines : 1 077 $ × 568 ≈ 611 700 $ — durée ≈ 21,8 ans</strong><br>
+            Économie en intérêts : <strong>≈ 34 600 $</strong><br>
+            Réduction de durée : <strong>≈ 3,2 ans</strong>
+          </div>
+          <h3>Versements forfaitaires anticipés</h3>
+          <p>La plupart des prêts hypothécaires québécois permettent un remboursement anticipé annuel de 10 % à 20 % du capital initial sans pénalité. Un versement forfaitaire de 10 000 $ effectué en début de prêt peut éliminer plus de 25 000 $ d'intérêts futurs et raccourcir l'amortissement d'un an et demi. Vérifiez les <strong>privilèges de remboursement</strong> de votre contrat avec Desjardins, BMO ou tout autre prêteur avant de planifier ces versements.</p>
+          <p>Combiner paiement accéléré et versements forfaitaires annuels est la stratégie la plus efficace pour réduire le coût total d'un prêt hypothécaire. Sur notre exemple, ajouter 5 000 $ par an à un paiement accéléré aux 2 semaines peut faire passer la durée totale sous les 17 ans, économisant plus de 100 000 $ en intérêts cumulés.</p>
+        </div>
+      </details>
+
+      <details><summary>Spécificités hypothécaires québécoises</summary>
+        <div class="cx-seo-body">
+          <p>Le marché hypothécaire québécois suit les règles fédérales canadiennes mais comporte aussi quelques particularités locales que tout acheteur doit connaître avant de signer.</p>
+          <h3>Terme vs amortissement</h3>
+          <p>Le <strong>terme</strong> est la durée du contrat avec votre prêteur (généralement 1, 2, 3, 4 ou 5 ans), tandis que l'<strong>amortissement</strong> est la durée totale prévue pour rembourser entièrement l'hypothèque (jusqu'à 25 ans pour une mise de fonds de moins de 20 %, jusqu'à 30 ans pour une mise de fonds plus élevée). À la fin de chaque terme, vous devez renouveler ou refinancer votre hypothèque.</p>
+          <h3>Mise de fonds minimale et assurance prêt SCHL</h3>
+          <p>Au Canada, les règles fédérales fixent la mise de fonds minimale ainsi :</p>
+          <ul>
+            <li><strong>5 %</strong> sur la première tranche de 500 000 $ du prix d'achat</li>
+            <li><strong>10 %</strong> sur la portion entre 500 000 $ et 1 500 000 $</li>
+            <li><strong>20 %</strong> sur toute portion au-delà de 1 500 000 $ (et 20 % minimum si la propriété coûte plus de 1,5 M $)</li>
+          </ul>
+          <p>Si votre mise de fonds est inférieure à 20 %, vous devez obtenir une <strong>assurance prêt hypothécaire</strong> auprès de la <strong>SCHL</strong> (Société canadienne d'hypothèques et de logement), de Sagen ou de Canada Guaranty. La prime varie de 2,8 % à 4,0 % du capital emprunté, selon le ratio prêt/valeur, et est généralement ajoutée au capital de l'hypothèque (vous payez les intérêts dessus aussi).</p>
+          <h3>Droits de mutation immobilière (taxe de bienvenue)</h3>
+          <p>Au Québec, l'acheteur doit payer des <strong>droits sur les mutations immobilières</strong>, communément appelés « taxe de bienvenue ». Ces droits sont calculés sur le prix d'achat selon des tranches progressives :</p>
+          <ul>
+            <li>0,5 % sur la première tranche jusqu'à 58 900 $</li>
+            <li>1,0 % entre 58 900 $ et 294 600 $</li>
+            <li>1,5 % au-delà de 294 600 $ (jusqu'à 500 000 $ ou 1 M $ selon les municipalités)</li>
+            <li>2,0 % à 3,0 % sur les tranches supérieures (Montréal et Québec ont leurs propres barèmes)</li>
+          </ul>
+          <p>Pour notre exemple de maison à 450 000 $ à Québec, la taxe de bienvenue serait d'environ <strong>4 870 $</strong>, payable dans les 30 jours suivant la réception de l'avis de la municipalité (généralement 3 à 6 mois après l'achat). Ce coût n'est pas inclus dans le calculateur d'amortissement et doit être budgétisé séparément.</p>
+          <h3>Frais de notaire et inspection</h3>
+          <p>Au Québec, le passage chez le notaire est obligatoire pour toute transaction immobilière. Comptez de 1 200 $ à 2 000 $ pour les honoraires du notaire, plus environ 500 $ pour une inspection préachat recommandée. Ces frais s'ajoutent à votre budget d'achat sans affecter le calcul d'amortissement.</p>
+        </div>
+      </details>
+
+      <details><summary>Foire aux questions</summary>
+        <div class="cx-seo-body">
+          <p class="cx-faq-q">Quelle est la différence entre un taux fixe et un taux variable ?</p>
+          <p>Le <strong>taux fixe</strong> reste identique pendant toute la durée du terme (par exemple 5 ans à 5,25 %), ce qui garantit un paiement stable. Le <strong>taux variable</strong> fluctue selon le taux préférentiel des banques canadiennes ; le paiement peut rester fixe (avec une portion capital qui varie) ou être ajusté à chaque changement. Historiquement, le taux variable a été légèrement moins coûteux à long terme, mais comporte un risque d'augmentation. Discutez avec votre courtier hypothécaire de votre tolérance au risque.</p>
+
+          <p class="cx-faq-q">Pourquoi mes premiers paiements sont surtout des intérêts ?</p>
+          <p>Parce que les intérêts sont calculés sur le solde restant. Au début, le solde est presque égal au capital initial, donc la portion intérêt de chaque paiement est très élevée. À mesure que le capital se rembourse, le solde diminue, donc moins d'intérêts s'accumulent et plus de votre paiement va au capital. C'est ce qu'on appelle l'effet d'amortissement progressif.</p>
+
+          <p class="cx-faq-q">Puis-je rembourser plus vite mon hypothèque ?</p>
+          <p>Oui, la plupart des prêteurs québécois (Desjardins, Banque Nationale, BMO, RBC, etc.) permettent : (1) d'augmenter le montant des paiements réguliers de 10 % à 20 % par an, (2) d'effectuer un versement forfaitaire annuel de 10 % à 20 % du capital initial, et (3) de choisir un paiement accéléré aux 2 semaines. Ces options ne génèrent pas de pénalité tant que vous restez dans les limites prévues. Vérifiez toujours votre contrat avant d'agir.</p>
+
+          <p class="cx-faq-q">Que se passe-t-il à la fin du terme ?</p>
+          <p>Vous devez renouveler ou transférer votre hypothèque. Votre prêteur vous enverra une offre de renouvellement environ 4 mois avant l'échéance. C'est le moment idéal pour magasiner et négocier — un courtier hypothécaire peut comparer plusieurs offres pour vous. Vous pouvez aussi changer d'institution sans pénalité à la fin du terme. Si vous ne faites rien, votre prêteur reconduira automatiquement l'hypothèque, mais souvent à un taux moins avantageux que ce qu'on peut obtenir en négociant.</p>
+
+          <p class="cx-faq-q">Le calculateur tient-il compte des taxes municipales et scolaires ?</p>
+          <p>Non. Ce calculateur ne calcule que la portion <strong>capital + intérêts</strong> de votre hypothèque. Les <strong>taxes municipales</strong> (de 0,5 % à 1,2 % de la valeur d'évaluation par an au Québec), les <strong>taxes scolaires</strong> (environ 0,1 % de la valeur), les <strong>assurances habitation</strong> et les frais de copropriété (le cas échéant) sont à ajouter séparément. Pour une maison de 450 000 $ à Québec, prévoyez environ 400 $ à 500 $ de plus par mois pour ces postes. Plusieurs prêteurs offrent un compte d'impôts foncier intégré aux paiements hypothécaires pour faciliter la gestion.</p>
+        </div>
+      </details>
+    </div>
+
+    <div lang="en">
+      <div class="cx-seo-intro">
+        <h2>Everything you need to know about mortgage amortization in Quebec</h2>
+        <p>Mortgage amortization is the process of gradually paying off the capital borrowed to buy a property by making periodic payments that cover both <strong>principal</strong> and <strong>interest</strong>. In Quebec, as throughout Canada, mortgage calculations follow specific rules set out in the <em>Interest Act</em>, which mandates <strong>semi-annual compounding</strong> for residential mortgages secured by real property.</p>
+        <p>Understanding how each payment is broken down, how payment frequency affects the total cost, and which rules apply to your situation can save you tens of thousands of dollars over the life of your loan. This practical guide helps you interpret the results of the calculator above and make informed financial decisions with your mortgage broker or advisor at Desjardins, National Bank, RBC, or elsewhere.</p>
+      </div>
+
+      <details open><summary>How mortgage amortization works</summary>
+        <div class="cx-seo-body">
+          <p>Amortization is based on a classic mathematical formula that calculates a constant periodic payment that fully repays the capital over the planned period, while paying the interest owed each period on the remaining balance. The basic formula is:</p>
+          <span class="cx-formula">Payment = P × r ÷ (1 − (1 + r)^−n)</span>
+          <p>where <strong>P</strong> is the principal borrowed, <strong>r</strong> is the periodic interest rate, and <strong>n</strong> is the total number of payments. For a Canadian mortgage, the periodic rate must be adjusted from the nominal annual rate compounded semi-annually, giving <span class="cx-formula">r = (1 + i/2)^(2/m) − 1</span>, where <strong>i</strong> is the posted annual rate and <strong>m</strong> is the number of payments per year (12 monthly, 26 bi-weekly, 52 weekly).</p>
+          <h3>Principal vs interest breakdown</h3>
+          <p>Each payment contains two parts: the <strong>interest</strong> portion is calculated on the remaining balance at the start of the period (balance × r), and the <strong>principal</strong> portion is what remains of the payment after paying interest. At the start of the amortization, the balance is high, so interest dominates; as the balance decreases, the principal portion grows and the interest portion shrinks. This is why your first payments seem to barely reduce your balance — most of it goes to interest.</p>
+          <h3>The earlier you pay, the less interest you pay</h3>
+          <p>Every dollar applied to early principal repayment eliminates the interest that would have been calculated on that dollar for all the remaining years. A lump-sum payment of $5,000 made early in the loan can save several thousand dollars in cumulative interest. This is the effect of <strong>reverse capitalization</strong>: less principal means less interest, so a larger share of subsequent payments attacks the principal, accelerating repayment.</p>
+        </div>
+      </details>
+
+      <details><summary>Worked example: a $450,000 home in Quebec City</summary>
+        <div class="cx-seo-body">
+          <p>Let's take a realistic case to illustrate how the calculator works. A family buys a home in Quebec City for <strong>$450,000</strong>, with a 20% down payment ($90,000) and therefore a mortgage of <strong>$360,000</strong>. The rate posted by their financial institution is <strong>5.25%</strong> on a 5-year term, with the amortization spread over <strong>25 years</strong>.</p>
+          <div class="cx-example">
+            <strong>Loan inputs</strong><br>
+            Principal borrowed: $360,000<br>
+            Annual rate: 5.25% (compounded semi-annually)<br>
+            Amortization: 25 years (300 monthly payments)<br>
+            Effective period rate: (1 + 0.0525/2)^(2/12) − 1 ≈ 0.4327% per month<br><br>
+            <strong>Calculated results</strong><br>
+            Monthly payment: <strong>≈ $2,154.33</strong><br>
+            Total payments over 25 years: ≈ $646,300<br>
+            Total interest paid: <strong>≈ $286,300</strong><br>
+            Interest-to-principal ratio: about 80%
+          </div>
+          <p>This result often surprises: to borrow $360,000, you end up paying nearly $646,000 — almost double. That's the reality of long amortization at a moderately high rate. The first payments contain about <strong>$1,558 in interest</strong> and only <strong>$596 in principal</strong>. Around the middle of the loan (payment 150), the two portions are roughly balanced. By the last payment, almost everything goes to principal.</p>
+          <h3>What happens after the 5-year term?</h3>
+          <p>In Quebec, as in the rest of Canada, the mortgage <em>term</em> is shorter than the amortization. After 5 years, the borrower must renew the mortgage at the prevailing market rate, which can change the monthly payment up or down. If rates rise to 6.5%, the payment would jump to about $2,350/month; if they drop to 4%, it would fall to $1,880/month.</p>
+        </div>
+      </details>
+
+      <details><summary>Payment frequency and real savings</summary>
+        <div class="cx-seo-body">
+          <p>The chosen payment frequency has a major impact on the total cost of your mortgage. The Calculix calculator lets you compare five options: <strong>monthly</strong>, <strong>bi-weekly</strong>, <strong>weekly</strong>, <strong>accelerated bi-weekly</strong>, and <strong>accelerated weekly</strong>. The distinction between regular and accelerated payments is crucial.</p>
+          <h3>Bi-weekly vs accelerated bi-weekly</h3>
+          <p>A <strong>regular bi-weekly payment</strong> simply divides your monthly payment into two equal halves spread over 26 payments per year (52 weeks ÷ 2). The annual total is identical to monthly mode: 12 monthly payments = 26 half-payments. No real savings result from this.</p>
+          <p>An <strong>accelerated bi-weekly payment</strong>, by contrast, takes your full monthly payment, divides it by 2, and pays it 26 times per year. You're paying the equivalent of <strong>13 monthly payments per year</strong> instead of 12. That extra annual payment goes directly to principal and shortens the amortization by several years.</p>
+          <div class="cx-example">
+            <strong>Comparison on our example ($360,000 at 5.25%, 25 years)</strong><br>
+            Monthly: $2,154 × 300 = $646,300 total — 25 years<br>
+            Bi-weekly (regular): $1,077 × 650 = $700,050 — 25 years<br>
+            <strong>Accelerated bi-weekly: $1,077 × 568 ≈ $611,700 — about 21.8 years</strong><br>
+            Interest savings: <strong>≈ $34,600</strong><br>
+            Term reduction: <strong>≈ 3.2 years</strong>
+          </div>
+          <h3>Lump-sum prepayments</h3>
+          <p>Most Quebec mortgages allow annual lump-sum prepayments of 10% to 20% of the original principal without penalty. A $10,000 lump sum made early in the loan can eliminate more than $25,000 in future interest and shorten the amortization by a year and a half. Check the <strong>prepayment privileges</strong> in your contract with Desjardins, BMO, or any other lender before planning these payments.</p>
+          <p>Combining accelerated payments with annual lump sums is the most effective strategy to reduce the total cost of a mortgage. On our example, adding $5,000 per year to an accelerated bi-weekly payment can bring the total term down to under 17 years, saving over $100,000 in cumulative interest.</p>
+        </div>
+      </details>
+
+      <details><summary>Quebec-specific mortgage rules</summary>
+        <div class="cx-seo-body">
+          <p>The Quebec mortgage market follows federal Canadian rules but also includes a few local specifics that every buyer should know before signing.</p>
+          <h3>Term vs amortization</h3>
+          <p>The <strong>term</strong> is the duration of the contract with your lender (usually 1, 2, 3, 4, or 5 years), while the <strong>amortization</strong> is the total time projected to fully repay the mortgage (up to 25 years for a down payment under 20%, up to 30 years for a higher down payment). At the end of each term, you must renew or refinance your mortgage.</p>
+          <h3>Minimum down payment and CMHC insurance</h3>
+          <p>In Canada, federal rules set the minimum down payment as follows:</p>
+          <ul>
+            <li><strong>5%</strong> on the first $500,000 of the purchase price</li>
+            <li><strong>10%</strong> on the portion between $500,000 and $1,500,000</li>
+            <li><strong>20%</strong> on any portion above $1,500,000 (and 20% minimum if the property costs more than $1.5M)</li>
+          </ul>
+          <p>If your down payment is below 20%, you must obtain <strong>mortgage default insurance</strong> from the <strong>CMHC</strong> (Canada Mortgage and Housing Corporation), Sagen, or Canada Guaranty. The premium ranges from 2.8% to 4.0% of the principal, depending on the loan-to-value ratio, and is usually added to the mortgage principal (you also pay interest on it).</p>
+          <h3>Quebec land transfer tax (welcome tax)</h3>
+          <p>In Quebec, the buyer must pay <strong>land transfer duties</strong>, commonly called the "welcome tax". These duties are calculated on the purchase price using progressive brackets:</p>
+          <ul>
+            <li>0.5% on the first $58,900</li>
+            <li>1.0% between $58,900 and $294,600</li>
+            <li>1.5% above $294,600 (up to $500,000 or $1M depending on the municipality)</li>
+            <li>2.0% to 3.0% on higher brackets (Montreal and Quebec City have their own scales)</li>
+          </ul>
+          <p>For our $450,000 home in Quebec City, the welcome tax would be approximately <strong>$4,870</strong>, payable within 30 days of receiving the municipal notice (usually 3 to 6 months after purchase). This cost is not included in the amortization calculator and must be budgeted separately.</p>
+          <h3>Notary and inspection fees</h3>
+          <p>In Quebec, going through a notary is mandatory for any real estate transaction. Plan for $1,200 to $2,000 in notary fees, plus about $500 for a recommended pre-purchase inspection. These fees add to your purchase budget without affecting the amortization calculation.</p>
+        </div>
+      </details>
+
+      <details><summary>Frequently asked questions</summary>
+        <div class="cx-seo-body">
+          <p class="cx-faq-q">What's the difference between a fixed and a variable rate?</p>
+          <p>A <strong>fixed rate</strong> stays the same throughout the term (e.g. 5 years at 5.25%), guaranteeing a stable payment. A <strong>variable rate</strong> fluctuates with the prime rate of Canadian banks; the payment can stay fixed (with a varying principal portion) or be adjusted at each change. Historically, the variable rate has been slightly cheaper long-term but carries the risk of increases. Discuss your risk tolerance with your mortgage broker.</p>
+
+          <p class="cx-faq-q">Why are my first payments mostly interest?</p>
+          <p>Because interest is calculated on the remaining balance. At the start, the balance is nearly equal to the original principal, so the interest portion of each payment is very high. As the principal is paid down, the balance shrinks, less interest accrues, and more of your payment goes to principal. This is the gradual amortization effect.</p>
+
+          <p class="cx-faq-q">Can I pay off my mortgage faster?</p>
+          <p>Yes, most Quebec lenders (Desjardins, National Bank, BMO, RBC, etc.) allow you to: (1) increase your regular payment amount by 10% to 20% per year, (2) make annual lump-sum payments of 10% to 20% of the original principal, and (3) choose accelerated bi-weekly payments. These options carry no penalty as long as you stay within the limits provided. Always check your contract before acting.</p>
+
+          <p class="cx-faq-q">What happens at the end of the term?</p>
+          <p>You must renew or transfer your mortgage. Your lender will send you a renewal offer about 4 months before maturity. This is the ideal time to shop around and negotiate — a mortgage broker can compare several offers for you. You can also switch institutions without penalty at the end of the term. If you do nothing, your lender will automatically renew, often at a less favourable rate than you could negotiate.</p>
+
+          <p class="cx-faq-q">Does the calculator include municipal and school taxes?</p>
+          <p>No. This calculator only computes the <strong>principal + interest</strong> portion of your mortgage. <strong>Municipal taxes</strong> (0.5% to 1.2% of the assessed value per year in Quebec), <strong>school taxes</strong> (about 0.1% of the value), <strong>home insurance</strong>, and condo fees (where applicable) must be added separately. For a $450,000 home in Quebec City, plan for an extra $400 to $500 per month for these items. Several lenders offer integrated property-tax accounts within mortgage payments to ease management.</p>
+        </div>
+      </details>
+    </div>
+
+    <div lang="es">
+      <div class="cx-seo-intro">
+        <h2>Todo sobre la amortización hipotecaria en Quebec</h2>
+        <p>La amortización hipotecaria es el proceso por el cual usted reembolsa progresivamente el capital prestado para comprar una propiedad, mediante pagos periódicos que cubren tanto el <strong>capital</strong> como los <strong>intereses</strong>. En Quebec, como en todo Canadá, el cálculo de la amortización sigue reglas precisas establecidas por la <em>Ley de Interés</em> (Interest Act), que impone una composición <strong>semestral</strong> para los préstamos hipotecarios garantizados por un inmueble residencial.</p>
+        <p>Comprender cómo se descompone cada pago, cómo la frecuencia de pago influye en el costo total y qué reglas se aplican a su situación puede ahorrarle decenas de miles de dólares a lo largo de su préstamo. Esta guía práctica le ayuda a interpretar los resultados de la calculadora anterior y a tomar decisiones financieras informadas con su corredor hipotecario o asesor en Desjardins, Banco Nacional, RBC u otra institución.</p>
+      </div>
+
+      <details open><summary>Cómo funciona la amortización hipotecaria</summary>
+        <div class="cx-seo-body">
+          <p>La amortización se basa en una fórmula matemática clásica que calcula un pago periódico constante que permite reembolsar íntegramente el capital durante el plazo previsto, pagando los intereses adeudados en cada período sobre el saldo restante. La fórmula básica es:</p>
+          <span class="cx-formula">Pago = P × r ÷ (1 − (1 + r)^−n)</span>
+          <p>donde <strong>P</strong> es el capital prestado, <strong>r</strong> es la tasa de interés por período y <strong>n</strong> es el número total de pagos. Para una hipoteca canadiense, la tasa por período debe ajustarse a partir de la tasa nominal anual compuesta semestralmente: <span class="cx-formula">r = (1 + i/2)^(2/m) − 1</span>, donde <strong>i</strong> es la tasa anual publicada y <strong>m</strong> es el número de pagos por año (12 mensual, 26 quincenal, 52 semanal).</p>
+          <h3>Descomposición capital / intereses</h3>
+          <p>Cada pago contiene dos partes: la porción de <strong>interés</strong> se calcula sobre el saldo restante al inicio del período (saldo × r), y la porción de <strong>capital</strong> es lo que queda del pago después de pagar los intereses. Al inicio de la amortización, el saldo es alto, por lo que los intereses dominan; a medida que el saldo disminuye, la porción de capital aumenta y la de intereses disminuye. Por eso sus primeros pagos parecen reducir muy poco su saldo: la mayor parte va a intereses.</p>
+          <h3>Cuanto antes pague, menos intereses pagará</h3>
+          <p>Cada dólar pagado por adelantado al capital elimina los intereses que se habrían calculado sobre ese dólar durante todos los años restantes. Un pago global de 5 000 $ realizado al inicio del préstamo puede ahorrar varios miles de dólares en intereses acumulados. Es el efecto de la <strong>capitalización inversa</strong>: menos capital, menos intereses, por lo que una mayor parte de los pagos siguientes ataca el capital, acelerando el reembolso.</p>
+        </div>
+      </details>
+
+      <details><summary>Ejemplo numérico: casa de 450 000 $ en Quebec</summary>
+        <div class="cx-seo-body">
+          <p>Tomemos un caso realista para ilustrar el funcionamiento de la calculadora. Una familia compra una casa en la ciudad de Quebec por <strong>450 000 $</strong>, con un pago inicial del 20 % (90 000 $) y por tanto una hipoteca de <strong>360 000 $</strong>. La tasa publicada por su institución financiera es de <strong>5,25 %</strong> a un plazo de 5 años, con amortización a <strong>25 años</strong>.</p>
+          <div class="cx-example">
+            <strong>Datos del préstamo</strong><br>
+            Capital prestado: 360 000 $<br>
+            Tasa anual: 5,25 % (compuesta semestralmente)<br>
+            Amortización: 25 años (300 pagos mensuales)<br>
+            Tasa periódica efectiva: (1 + 0,0525/2)^(2/12) − 1 ≈ 0,4327 % mensual<br><br>
+            <strong>Resultados calculados</strong><br>
+            Pago mensual: <strong>≈ 2 154,33 $</strong><br>
+            Total de pagos a 25 años: ≈ 646 300 $<br>
+            Intereses totales: <strong>≈ 286 300 $</strong><br>
+            Razón intereses / capital: aproximadamente 80 %
+          </div>
+          <p>Este resultado a menudo sorprende: para pedir prestados 360 000 $, se acaba pagando casi 646 000 $, casi el doble. Es la realidad de una amortización larga a una tasa moderadamente alta. Los primeros pagos contienen aproximadamente <strong>1 558 $ de intereses</strong> y solo <strong>596 $ de capital</strong>. Hacia la mitad del préstamo (pago 150), las dos porciones se equilibran. En el último pago, casi todo va al capital.</p>
+          <h3>¿Qué pasa al final del plazo de 5 años?</h3>
+          <p>En Quebec, como en el resto de Canadá, el <em>plazo</em> hipotecario es más corto que la amortización. Después de 5 años, el prestatario debe renovar su hipoteca a la tasa de mercado vigente, lo que puede modificar el pago mensual al alza o a la baja. Si las tasas suben al 6,5 %, el pago aumentaría a unos 2 350 $/mes; si bajan al 4 %, descendería a 1 880 $/mes.</p>
+        </div>
+      </details>
+
+      <details><summary>Frecuencia de pago y ahorros reales</summary>
+        <div class="cx-seo-body">
+          <p>La frecuencia de pago elegida tiene un impacto importante en el costo total de su hipoteca. La calculadora Calculix le permite comparar cinco opciones: <strong>mensual</strong>, <strong>quincenal</strong>, <strong>semanal</strong>, <strong>quincenal acelerada</strong> y <strong>semanal acelerada</strong>. La distinción entre pago regular y pago acelerado es crucial.</p>
+          <h3>Quincenal regular vs quincenal acelerado</h3>
+          <p>Un <strong>pago quincenal regular</strong> simplemente divide su pago mensual en dos partes iguales repartidas en 26 pagos al año (52 semanas ÷ 2). El total anual es idéntico al modo mensual: 12 pagos mensuales = 26 medios pagos. No hay ahorro real.</p>
+          <p>Un <strong>pago quincenal acelerado</strong>, en cambio, toma su pago mensual completo, lo divide entre 2, y se realiza 26 veces al año. Usted paga el equivalente a <strong>13 pagos mensuales al año</strong> en lugar de 12. Ese pago extra anual va directamente al capital y acorta la amortización en varios años.</p>
+          <div class="cx-example">
+            <strong>Comparación con nuestro ejemplo (360 000 $ al 5,25 %, 25 años)</strong><br>
+            Mensual: 2 154 $ × 300 = 646 300 $ total — 25 años<br>
+            Quincenal (regular): 1 077 $ × 650 = 700 050 $ — 25 años<br>
+            <strong>Quincenal acelerada: 1 077 $ × 568 ≈ 611 700 $ — aprox. 21,8 años</strong><br>
+            Ahorro de intereses: <strong>≈ 34 600 $</strong><br>
+            Reducción del plazo: <strong>≈ 3,2 años</strong>
+          </div>
+          <h3>Pagos globales anticipados</h3>
+          <p>La mayoría de las hipotecas quebequenses permiten un reembolso anticipado anual del 10 % al 20 % del capital inicial sin penalización. Un pago global de 10 000 $ al inicio del préstamo puede eliminar más de 25 000 $ en intereses futuros y acortar la amortización en un año y medio. Verifique los <strong>privilegios de reembolso</strong> en su contrato con Desjardins, BMO u otro prestamista antes de planificar estos pagos.</p>
+          <p>Combinar pagos acelerados y pagos globales anuales es la estrategia más eficaz para reducir el costo total de un préstamo hipotecario. En nuestro ejemplo, añadir 5 000 $ al año a un pago quincenal acelerado puede llevar el plazo total a menos de 17 años, ahorrando más de 100 000 $ en intereses acumulados.</p>
+        </div>
+      </details>
+
+      <details><summary>Reglas hipotecarias específicas de Quebec</summary>
+        <div class="cx-seo-body">
+          <p>El mercado hipotecario quebequense sigue las reglas federales canadienses pero incluye también algunas particularidades locales que todo comprador debe conocer antes de firmar.</p>
+          <h3>Plazo vs amortización</h3>
+          <p>El <strong>plazo</strong> es la duración del contrato con su prestamista (generalmente 1, 2, 3, 4 o 5 años), mientras que la <strong>amortización</strong> es el tiempo total previsto para reembolsar la hipoteca por completo (hasta 25 años para un pago inicial inferior al 20 %, hasta 30 años para un pago inicial superior). Al final de cada plazo, debe renovar o refinanciar su hipoteca.</p>
+          <h3>Pago inicial mínimo y seguro hipotecario CMHC</h3>
+          <p>En Canadá, las reglas federales fijan el pago inicial mínimo así:</p>
+          <ul>
+            <li><strong>5 %</strong> sobre los primeros 500 000 $ del precio de compra</li>
+            <li><strong>10 %</strong> sobre la porción entre 500 000 $ y 1 500 000 $</li>
+            <li><strong>20 %</strong> sobre cualquier porción superior a 1 500 000 $ (y 20 % mínimo si la propiedad cuesta más de 1,5 M $)</li>
+          </ul>
+          <p>Si su pago inicial es inferior al 20 %, debe obtener un <strong>seguro de préstamo hipotecario</strong> con la <strong>CMHC</strong> (Sociedad Canadiense de Hipotecas y Vivienda), Sagen o Canada Guaranty. La prima varía del 2,8 % al 4,0 % del capital, según la relación préstamo-valor, y suele añadirse al capital de la hipoteca (también paga intereses sobre ella).</p>
+          <h3>Impuesto de transferencia (taxe de bienvenue)</h3>
+          <p>En Quebec, el comprador debe pagar <strong>derechos de mutación inmobiliaria</strong>, comúnmente llamados "impuesto de bienvenida". Estos derechos se calculan sobre el precio de compra según tramos progresivos:</p>
+          <ul>
+            <li>0,5 % sobre los primeros 58 900 $</li>
+            <li>1,0 % entre 58 900 $ y 294 600 $</li>
+            <li>1,5 % por encima de 294 600 $ (hasta 500 000 $ o 1 M $ según el municipio)</li>
+            <li>2,0 % a 3,0 % sobre tramos superiores (Montreal y Quebec tienen sus propias escalas)</li>
+          </ul>
+          <p>Para nuestra casa de 450 000 $ en la ciudad de Quebec, el impuesto de bienvenida sería de aproximadamente <strong>4 870 $</strong>, pagadero dentro de los 30 días posteriores a la recepción del aviso municipal (generalmente 3 a 6 meses después de la compra). Este costo no está incluido en la calculadora de amortización y debe presupuestarse por separado.</p>
+          <h3>Honorarios notariales y de inspección</h3>
+          <p>En Quebec, pasar por un notario es obligatorio para toda transacción inmobiliaria. Cuente entre 1 200 $ y 2 000 $ por honorarios notariales, más unos 500 $ por una inspección previa a la compra recomendada. Estos costos se suman a su presupuesto de compra sin afectar el cálculo de amortización.</p>
+        </div>
+      </details>
+
+      <details><summary>Preguntas frecuentes</summary>
+        <div class="cx-seo-body">
+          <p class="cx-faq-q">¿Cuál es la diferencia entre tasa fija y tasa variable?</p>
+          <p>La <strong>tasa fija</strong> permanece igual durante todo el plazo (por ejemplo 5 años al 5,25 %), garantizando un pago estable. La <strong>tasa variable</strong> fluctúa según la tasa preferencial de los bancos canadienses; el pago puede mantenerse fijo (con una porción de capital que varía) o ajustarse en cada cambio. Históricamente, la tasa variable ha sido ligeramente más barata a largo plazo, pero conlleva riesgo de aumento. Discuta su tolerancia al riesgo con su corredor hipotecario.</p>
+
+          <p class="cx-faq-q">¿Por qué mis primeros pagos son casi todos intereses?</p>
+          <p>Porque los intereses se calculan sobre el saldo restante. Al inicio, el saldo es casi igual al capital original, por lo que la porción de intereses de cada pago es muy alta. A medida que el capital se reembolsa, el saldo disminuye, se acumulan menos intereses y más de su pago va al capital. Es el efecto de la amortización progresiva.</p>
+
+          <p class="cx-faq-q">¿Puedo pagar mi hipoteca más rápido?</p>
+          <p>Sí, la mayoría de los prestamistas quebequenses (Desjardins, Banco Nacional, BMO, RBC, etc.) permiten: (1) aumentar el monto de los pagos regulares del 10 % al 20 % por año, (2) realizar un pago global anual del 10 % al 20 % del capital inicial, y (3) elegir un pago quincenal acelerado. Estas opciones no generan penalización mientras se respeten los límites previstos. Verifique siempre su contrato antes de actuar.</p>
+
+          <p class="cx-faq-q">¿Qué pasa al final del plazo?</p>
+          <p>Debe renovar o transferir su hipoteca. Su prestamista le enviará una oferta de renovación unos 4 meses antes del vencimiento. Es el momento ideal para comparar y negociar — un corredor hipotecario puede comparar varias ofertas. También puede cambiar de institución sin penalización al final del plazo. Si no hace nada, su prestamista renovará automáticamente, a menudo con una tasa menos ventajosa de la que se podría negociar.</p>
+
+          <p class="cx-faq-q">¿La calculadora incluye los impuestos municipales y escolares?</p>
+          <p>No. Esta calculadora solo calcula la porción <strong>capital + intereses</strong> de su hipoteca. Los <strong>impuestos municipales</strong> (del 0,5 % al 1,2 % del valor catastral por año en Quebec), los <strong>impuestos escolares</strong> (aprox. 0,1 % del valor), el <strong>seguro de hogar</strong> y las cuotas de condominio (si corresponde) deben añadirse por separado. Para una casa de 450 000 $ en la ciudad de Quebec, prevea entre 400 $ y 500 $ adicionales por mes para estos rubros. Varios prestamistas ofrecen una cuenta de impuestos prediales integrada en los pagos hipotecarios para facilitar la gestión.</p>
+        </div>
+      </details>
+    </div>
+  </section>
 </main>
 
 <footer>
@@ -536,6 +860,7 @@ function updateLangToggleUI() {
 
 function applyTranslations() {
   var t = i18n[lang];
+  document.body.dataset.lang = lang;
   document.title = t.pageTitle;
   document.getElementById('mainTitle').textContent    = t.mainTitle;
   document.getElementById('mainSubtitle').textContent = t.mainSubtitle;

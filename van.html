@@ -16,6 +16,7 @@
 <title>VAN — Valeur Actuelle Nette (NPV/IRR) | Calculix.ca</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/ads.css?v=20260426a">
+<link rel="stylesheet" href="assets/seo.css?v=20260510a">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451" crossorigin="anonymous"></script>
 <script src="assets/site-config.js?v=20260426a"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -427,6 +428,269 @@
   </div>
 </main>
 
+<section class="cx-seo" aria-label="Guide VAN/TRI">
+  <!-- ═══════════════════════════════ FRANÇAIS ═══════════════════════════════ -->
+  <div lang="fr">
+    <div class="cx-seo-intro">
+      <h2>Valeur actuelle nette (VAN) et taux de rendement interne (TRI) — guide pour les PME québécoises</h2>
+      <p>La <strong>VAN</strong> et le <strong>TRI</strong> sont les deux indicateurs les plus utilisés pour décider si un projet d'investissement vaut la peine d'être lancé. Que vous évaluiez l'achat d'une nouvelle machine, un projet immobilier, un développement logiciel ou l'acquisition d'une entreprise, ces deux outils vous disent <strong>combien de valeur sera créée</strong> et <strong>quelle est la rentabilité réelle</strong> du projet.</p>
+      <p>Notre calculateur vous permet de saisir l'investissement initial, les flux de trésorerie attendus année après année, et le taux d'actualisation (coût du capital). Il calcule la VAN, le TRI et la période de récupération en un clic. Idéal pour les entrepreneurs, contrôleurs financiers, étudiants en finance et planificateurs.</p>
+    </div>
+
+    <details open>
+      <summary>Qu'est-ce que la VAN exactement ?</summary>
+      <div class="cx-seo-body">
+        <p>La <strong>valeur actuelle nette (VAN)</strong> est la somme des flux de trésorerie futurs d'un projet, ramenés en dollars d'aujourd'hui à l'aide d'un taux d'actualisation. La logique : un dollar reçu dans 5 ans vaut moins qu'un dollar reçu aujourd'hui (à cause de l'inflation, du risque, et du coût d'opportunité).</p>
+        <span class="cx-formula">VAN = − Investissement initial + Σ (Flux<sub>t</sub> ÷ (1+r)<sup>t</sup>)</span>
+        <h3>Comment interpréter</h3>
+        <ul>
+          <li><strong>VAN &gt; 0</strong> : le projet crée de la valeur. Acceptable.</li>
+          <li><strong>VAN = 0</strong> : le projet rapporte exactement le taux d'actualisation. Indifférent.</li>
+          <li><strong>VAN &lt; 0</strong> : le projet détruit de la valeur. À rejeter.</li>
+        </ul>
+        <p>Quand vous choisissez entre plusieurs projets mutuellement exclusifs, prenez celui qui a la <strong>VAN la plus élevée</strong>.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>VAN et TRI — quelle différence ?</summary>
+      <div class="cx-seo-body">
+        <p>Le <strong>taux de rendement interne (TRI)</strong> est le taux d'actualisation qui rend la VAN égale à zéro. Autrement dit, c'est le rendement effectif du projet. On l'interprète comme un pourcentage : « ce projet rapporte X % par année ».</p>
+        <h3>Règle de décision avec le TRI</h3>
+        <p>Acceptez le projet si <strong>TRI &gt; coût du capital</strong>. Si le TRI est inférieur, le projet ne couvre pas votre coût de financement.</p>
+        <div class="cx-example">
+          <strong>Exemple :</strong> votre PME emprunte à 7 %. Un projet a un TRI de 12 % — vous gagnez 5 % au-delà de votre coût d'emprunt. Vert. Un autre a un TRI de 4 % — vous perdez 3 % par rapport au coût d'emprunt. Rouge.
+        </div>
+        <h3>Quand préférer la VAN au TRI</h3>
+        <p>Le TRI peut être trompeur quand les flux changent de signe plusieurs fois (TRI multiples) ou quand on compare des projets de tailles très différentes. Dans le doute, <strong>la VAN gagne</strong> : elle mesure directement la création de valeur en dollars.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Exemple — acquisition d'une machine pour une PME du Saguenay</summary>
+      <div class="cx-seo-body">
+        <p>Une PME manufacturière au Saguenay envisage l'achat d'une nouvelle ligne de production à <strong>250 000 $</strong>. La direction estime des flux de trésorerie nets supplémentaires de 70 000 $/an pendant 5 ans, et une valeur de revente de 30 000 $ en année 5. Le coût du capital de l'entreprise est de <strong>8 %</strong>.</p>
+        <div class="cx-example">
+          <strong>Calcul :</strong><br>
+          Année 0 : −250 000 $<br>
+          Année 1 : 70 000 ÷ 1,08 = 64 815 $<br>
+          Année 2 : 70 000 ÷ 1,08² = 60 014 $<br>
+          Année 3 : 70 000 ÷ 1,08³ = 55 568 $<br>
+          Année 4 : 70 000 ÷ 1,08⁴ = 51 452 $<br>
+          Année 5 : (70 000 + 30 000) ÷ 1,08⁵ = 68 058 $<br>
+          <strong>VAN ≈ +49 907 $</strong>, TRI ≈ 14,8 %.
+        </div>
+        <p>Décision : VAN positive et TRI nettement supérieur au coût du capital. Le projet est rentable et devrait être accepté.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Comment choisir le taux d'actualisation</summary>
+      <div class="cx-seo-body">
+        <p>Le taux d'actualisation (souvent noté <em>r</em>) reflète le <strong>coût du capital</strong> et le <strong>risque</strong> du projet. Plus il est élevé, plus vous pénalisez les flux futurs lointains.</p>
+        <h3>Repères pour une PME québécoise</h3>
+        <ul>
+          <li><strong>Projet à risque faible</strong> (remplacement d'équipement existant, économies sûres) : 5 % à 8 %.</li>
+          <li><strong>Projet à risque moyen</strong> (expansion sur un marché connu, lancement d'un produit éprouvé) : 8 % à 12 %.</li>
+          <li><strong>Projet à risque élevé</strong> (nouveau marché, R&D, startup) : 15 % à 25 % et plus.</li>
+        </ul>
+        <p>Le <strong>WACC</strong> (coût moyen pondéré du capital) est la version sophistiquée : moyenne pondérée du coût de la dette (après impôt) et du coût des fonds propres. Pour une petite entreprise sans dette structurée, on prend souvent le taux d'emprunt bancaire majoré d'une prime de risque.</p>
+        <p>Au Québec, les programmes d'aide d'<strong>Investissement Québec</strong> ou de la <strong>BDC</strong> peuvent influencer le taux effectif via des prêts à taux préférentiel ou des subventions.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Foire aux questions</summary>
+      <div class="cx-seo-body">
+        <p class="cx-faq-q">VAN positive ne veut-il pas toujours dire « bon investissement » ?</p>
+        <p>Pas forcément — ça veut dire que le projet rapporte plus que le taux exigé. Mais si vous avez plusieurs projets et un budget limité, choisissez celui qui a la VAN la plus élevée par dollar investi (c'est l'<strong>indice de profitabilité</strong>).</p>
+        <p class="cx-faq-q">Quelle différence entre VAN et ROI (rendement sur investissement) ?</p>
+        <p>Le ROI est un ratio simple (gain ÷ investissement) qui ignore la chronologie. La VAN tient compte du moment où chaque dollar entre ou sort. Pour des projets pluriannuels, la VAN est <strong>nettement plus précise</strong>.</p>
+        <p class="cx-faq-q">Faut-il inclure les impôts dans les flux ?</p>
+        <p>Oui. Utilisez les flux de trésorerie <strong>après impôt</strong>. Au Québec, le taux combiné fédéral + provincial pour une grande entreprise est environ 26,5 %, et pour une PME admissible à la déduction pour petites entreprises, environ 12,2 %.</p>
+        <p class="cx-faq-q">Qu'est-ce que la période de récupération ?</p>
+        <p>C'est le nombre d'années nécessaires pour récupérer l'investissement initial via les flux. Un complément utile, mais qui ignore tout ce qui se passe après. À utiliser comme <strong>filtre rapide</strong>, pas comme critère unique.</p>
+        <p class="cx-faq-q">Le calculateur fonctionne-t-il pour des flux mensuels ?</p>
+        <p>Saisissez vos flux dans la fréquence cohérente avec le taux. Un taux annuel de 8 % correspond à un taux mensuel de (1,08)^(1/12) − 1 ≈ 0,643 %. La plupart des analyses pratiques restent en flux annuels.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- ═══════════════════════════════ ENGLISH ═══════════════════════════════ -->
+  <div lang="en">
+    <div class="cx-seo-intro">
+      <h2>Net present value (NPV) and internal rate of return (IRR) — guide for Québec SMBs</h2>
+      <p><strong>NPV</strong> and <strong>IRR</strong> are the two most-used indicators to decide whether an investment project is worth pursuing. Whether you're evaluating a new machine, a real-estate project, software development or a business acquisition, these two tools tell you <strong>how much value will be created</strong> and <strong>what the actual return</strong> on the project will be.</p>
+      <p>Our calculator lets you enter the initial investment, expected cash flows year by year, and the discount rate (cost of capital). It computes NPV, IRR and payback period in one click. Ideal for entrepreneurs, financial controllers, finance students and planners.</p>
+    </div>
+
+    <details open>
+      <summary>What exactly is NPV?</summary>
+      <div class="cx-seo-body">
+        <p><strong>Net present value (NPV)</strong> is the sum of a project's future cash flows, brought back to today's dollars using a discount rate. The logic: a dollar received in 5 years is worth less than a dollar received today (because of inflation, risk and opportunity cost).</p>
+        <span class="cx-formula">NPV = − Initial investment + Σ (Flow<sub>t</sub> ÷ (1+r)<sup>t</sup>)</span>
+        <h3>How to interpret</h3>
+        <ul>
+          <li><strong>NPV &gt; 0</strong>: the project creates value. Acceptable.</li>
+          <li><strong>NPV = 0</strong>: the project earns exactly the discount rate. Neutral.</li>
+          <li><strong>NPV &lt; 0</strong>: the project destroys value. Reject.</li>
+        </ul>
+        <p>When choosing between mutually exclusive projects, pick the one with the <strong>highest NPV</strong>.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>NPV vs IRR — what's the difference?</summary>
+      <div class="cx-seo-body">
+        <p>The <strong>internal rate of return (IRR)</strong> is the discount rate that makes NPV equal to zero. In plain terms, it's the project's effective return. We read it as a percentage: "this project returns X% per year".</p>
+        <h3>Decision rule with IRR</h3>
+        <p>Accept the project if <strong>IRR &gt; cost of capital</strong>. If IRR is lower, the project doesn't cover your funding cost.</p>
+        <div class="cx-example">
+          <strong>Example:</strong> your SMB borrows at 7%. A project has a 12% IRR — you earn 5% over your borrowing cost. Green. Another has a 4% IRR — you lose 3% versus your borrowing cost. Red.
+        </div>
+        <h3>When to prefer NPV over IRR</h3>
+        <p>IRR can mislead when flows change sign multiple times (multiple IRRs) or when comparing projects of very different sizes. When in doubt, <strong>NPV wins</strong>: it directly measures value creation in dollars.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Example — buying a machine for a Saguenay SMB</summary>
+      <div class="cx-seo-body">
+        <p>A manufacturing SMB in Saguenay is considering a new production line for <strong>$250,000</strong>. Management expects additional net cash flows of $70,000/year over 5 years, plus a $30,000 resale value in year 5. The company's cost of capital is <strong>8%</strong>.</p>
+        <div class="cx-example">
+          <strong>Calculation:</strong><br>
+          Year 0: −$250,000<br>
+          Year 1: 70,000 ÷ 1.08 = $64,815<br>
+          Year 2: 70,000 ÷ 1.08² = $60,014<br>
+          Year 3: 70,000 ÷ 1.08³ = $55,568<br>
+          Year 4: 70,000 ÷ 1.08⁴ = $51,452<br>
+          Year 5: (70,000 + 30,000) ÷ 1.08⁵ = $68,058<br>
+          <strong>NPV ≈ +$49,907</strong>, IRR ≈ 14.8%.
+        </div>
+        <p>Decision: positive NPV and IRR clearly above cost of capital. Project is profitable and should be accepted.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>How to choose the discount rate</summary>
+      <div class="cx-seo-body">
+        <p>The discount rate (often noted <em>r</em>) reflects the <strong>cost of capital</strong> and the <strong>project risk</strong>. The higher it is, the more you penalize distant future flows.</p>
+        <h3>Benchmarks for a Québec SMB</h3>
+        <ul>
+          <li><strong>Low-risk project</strong> (replacing existing equipment, certain savings): 5% to 8%.</li>
+          <li><strong>Medium-risk project</strong> (expansion in a known market, launching a proven product): 8% to 12%.</li>
+          <li><strong>High-risk project</strong> (new market, R&D, startup): 15% to 25%+.</li>
+        </ul>
+        <p><strong>WACC</strong> (weighted average cost of capital) is the sophisticated version: weighted average of after-tax cost of debt and cost of equity. For a small business with no structured debt, the bank lending rate plus a risk premium is often used.</p>
+        <p>In Québec, support programs from <strong>Investissement Québec</strong> or <strong>BDC</strong> can affect the effective rate via preferential loans or grants.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Frequently asked questions</summary>
+      <div class="cx-seo-body">
+        <p class="cx-faq-q">Doesn't a positive NPV always mean "good investment"?</p>
+        <p>Not exactly — it means the project earns more than your required rate. But with several projects and a limited budget, pick the one with the highest NPV per dollar invested (the <strong>profitability index</strong>).</p>
+        <p class="cx-faq-q">What's the difference between NPV and ROI?</p>
+        <p>ROI is a simple ratio (gain ÷ investment) that ignores timing. NPV accounts for when each dollar comes in or goes out. For multi-year projects, NPV is <strong>significantly more accurate</strong>.</p>
+        <p class="cx-faq-q">Should I include taxes in the cash flows?</p>
+        <p>Yes. Use <strong>after-tax</strong> cash flows. In Québec, the combined federal + provincial rate for a large corporation is ~26.5%, and for an SMB qualifying for the small-business deduction, ~12.2%.</p>
+        <p class="cx-faq-q">What's the payback period?</p>
+        <p>It's the number of years needed to recover the initial investment via cash flows. A useful complement, but it ignores everything that happens after. Use it as a <strong>quick filter</strong>, not the sole criterion.</p>
+        <p class="cx-faq-q">Does the calculator work for monthly flows?</p>
+        <p>Use flows in the frequency consistent with the rate. An 8% annual rate equals a monthly rate of (1.08)^(1/12) − 1 ≈ 0.643%. Most practical analyses stay in annual flows.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- ═══════════════════════════════ ESPAÑOL ═══════════════════════════════ -->
+  <div lang="es">
+    <div class="cx-seo-intro">
+      <h2>Valor actual neto (VAN) y tasa interna de rentabilidad (TIR) — guía para PYME quebequenses</h2>
+      <p>La <strong>VAN</strong> y la <strong>TIR</strong> son los dos indicadores más usados para decidir si vale la pena lanzar un proyecto de inversión. Ya sea que evalúe la compra de una máquina nueva, un proyecto inmobiliario, un desarrollo de software o la adquisición de una empresa, estas dos herramientas le indican <strong>cuánto valor se creará</strong> y <strong>cuál es la rentabilidad real</strong> del proyecto.</p>
+      <p>Nuestra calculadora le permite ingresar la inversión inicial, los flujos de caja esperados año tras año y la tasa de descuento (costo del capital). Calcula la VAN, la TIR y el periodo de recuperación con un clic. Ideal para empresarios, controladores financieros, estudiantes de finanzas y planificadores.</p>
+    </div>
+
+    <details open>
+      <summary>¿Qué es exactamente la VAN?</summary>
+      <div class="cx-seo-body">
+        <p>El <strong>valor actual neto (VAN)</strong> es la suma de los flujos de caja futuros de un proyecto, traídos a dólares de hoy mediante una tasa de descuento. La lógica: un dólar recibido en 5 años vale menos que un dólar recibido hoy (por la inflación, el riesgo y el costo de oportunidad).</p>
+        <span class="cx-formula">VAN = − Inversión inicial + Σ (Flujo<sub>t</sub> ÷ (1+r)<sup>t</sup>)</span>
+        <h3>Cómo interpretar</h3>
+        <ul>
+          <li><strong>VAN &gt; 0</strong>: el proyecto crea valor. Aceptable.</li>
+          <li><strong>VAN = 0</strong>: el proyecto rinde exactamente la tasa de descuento. Indiferente.</li>
+          <li><strong>VAN &lt; 0</strong>: el proyecto destruye valor. Rechazar.</li>
+        </ul>
+        <p>Cuando elija entre varios proyectos mutuamente exclusivos, tome el que tenga la <strong>VAN más alta</strong>.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>VAN y TIR — ¿cuál es la diferencia?</summary>
+      <div class="cx-seo-body">
+        <p>La <strong>tasa interna de rentabilidad (TIR)</strong> es la tasa de descuento que hace que la VAN sea igual a cero. En otras palabras, es el rendimiento efectivo del proyecto. Se interpreta como un porcentaje: "este proyecto rinde X % al año".</p>
+        <h3>Regla de decisión con la TIR</h3>
+        <p>Acepte el proyecto si <strong>TIR &gt; costo del capital</strong>. Si la TIR es menor, el proyecto no cubre su costo de financiamiento.</p>
+        <div class="cx-example">
+          <strong>Ejemplo:</strong> su PYME pide prestado al 7 %. Un proyecto tiene una TIR del 12 % — gana 5 % por encima de su costo de préstamo. Verde. Otro tiene una TIR del 4 % — pierde 3 % frente al costo de préstamo. Rojo.
+        </div>
+        <h3>Cuándo preferir la VAN sobre la TIR</h3>
+        <p>La TIR puede engañar cuando los flujos cambian de signo varias veces (TIR múltiples) o al comparar proyectos de tamaños muy diferentes. En la duda, <strong>gana la VAN</strong>: mide directamente la creación de valor en dólares.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Ejemplo — compra de una máquina para una PYME del Saguenay</summary>
+      <div class="cx-seo-body">
+        <p>Una PYME manufacturera del Saguenay considera la compra de una nueva línea de producción a <strong>250 000 $</strong>. La dirección estima flujos de caja netos adicionales de 70 000 $/año durante 5 años, y un valor de reventa de 30 000 $ en el año 5. El costo del capital de la empresa es del <strong>8 %</strong>.</p>
+        <div class="cx-example">
+          <strong>Cálculo:</strong><br>
+          Año 0: −250 000 $<br>
+          Año 1: 70 000 ÷ 1,08 = 64 815 $<br>
+          Año 2: 70 000 ÷ 1,08² = 60 014 $<br>
+          Año 3: 70 000 ÷ 1,08³ = 55 568 $<br>
+          Año 4: 70 000 ÷ 1,08⁴ = 51 452 $<br>
+          Año 5: (70 000 + 30 000) ÷ 1,08⁵ = 68 058 $<br>
+          <strong>VAN ≈ +49 907 $</strong>, TIR ≈ 14,8 %.
+        </div>
+        <p>Decisión: VAN positiva y TIR claramente superior al costo del capital. El proyecto es rentable y debería aceptarse.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Cómo elegir la tasa de descuento</summary>
+      <div class="cx-seo-body">
+        <p>La tasa de descuento (a menudo denotada <em>r</em>) refleja el <strong>costo del capital</strong> y el <strong>riesgo</strong> del proyecto. Cuanto más alta, más penaliza los flujos futuros lejanos.</p>
+        <h3>Referencias para una PYME quebequense</h3>
+        <ul>
+          <li><strong>Proyecto de bajo riesgo</strong> (reemplazo de equipo existente, ahorros seguros): 5 % a 8 %.</li>
+          <li><strong>Proyecto de riesgo medio</strong> (expansión en un mercado conocido, lanzamiento de un producto probado): 8 % a 12 %.</li>
+          <li><strong>Proyecto de alto riesgo</strong> (nuevo mercado, I+D, startup): 15 % a 25 % o más.</li>
+        </ul>
+        <p>El <strong>WACC</strong> (costo medio ponderado del capital) es la versión sofisticada: media ponderada del costo de la deuda (después de impuestos) y del costo del capital propio. Para una pequeña empresa sin deuda estructurada, se suele tomar la tasa de préstamo bancario más una prima de riesgo.</p>
+        <p>En Quebec, los programas de apoyo de <strong>Investissement Québec</strong> o de la <strong>BDC</strong> pueden influir en la tasa efectiva mediante préstamos preferenciales o subvenciones.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Preguntas frecuentes</summary>
+      <div class="cx-seo-body">
+        <p class="cx-faq-q">¿VAN positiva no significa siempre "buena inversión"?</p>
+        <p>No exactamente — significa que el proyecto rinde más que la tasa requerida. Pero si tiene varios proyectos y un presupuesto limitado, elija el que tenga la VAN más alta por dólar invertido (es el <strong>índice de rentabilidad</strong>).</p>
+        <p class="cx-faq-q">¿Cuál es la diferencia entre VAN y ROI?</p>
+        <p>El ROI es un ratio simple (ganancia ÷ inversión) que ignora la cronología. La VAN tiene en cuenta el momento en que entra o sale cada dólar. Para proyectos plurianuales, la VAN es <strong>mucho más precisa</strong>.</p>
+        <p class="cx-faq-q">¿Hay que incluir los impuestos en los flujos?</p>
+        <p>Sí. Use los flujos de caja <strong>después de impuestos</strong>. En Quebec, la tasa combinada federal + provincial para una gran empresa es ~26,5 %, y para una PYME elegible a la deducción de pequeñas empresas, ~12,2 %.</p>
+        <p class="cx-faq-q">¿Qué es el periodo de recuperación?</p>
+        <p>Es el número de años necesarios para recuperar la inversión inicial vía los flujos. Un complemento útil, pero ignora todo lo que pasa después. Úselo como <strong>filtro rápido</strong>, no como criterio único.</p>
+        <p class="cx-faq-q">¿La calculadora funciona para flujos mensuales?</p>
+        <p>Use flujos en la frecuencia coherente con la tasa. Una tasa anual del 8 % equivale a una tasa mensual de (1,08)^(1/12) − 1 ≈ 0,643 %. La mayoría de los análisis prácticos se quedan en flujos anuales.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
 <footer>
   <div class="footer-links" id="footerLinks"></div>
   <div id="footerText">© 2026 Calculix.ca — Outil informatif uniquement.</div>
@@ -666,6 +930,7 @@
     function setText(id, v) { const el = document.getElementById(id); if (el) el.textContent = v; }
     function setHTML(id, v) { const el = document.getElementById(id); if (el) el.innerHTML = v; }
 
+    document.body.dataset.lang = lang;
     document.title = t.mainTitle.replace(/^\S+\s/, '') + ' | Calculix.ca';
     setText('mainTitle', t.mainTitle);
     setText('mainSubtitle', t.mainSubtitle);

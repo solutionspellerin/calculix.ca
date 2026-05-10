@@ -16,6 +16,7 @@
 <title>Factures &amp; reçus — Invoice Generator | Calculix.ca</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/ads.css?v=20260426a">
+<link rel="stylesheet" href="assets/seo.css?v=20260510a">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451" crossorigin="anonymous"></script>
 <script src="assets/site-config.js?v=20260426a"></script>
 <style>
@@ -616,6 +617,299 @@
   <div class="disclaimer" id="disclaimerText">
     ⚠️ Calculix.ca fournit des outils à titre informatif uniquement. Vérifiez vos taux et numéros de taxes avec Revenu Québec et l'ARC. Cet outil n'est pas un avis fiscal.
   </div>
+
+  <section class="cx-seo" aria-label="Guide factures et reçus">
+    <div lang="fr">
+      <div class="cx-seo-intro">
+        <h2>Facturer correctement au Québec</h2>
+        <p>Émettre une facture conforme est une exigence à la fois fiscale et commerciale pour toute entreprise québécoise : Revenu Québec et l'Agence du revenu du Canada (ARC) imposent des mentions obligatoires, des règles de calcul de la TPS et de la TVQ, des seuils d'inscription et des durées de conservation. Ce guide rassemble l'essentiel pour produire des factures et reçus en règle, de la PME au travailleur autonome.</p>
+      </div>
+
+      <details open>
+        <summary>Exigences Revenu Québec pour une facture conforme</summary>
+        <div class="cx-seo-body">
+          <p>Pour qu'une facture soit acceptée par Revenu Québec et permette à votre client d'<strong>obtenir le crédit de taxe sur les intrants (CTI / RTI)</strong>, elle doit comporter un ensemble de mentions obligatoires. Voici la liste minimale :</p>
+          <ul>
+            <li><strong>Numéro de facture unique</strong> — chaque facture doit avoir un numéro qui ne se répète pas, dans une séquence continue ou structurée par client.</li>
+            <li><strong>Date d'émission</strong> — date à laquelle la facture est émise (et non nécessairement la date de livraison).</li>
+            <li><strong>Identité du vendeur</strong> — nom légal de l'entreprise (ou nom commercial enregistré), adresse complète, courriel ou téléphone.</li>
+            <li><strong>Numéros d'enregistrement TPS et TVQ</strong> — par exemple <span class="cx-formula">123456789 RT0001</span> pour la TPS et <span class="cx-formula">1234567890 TQ0001</span> pour la TVQ — sans ces numéros, votre client ne peut pas réclamer ses crédits.</li>
+            <li><strong>Nom de l'acheteur</strong> — pour les factures de plus de 150 $, l'identification du client est exigée par la loi.</li>
+            <li><strong>Description précise des biens ou services</strong> — quantité, unité, prix unitaire ; vague ne suffit pas.</li>
+            <li><strong>Montant avant taxes (sous-total)</strong>, <strong>TPS et TVQ détaillées séparément</strong>, et <strong>montant total à payer</strong>.</li>
+          </ul>
+          <p>Pour les factures de moins de 30 $, certaines mentions peuvent être allégées (le sous-total et les taxes peuvent être indiqués globalement avec la mention "taxes incluses"), mais inclure tout l'inventaire ci-dessus reste la pratique sûre. Le calculateur Calculix génère automatiquement une présentation imprimable conforme.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>TPS et TVQ — comment les calculer correctement</summary>
+        <div class="cx-seo-body">
+          <p>Au Québec, deux taxes de vente s'ajoutent au prix de la plupart des biens et services :</p>
+          <ul>
+            <li><strong>TPS</strong> (Taxe sur les produits et services) — fédérale, taux de <strong>5 %</strong>.</li>
+            <li><strong>TVQ</strong> (Taxe de vente du Québec) — provinciale, taux de <strong>9,975 %</strong>.</li>
+          </ul>
+          <p>Depuis 2013, la TVQ se calcule sur le sous-total avant taxes, et non plus sur le montant TPS comprise. Les deux taxes sont donc <strong>parallèles</strong> :</p>
+          <p><span class="cx-formula">TPS = sous-total × 0,05</span></p>
+          <p><span class="cx-formula">TVQ = sous-total × 0,09975</span></p>
+          <p><span class="cx-formula">Total = sous-total × 1,14975</span></p>
+          <div class="cx-example">
+            <p><strong>Exemple direct (taxes ajoutées) :</strong></p>
+            <p>Sous-total : 200,00 $</p>
+            <p>TPS (5 %) : 200 × 0,05 = 10,00 $</p>
+            <p>TVQ (9,975 %) : 200 × 0,09975 = 19,95 $</p>
+            <p>Total : 200 + 10 + 19,95 = <strong>229,95 $</strong>.</p>
+          </div>
+          <div class="cx-example">
+            <p><strong>Exemple inverse (taxes incluses) :</strong></p>
+            <p>Total payé : 229,95 $.</p>
+            <p>Sous-total = 229,95 ÷ 1,14975 = 200,00 $.</p>
+            <p>TPS = 200 × 0,05 = 10,00 $ ; TVQ = 200 × 0,09975 = 19,95 $.</p>
+          </div>
+          <p>Lorsqu'un commerçant indique "taxes incluses" (par exemple un café à 5,00 $), il doit pouvoir reconstituer le sous-total et les deux taxes pour ses déclarations TPS/TVQ. Conserver des factures ou journaux où ces composantes sont visibles vous évitera des redressements lors d'une vérification.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Quand faut-il s'inscrire à la TPS/TVQ ?</summary>
+        <div class="cx-seo-body">
+          <p>La règle du <strong>petit fournisseur</strong> exempte les entreprises dont les revenus mondiaux taxables, calculés sur 4 trimestres consécutifs, ne dépassent pas <strong>30 000 $</strong>. Tant que vous restez sous ce seuil, l'inscription est facultative. Dès que les revenus franchissent 30 000 $, vous avez <strong>au plus 30 jours</strong> à partir de la fin du trimestre où le seuil a été atteint pour vous inscrire.</p>
+          <p>L'inscription se fait auprès de Revenu Québec pour les deux taxes (la province administre la TPS au Québec). Vous obtenez :</p>
+          <ul>
+            <li>Un <strong>numéro d'entreprise (NE)</strong> à 9 chiffres, suivi d'un suffixe : <span class="cx-formula">RT0001</span> identifie le compte TPS, <span class="cx-formula">TQ0001</span> identifie le compte TVQ.</li>
+            <li>Une fréquence de déclaration (mensuelle, trimestrielle ou annuelle) déterminée selon vos revenus annuels.</li>
+            <li>Une date d'effet — l'inscription est généralement rétroactive au jour où vous avez dépassé le seuil.</li>
+          </ul>
+          <p>Certains secteurs exigent l'inscription dès le premier dollar : <strong>taxis et VTC, locations à court terme, vente de tabac et de carburant</strong>. Inversement, les <strong>fournitures détaxées</strong> (épicerie de base, médicaments d'ordonnance, livres avec ISBN partiellement) entrent dans le calcul du seuil mais ne génèrent pas de taxe à percevoir. S'inscrire volontairement avant 30 000 $ peut être avantageux : vous récupérez la TPS/TVQ sur vos achats d'affaires (CTI/RTI), surtout au démarrage où les dépenses dépassent souvent les revenus.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Conservation des documents et reçus</summary>
+        <div class="cx-seo-body">
+          <p>Revenu Québec et l'ARC exigent que les <strong>documents et pièces justificatives</strong> liés à votre activité soient conservés pendant <strong>6 ans</strong> à compter de la fin de l'année d'imposition concernée. Cela couvre les factures émises, les factures reçues, les reçus, les relevés bancaires, les contrats, les feuilles de temps, les inventaires et les registres comptables.</p>
+          <p>Le format <strong>papier ou électronique</strong> est accepté, à condition que les fichiers soient lisibles, intacts et accessibles à un vérificateur. Si vous numérisez, l'original papier peut être détruit pourvu que la copie numérique soit fidèle, conservée selon des procédures fiables et consultable à tout moment.</p>
+          <p>Pour qu'un <strong>reçu donne droit à une déduction d'affaires</strong> (repas, déplacements, fournitures, etc.), il doit comporter : la date, le nom du fournisseur, la description des biens ou services, le montant payé, et idéalement les taxes ventilées. Une simple sortie de carte bancaire ne suffit généralement pas — il faut le ticket détaillé. Pour les frais de représentation, on note aussi le motif d'affaires et les personnes rencontrées au verso ou dans un journal.</p>
+          <p>Les <strong>frais de véhicule</strong> exigent un <strong>registre des déplacements</strong> (date, destination, motif, km parcourus) tenu en continu, en plus des reçus d'essence et d'entretien. Un journal Excel ou une application mobile suffit s'il est tenu rigoureusement.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Foire aux questions</summary>
+        <div class="cx-seo-body">
+          <p class="cx-faq-q">Travailleur autonome, dois-je facturer les taxes ?</p>
+          <p>Tant que vos revenus de prestations taxables restent sous <strong>30 000 $</strong> par 4 trimestres consécutifs, non. Au-delà, vous devez vous inscrire dans les 30 jours et facturer TPS et TVQ à vos clients. Beaucoup de travailleurs autonomes choisissent toutefois de s'inscrire dès le départ pour récupérer les taxes payées sur leurs achats d'affaires.</p>
+
+          <p class="cx-faq-q">Quelle est la différence entre une facture et un reçu ?</p>
+          <p>La <strong>facture</strong> est le document émis par le vendeur qui détaille les biens ou services et indique un montant à payer (souvent à crédit). Le <strong>reçu</strong> est la preuve qu'un paiement a été effectué. En contexte de vente comptant immédiate, un même document peut faire office des deux ; pour les ventes à crédit, on émet d'abord la facture, puis le reçu lors du paiement.</p>
+
+          <p class="cx-faq-q">Faut-il une signature sur la facture ?</p>
+          <p>Non. Aucune signature n'est exigée pour qu'une facture soit conforme aux yeux de Revenu Québec ou de l'ARC. Une signature peut toutefois être utile dans certains contextes commerciaux (preuve de réception, acceptation de devis).</p>
+
+          <p class="cx-faq-q">Quelle est la pénalité pour facture non conforme ?</p>
+          <p>Pour le client, l'absence du numéro TPS ou TVQ entraîne le <strong>refus du crédit (CTI/RTI)</strong> demandé. Pour le fournisseur, l'omission répétée d'éléments obligatoires peut entraîner des amendes administratives, des intérêts sur taxes non perçues et, en cas de fraude, des sanctions criminelles. La meilleure protection : utiliser un modèle conforme et le respecter sans exception.</p>
+
+          <p class="cx-faq-q">Puis-je utiliser une seule numérotation pour toutes mes factures ?</p>
+          <p>Oui. Une <strong>séquence unique et continue</strong> (ex. : 2026-001, 2026-002, …) est parfaitement valide et même recommandée. Les "trous" dans la numérotation sont souvent flaggés par les vérificateurs ; conservez les factures annulées avec une mention "ANNULÉE" plutôt que de simplement sauter le numéro.</p>
+        </div>
+      </details>
+    </div>
+
+    <div lang="en">
+      <div class="cx-seo-intro">
+        <h2>Invoicing correctly in Quebec</h2>
+        <p>Issuing a compliant invoice is both a tax and a business requirement for any Quebec company: Revenu Québec and the Canada Revenue Agency (CRA) impose mandatory mentions, GST and QST calculation rules, registration thresholds, and document-retention periods. This guide gathers the essentials for producing compliant invoices and receipts, from SMEs to self-employed workers.</p>
+      </div>
+
+      <details open>
+        <summary>Revenu Québec requirements for a compliant invoice</summary>
+        <div class="cx-seo-body">
+          <p>For an invoice to be accepted by Revenu Québec and to allow your customer to <strong>claim their input tax credits (ITC / ITR)</strong>, it must include a set of mandatory mentions. Here is the minimum list:</p>
+          <ul>
+            <li><strong>Unique invoice number</strong> — every invoice must have a non-repeating number, in a continuous or per-customer sequence.</li>
+            <li><strong>Issue date</strong> — the date the invoice is issued (not necessarily the delivery date).</li>
+            <li><strong>Vendor identity</strong> — legal name (or registered trade name), full address, email or phone.</li>
+            <li><strong>GST and QST registration numbers</strong> — for example <span class="cx-formula">123456789 RT0001</span> for GST and <span class="cx-formula">1234567890 TQ0001</span> for QST — without those, your customer cannot claim their credits.</li>
+            <li><strong>Buyer's name</strong> — for invoices over $150, customer identification is required by law.</li>
+            <li><strong>Precise description of goods or services</strong> — quantity, unit, unit price; vague descriptions do not qualify.</li>
+            <li><strong>Pre-tax amount (subtotal)</strong>, <strong>GST and QST shown separately</strong>, and <strong>total payable</strong>.</li>
+          </ul>
+          <p>For invoices below $30, some mentions can be lightened (subtotal and taxes may appear globally with a "taxes included" note), but including every item above remains the safe practice. The Calculix calculator automatically generates a printable, compliant layout.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>GST and QST — how to calculate them correctly</summary>
+        <div class="cx-seo-body">
+          <p>In Quebec, two sales taxes apply on top of the price of most goods and services:</p>
+          <ul>
+            <li><strong>GST</strong> (Goods and Services Tax) — federal, rate <strong>5 %</strong>.</li>
+            <li><strong>QST</strong> (Quebec Sales Tax) — provincial, rate <strong>9.975 %</strong>.</li>
+          </ul>
+          <p>Since 2013, QST is calculated on the pre-tax subtotal, no longer on the GST-inclusive amount. The two taxes are therefore <strong>parallel</strong>:</p>
+          <p><span class="cx-formula">GST = subtotal × 0.05</span></p>
+          <p><span class="cx-formula">QST = subtotal × 0.09975</span></p>
+          <p><span class="cx-formula">Total = subtotal × 1.14975</span></p>
+          <div class="cx-example">
+            <p><strong>Forward example (taxes added):</strong></p>
+            <p>Subtotal: $200.00</p>
+            <p>GST (5 %): 200 × 0.05 = $10.00</p>
+            <p>QST (9.975 %): 200 × 0.09975 = $19.95</p>
+            <p>Total: 200 + 10 + 19.95 = <strong>$229.95</strong>.</p>
+          </div>
+          <div class="cx-example">
+            <p><strong>Reverse example (taxes included):</strong></p>
+            <p>Total paid: $229.95.</p>
+            <p>Subtotal = 229.95 ÷ 1.14975 = $200.00.</p>
+            <p>GST = 200 × 0.05 = $10.00 ; QST = 200 × 0.09975 = $19.95.</p>
+          </div>
+          <p>When a merchant marks "taxes included" (for example a $5.00 coffee), they must still be able to reconstruct the subtotal and the two taxes for their GST/QST returns. Keeping invoices or journals where these components are visible avoids reassessments during an audit.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>When must you register for GST/QST?</summary>
+        <div class="cx-seo-body">
+          <p>The <strong>small-supplier</strong> rule exempts businesses whose worldwide taxable revenues, calculated on four consecutive quarters, do not exceed <strong>$30,000</strong>. As long as you stay below that threshold, registration is optional. As soon as revenues cross $30,000, you have <strong>at most 30 days</strong> from the end of the quarter where the threshold was crossed to register.</p>
+          <p>Registration is done with Revenu Québec for both taxes (the province administers GST in Quebec). You obtain:</p>
+          <ul>
+            <li>A 9-digit <strong>business number (BN)</strong>, followed by a suffix: <span class="cx-formula">RT0001</span> identifies the GST account, <span class="cx-formula">TQ0001</span> the QST account.</li>
+            <li>A reporting frequency (monthly, quarterly or annual) determined by annual revenue.</li>
+            <li>An effective date — registration is generally retroactive to the day you crossed the threshold.</li>
+          </ul>
+          <p>Some sectors require registration from the first dollar: <strong>taxis and ride-sharing, short-term rentals, tobacco and fuel sales</strong>. Conversely, <strong>zero-rated supplies</strong> (basic groceries, prescription drugs) are counted toward the threshold but generate no tax to collect. Voluntary registration below $30,000 can be advantageous: you recover GST/QST paid on business purchases (ITC/ITR), especially when starting up.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Document and receipt retention</summary>
+        <div class="cx-seo-body">
+          <p>Revenu Québec and the CRA require <strong>documents and supporting records</strong> related to your business to be kept for <strong>6 years</strong> from the end of the relevant tax year. This covers invoices issued, invoices received, receipts, bank statements, contracts, time sheets, inventories and accounting records.</p>
+          <p><strong>Paper or electronic</strong> formats are accepted, provided files are legible, intact and accessible to an auditor. If you scan, the paper original may be destroyed provided the digital copy is faithful, kept under reliable procedures and retrievable at any time.</p>
+          <p>For a <strong>receipt to support a business deduction</strong> (meals, travel, supplies, etc.), it must include: date, vendor name, description of goods or services, amount paid, and ideally taxes broken down. A simple credit-card slip is usually not enough — you need the itemized receipt. For entertainment expenses, also note the business purpose and persons met on the back or in a log.</p>
+          <p><strong>Vehicle expenses</strong> require a <strong>mileage log</strong> (date, destination, purpose, km driven) kept on an ongoing basis, in addition to fuel and maintenance receipts. An Excel sheet or mobile app is fine if kept rigorously.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Frequently asked questions</summary>
+        <div class="cx-seo-body">
+          <p class="cx-faq-q">As a self-employed worker, do I have to charge taxes?</p>
+          <p>As long as your taxable supply revenues stay below <strong>$30,000</strong> over 4 consecutive quarters, no. Above that, you must register within 30 days and charge GST and QST to your customers. Many self-employed workers nevertheless choose to register from the start to recover taxes paid on their business purchases.</p>
+
+          <p class="cx-faq-q">What's the difference between an invoice and a receipt?</p>
+          <p>The <strong>invoice</strong> is the document issued by the seller that details goods or services and shows an amount payable (often on credit). The <strong>receipt</strong> is the proof that a payment was made. For an immediate cash sale, one document can serve as both; for credit sales, you first issue the invoice and then the receipt upon payment.</p>
+
+          <p class="cx-faq-q">Is a signature required on the invoice?</p>
+          <p>No. No signature is required for an invoice to be compliant in the eyes of Revenu Québec or the CRA. A signature can still be useful in some commercial contexts (proof of delivery, quote acceptance).</p>
+
+          <p class="cx-faq-q">What is the penalty for a non-compliant invoice?</p>
+          <p>For the customer, the absence of the GST or QST number triggers the <strong>denial of the claimed credit (ITC/ITR)</strong>. For the supplier, repeated omission of mandatory elements may lead to administrative fines, interest on uncollected taxes and, in fraud cases, criminal sanctions. Best protection: use a compliant template and follow it without exception.</p>
+
+          <p class="cx-faq-q">Can I use a single numbering scheme for all my invoices?</p>
+          <p>Yes. A <strong>single, continuous sequence</strong> (e.g., 2026-001, 2026-002, …) is perfectly valid and even recommended. Gaps in numbering are often flagged by auditors; keep cancelled invoices marked "VOID" rather than simply skipping the number.</p>
+        </div>
+      </details>
+    </div>
+
+    <div lang="es">
+      <div class="cx-seo-intro">
+        <h2>Facturar correctamente en Quebec</h2>
+        <p>Emitir una factura conforme es una exigencia tanto fiscal como comercial para toda empresa quebequense: Revenu Québec y la Agencia de Ingresos de Canadá (ARC) imponen menciones obligatorias, reglas de cálculo del GST y del QST, umbrales de inscripción y períodos de conservación. Esta guía reúne lo esencial para producir facturas y recibos en regla, desde la pyme hasta el trabajador autónomo.</p>
+      </div>
+
+      <details open>
+        <summary>Exigencias de Revenu Québec para una factura conforme</summary>
+        <div class="cx-seo-body">
+          <p>Para que una factura sea aceptada por Revenu Québec y permita a su cliente <strong>obtener el crédito fiscal (CTI / RTI)</strong>, debe incluir un conjunto de menciones obligatorias. Aquí la lista mínima:</p>
+          <ul>
+            <li><strong>Número de factura único</strong> — cada factura debe tener un número que no se repita, en una secuencia continua o estructurada por cliente.</li>
+            <li><strong>Fecha de emisión</strong> — fecha en la que se emite la factura (no necesariamente la de entrega).</li>
+            <li><strong>Identidad del vendedor</strong> — nombre legal de la empresa (o nombre comercial registrado), dirección completa, correo o teléfono.</li>
+            <li><strong>Números de registro GST y QST</strong> — por ejemplo <span class="cx-formula">123456789 RT0001</span> para GST y <span class="cx-formula">1234567890 TQ0001</span> para QST — sin esos números, el cliente no puede reclamar sus créditos.</li>
+            <li><strong>Nombre del comprador</strong> — para facturas de más de 150 $, la ley exige identificar al cliente.</li>
+            <li><strong>Descripción precisa de bienes o servicios</strong> — cantidad, unidad, precio unitario; lo vago no basta.</li>
+            <li><strong>Importe sin impuestos (subtotal)</strong>, <strong>GST y QST detallados por separado</strong>, e <strong>importe total a pagar</strong>.</li>
+          </ul>
+          <p>Para facturas inferiores a 30 $, algunas menciones pueden simplificarse (subtotal y impuestos pueden indicarse globalmente con la mención "impuestos incluidos"), pero incluir todo lo anterior sigue siendo la práctica segura. El calculador Calculix genera automáticamente una presentación imprimible conforme.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>GST y QST — cómo calcularlos correctamente</summary>
+        <div class="cx-seo-body">
+          <p>En Quebec, se añaden dos impuestos al precio de la mayoría de bienes y servicios:</p>
+          <ul>
+            <li><strong>GST</strong> (impuesto sobre bienes y servicios) — federal, tasa del <strong>5 %</strong>.</li>
+            <li><strong>QST</strong> (impuesto de venta de Quebec) — provincial, tasa del <strong>9,975 %</strong>.</li>
+          </ul>
+          <p>Desde 2013, el QST se calcula sobre el subtotal antes de impuestos, ya no sobre el importe con GST. Los dos impuestos son por tanto <strong>paralelos</strong>:</p>
+          <p><span class="cx-formula">GST = subtotal × 0,05</span></p>
+          <p><span class="cx-formula">QST = subtotal × 0,09975</span></p>
+          <p><span class="cx-formula">Total = subtotal × 1,14975</span></p>
+          <div class="cx-example">
+            <p><strong>Ejemplo directo (impuestos añadidos):</strong></p>
+            <p>Subtotal: 200,00 $</p>
+            <p>GST (5 %): 200 × 0,05 = 10,00 $</p>
+            <p>QST (9,975 %): 200 × 0,09975 = 19,95 $</p>
+            <p>Total: 200 + 10 + 19,95 = <strong>229,95 $</strong>.</p>
+          </div>
+          <div class="cx-example">
+            <p><strong>Ejemplo inverso (impuestos incluidos):</strong></p>
+            <p>Total pagado: 229,95 $.</p>
+            <p>Subtotal = 229,95 ÷ 1,14975 = 200,00 $.</p>
+            <p>GST = 200 × 0,05 = 10,00 $ ; QST = 200 × 0,09975 = 19,95 $.</p>
+          </div>
+          <p>Cuando un comerciante indica "impuestos incluidos" (por ejemplo un café a 5,00 $), debe poder reconstruir el subtotal y los dos impuestos para sus declaraciones GST/QST. Conservar facturas o registros donde esos componentes sean visibles le evitará ajustes durante una auditoría.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>¿Cuándo hay que inscribirse al GST/QST?</summary>
+        <div class="cx-seo-body">
+          <p>La regla del <strong>pequeño proveedor</strong> exime a las empresas cuyos ingresos mundiales gravables, calculados sobre 4 trimestres consecutivos, no superen los <strong>30 000 $</strong>. Mientras se permanezca por debajo de ese umbral, la inscripción es facultativa. En cuanto los ingresos crucen los 30 000 $, dispone de <strong>30 días como máximo</strong> a partir del final del trimestre en que se alcanzó el umbral para inscribirse.</p>
+          <p>La inscripción se realiza ante Revenu Québec para ambos impuestos (la provincia administra el GST en Quebec). Se obtiene:</p>
+          <ul>
+            <li>Un <strong>número de empresa (NE)</strong> de 9 dígitos, seguido de un sufijo: <span class="cx-formula">RT0001</span> identifica la cuenta GST, <span class="cx-formula">TQ0001</span> la cuenta QST.</li>
+            <li>Una frecuencia de declaración (mensual, trimestral o anual) determinada por los ingresos anuales.</li>
+            <li>Una fecha de efecto — la inscripción suele ser retroactiva al día en que se cruzó el umbral.</li>
+          </ul>
+          <p>Algunos sectores exigen la inscripción desde el primer dólar: <strong>taxis y plataformas tipo VTC, alquileres a corto plazo, venta de tabaco y combustibles</strong>. A la inversa, los <strong>suministros con tasa cero</strong> (alimentos básicos, medicamentos con receta) entran en el cálculo del umbral pero no generan impuesto a cobrar. Inscribirse voluntariamente antes de los 30 000 $ puede ser ventajoso: se recupera el GST/QST sobre las compras de negocio (CTI/RTI), sobre todo al inicio de la actividad.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Conservación de documentos y recibos</summary>
+        <div class="cx-seo-body">
+          <p>Revenu Québec y la ARC exigen que los <strong>documentos y comprobantes</strong> relacionados con su actividad se conserven durante <strong>6 años</strong> a partir del fin del año fiscal correspondiente. Esto incluye facturas emitidas, facturas recibidas, recibos, extractos bancarios, contratos, hojas de tiempo, inventarios y registros contables.</p>
+          <p>Se acepta el formato <strong>papel o electrónico</strong>, siempre que los archivos sean legibles, íntegros y accesibles para un auditor. Si digitaliza, el original en papel puede destruirse siempre que la copia digital sea fiel, conservada con procedimientos confiables y consultable en cualquier momento.</p>
+          <p>Para que un <strong>recibo dé derecho a una deducción de negocio</strong> (comidas, desplazamientos, suministros, etc.), debe incluir: fecha, nombre del proveedor, descripción de bienes o servicios, importe pagado e idealmente impuestos desglosados. Un simple ticket de tarjeta no suele ser suficiente — se necesita el ticket detallado. Para gastos de representación, anote también el motivo y las personas presentes.</p>
+          <p>Los <strong>gastos de vehículo</strong> requieren un <strong>registro de desplazamientos</strong> (fecha, destino, motivo, km recorridos) llevado de forma continua, además de los recibos de combustible y mantenimiento. Una hoja Excel o una aplicación móvil son válidas si se mantienen con rigor.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Preguntas frecuentes</summary>
+        <div class="cx-seo-body">
+          <p class="cx-faq-q">Como trabajador autónomo, ¿debo facturar los impuestos?</p>
+          <p>Mientras sus ingresos por servicios gravables se mantengan por debajo de <strong>30 000 $</strong> en 4 trimestres consecutivos, no. Por encima, debe inscribirse en 30 días y cobrar GST y QST a sus clientes. Muchos autónomos eligen, sin embargo, inscribirse desde el inicio para recuperar los impuestos pagados en sus compras de negocio.</p>
+
+          <p class="cx-faq-q">¿Cuál es la diferencia entre factura y recibo?</p>
+          <p>La <strong>factura</strong> es el documento emitido por el vendedor que detalla los bienes o servicios e indica un importe a pagar (a menudo a crédito). El <strong>recibo</strong> es la prueba de que un pago se realizó. En venta al contado inmediata, un mismo documento puede cumplir ambas funciones; en ventas a crédito, primero se emite la factura y luego el recibo al pagar.</p>
+
+          <p class="cx-faq-q">¿Hace falta una firma en la factura?</p>
+          <p>No. No se requiere firma para que una factura sea conforme a Revenu Québec o la ARC. Una firma puede ser útil en ciertos contextos comerciales (prueba de recepción, aceptación de presupuesto).</p>
+
+          <p class="cx-faq-q">¿Cuál es la sanción por una factura no conforme?</p>
+          <p>Para el cliente, la ausencia del número GST o QST conlleva el <strong>rechazo del crédito (CTI/RTI)</strong> reclamado. Para el proveedor, la omisión repetida de elementos obligatorios puede acarrear multas administrativas, intereses sobre impuestos no recaudados y, en caso de fraude, sanciones penales. La mejor protección: usar una plantilla conforme y respetarla sin excepción.</p>
+
+          <p class="cx-faq-q">¿Puedo usar una sola numeración para todas mis facturas?</p>
+          <p>Sí. Una <strong>secuencia única y continua</strong> (ej.: 2026-001, 2026-002, …) es perfectamente válida e incluso recomendada. Los "vacíos" en la numeración suelen llamar la atención de los auditores; conserve las facturas anuladas con la mención "ANULADA" en lugar de saltar el número.</p>
+        </div>
+      </details>
+    </div>
+  </section>
 </main>
 
 <footer>
@@ -922,6 +1216,7 @@
     const t = i18n[lang];
     function setText(id, v) { const el = document.getElementById(id); if (el) el.textContent = v; }
     function setHTML(id, v) { const el = document.getElementById(id); if (el) el.innerHTML = v; }
+    document.body.dataset.lang = lang;
 
     document.title = t.mainTitle.replace(/^\S+\s/, '') + ' | Calculix.ca';
     setText('mainTitle', t.mainTitle);
