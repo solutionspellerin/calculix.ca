@@ -1,0 +1,61 @@
+{
+  "domain": "https://www.calculix.ca",
+  "brand": "Calculix.ca",
+  "pages": {
+    "index.html": {
+      "fr": ["Calculateurs financiers gratuits au Québec | Calculix.ca", "Calculateurs financiers gratuits au Québec : pourboires, investissement, VAN/TRI, amortissement, budgets, équité salariale et factures conformes TPS/TVQ."],
+      "en": ["Free Financial Calculators for Québec | Calculix.ca", "Free financial calculators for Québec: tip splitting, investment, NPV/IRR, loan amortization, budgets, pay equity and GST/QST-compliant invoices."],
+      "es": ["Calculadoras financieras gratuitas para Quebec | Calculix.ca", "Calculadoras financieras gratuitas para Quebec: propinas, inversión, VAN/TIR, amortización, presupuestos, equidad salarial y facturas con TPS/TVQ."]
+    },
+    "pourboires.html": {
+      "fr": ["Calculateur de partage des pourboires | Calculix.ca", "Partagez les pourboires équitablement entre employés : parts égales ou au prorata des heures travaillées. Gratuit, exportable en Excel."],
+      "en": ["Tip Splitting Calculator | Calculix.ca", "Split tips fairly between staff: equal shares or in proportion to hours worked. Free, with Excel export."],
+      "es": ["Calculadora para repartir propinas | Calculix.ca", "Reparta las propinas de forma justa entre el personal: partes iguales o en proporción a las horas trabajadas. Gratis, con exportación a Excel."]
+    },
+    "investissement.html": {
+      "fr": ["Calculateur de projection d'investissement | Calculix.ca", "Combien de temps ou quelle mise pour atteindre votre objectif ? Projection avec rendement composé, cotisations récurrentes et graphique."],
+      "en": ["Investment Projection Calculator | Calculix.ca", "How long, or how much, to reach your goal? Projection with compound returns, recurring contributions and a chart."],
+      "es": ["Calculadora de proyección de inversión | Calculix.ca", "¿Cuánto tiempo o cuánto dinero para alcanzar su objetivo? Proyección con rendimiento compuesto, aportes periódicos y gráfico."]
+    },
+    "van.html": {
+      "fr": ["Calcul de la VAN et du TRI | Calculix.ca", "Calculez la valeur actuelle nette (VAN), le taux de rendement interne (TRI) et la période de récupération de vos projets d'investissement."],
+      "en": ["NPV and IRR Calculator | Calculix.ca", "Calculate the net present value (NPV), internal rate of return (IRR) and payback period of your investment projects."],
+      "es": ["Calculadora de VAN y TIR | Calculix.ca", "Calcule el valor actual neto (VAN), la tasa interna de retorno (TIR) y el periodo de recuperación de sus proyectos de inversión."]
+    },
+    "amortissement.html": {
+      "fr": ["Calculateur d'amortissement de prêt ou d'hypothèque | Calculix.ca", "Calculez vos paiements de prêt ou d'hypothèque, et la part de capital et d'intérêts à chaque période. Tableau exportable en Excel."],
+      "en": ["Loan and Mortgage Amortization Calculator | Calculix.ca", "Calculate your loan or mortgage payments and the principal and interest split for every period. Schedule exportable to Excel."],
+      "es": ["Calculadora de amortización de préstamos e hipotecas | Calculix.ca", "Calcule sus pagos de préstamo o hipoteca y la parte de capital e intereses de cada periodo. Tabla exportable a Excel."]
+    },
+    "budget-couple.html": {
+      "fr": ["Budget de couple — partage des dépenses | Calculix.ca", "Budget de couple : partagez les dépenses au prorata des revenus ou selon un pourcentage choisi. Montants par jour, semaine, mois et année."],
+      "en": ["Couple Budget — Sharing Expenses | Calculix.ca", "Couple budget: share expenses in proportion to income or by a chosen percentage. Amounts per day, week, month and year."],
+      "es": ["Presupuesto de pareja — reparto de gastos | Calculix.ca", "Presupuesto de pareja: reparta los gastos en proporción a los ingresos o según un porcentaje elegido. Montos por día, semana, mes y año."]
+    },
+    "budget-personne-seule.html": {
+      "fr": ["Budget personnel — personne seule | Calculix.ca", "Budget personnel : revenus et dépenses par jour, semaine, mois et année, taux d'épargne et règle 50/30/20. Exportable en Excel."],
+      "en": ["Personal Budget Calculator | Calculix.ca", "Personal budget: income and expenses per day, week, month and year, savings rate and the 50/30/20 rule. Excel export."],
+      "es": ["Presupuesto personal | Calculix.ca", "Presupuesto personal: ingresos y gastos por día, semana, mes y año, tasa de ahorro y regla 50/30/20. Exportable a Excel."]
+    },
+    "equite-salariale.html": {
+      "fr": ["Calculateur d'équité salariale (Québec) | Calculix.ca", "Évaluez les catégories d'emplois selon des facteurs et sous-facteurs pondérés, en s'inspirant de la Loi sur l'équité salariale du Québec. Export Excel."],
+      "en": ["Pay Equity Calculator (Québec) | Calculix.ca", "Evaluate job classes with weighted factors and sub-factors, based on Québec's Pay Equity Act. Excel export."],
+      "es": ["Calculadora de equidad salarial (Quebec) | Calculix.ca", "Evalúe categorías de empleo con factores y subfactores ponderados, según la Ley de equidad salarial de Quebec. Exportación a Excel."]
+    },
+    "factures-recus.html": {
+      "fr": ["Générateur de factures et reçus TPS/TVQ | Calculix.ca", "Générateur gratuit de factures et reçus pour entreprises du Québec : TPS/TVQ, TVH ou sans taxes, historique et export PDF imprimable."],
+      "en": ["GST/QST Invoice and Receipt Generator | Calculix.ca", "Free invoice and receipt generator for Québec businesses: GST/QST, HST or no tax, invoice history and printable PDF export."],
+      "es": ["Generador de facturas y recibos TPS/TVQ | Calculix.ca", "Generador gratuito de facturas y recibos para empresas de Quebec: TPS/TVQ, TVH o sin impuestos, historial y exportación a PDF."]
+    },
+    "about.html": {
+      "fr": ["À propos de Calculix.ca — qui sommes-nous | Calculix.ca", "Qui est derrière Calculix.ca : Marie-Pier Pellerin, Solutions Pellerin (Val-des-Sources, Québec). Mission, méthode de calcul, sources et contact."],
+      "en": ["About Calculix.ca — who we are | Calculix.ca", "Who is behind Calculix.ca: Marie-Pier Pellerin, Solutions Pellerin (Val-des-Sources, Québec). Mission, calculation method, sources and contact."],
+      "es": ["Acerca de Calculix.ca — quiénes somos | Calculix.ca", "Quién está detrás de Calculix.ca: Marie-Pier Pellerin, Solutions Pellerin (Val-des-Sources, Quebec). Misión, método de cálculo, fuentes y contacto."]
+    },
+    "privacy-policy.html": {
+      "fr": ["Politique de confidentialité | Calculix.ca", "Politique de confidentialité de Calculix.ca : cookies, publicités Google AdSense et liens d'affiliation (Amazon, Le CFO masqué)."],
+      "en": ["Privacy Policy | Calculix.ca", "Calculix.ca privacy policy: cookies, Google AdSense advertising and affiliate links (Amazon, Le CFO masqué)."],
+      "es": ["Política de privacidad | Calculix.ca", "Política de privacidad de Calculix.ca: cookies, publicidad de Google AdSense y enlaces de afiliados (Amazon, Le CFO masqué)."]
+    }
+  }
+}

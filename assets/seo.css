@@ -4,11 +4,8 @@
    ============================================================ */
 
 /* Visibilité par langue : body[data-lang="fr|en|es"] */
-.cx-seo > [lang]      { display: none; }
-body[data-lang="fr"] .cx-seo > [lang="fr"],
-body:not([data-lang]) .cx-seo > [lang="fr"] { display: block; }
-body[data-lang="en"] .cx-seo > [lang="en"] { display: block; }
-body[data-lang="es"] .cx-seo > [lang="es"] { display: block; }
+/* Une seule langue par page (FR racine, /en/, /es/) : toujours visible */
+.cx-seo > [lang] { display: block; }
 
 .cx-seo {
   width: 100%;

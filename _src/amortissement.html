@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8GX6M9JHC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Z8GX6M9JHC');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Calculateur d'amortissement : calculez vos paiements de prêt ou d'hypothèque, le capital et les intérêts à chaque période. Exportable en Excel. Gratuit · Québec.">
+<link rel="canonical" href="https://www.calculix.ca/amortissement.html">
+<title>Calculateur d'amortissement — Loan Schedule | Calculix.ca</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ads.css?v=20260424j">
+<link rel="stylesheet" href="assets/seo.css?v=20260510a">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451" crossorigin="anonymous"></script>
+<script src="assets/site-config.js?v=20260424j"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+  :root {
+    --bleu: #1a3a5c; --bleu-clair: #2d6a9f; --accent: #e8c547;
+    --vert: #2f8f5f; --vert-clair: #4db37f; --vert-fonce: #1f6e45;
+    --rouge: #c64545; --rouge-clair: #e57373;
+    --fond: #f4f1eb; --blanc: #ffffff; --gris: #8a8a8a;
+    --gris-clair: #e8e4dc; --texte: #1a1a1a;
+    --ombre: 0 4px 24px rgba(26,58,92,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--fond); color: var(--texte); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+
+  header { width: 100%; background: var(--bleu); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1.3rem; letter-spacing: 0.03em; text-decoration: none; }
+  .logo span { color: var(--blanc); font-weight: 300; }
+  .header-right { display: flex; align-items: center; gap: 14px; }
+  .lang-label { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.05em; }
+  .lang-toggle-3 {
+    display: inline-flex; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px;
+    overflow: hidden; cursor: pointer; background: rgba(255,255,255,0.04);
+    font-size: 0.78rem; letter-spacing: 0.08em;
+  }
+  .lang-toggle-3 .lang-opt { padding: 6px 12px; color: rgba(255,255,255,0.6); transition: all 0.15s; }
+  .lang-toggle-3 .lang-opt.active { color: var(--bleu); background: var(--accent); font-weight: 700; }
+
+  nav.site-nav { width: 100%; background: #142d47; border-bottom: 2px solid rgba(232,197,71,0.2); }
+  nav.site-nav .nav-inner { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; padding: 0 16px; gap: 4px; overflow-x: auto; }
+  nav.site-nav .nav-link { display: inline-block; padding: 12px 16px; color: rgba(255,255,255,0.6); font-size: 0.85rem; font-weight: 500; text-decoration: none; letter-spacing: 0.03em; white-space: nowrap; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
+  nav.site-nav .nav-link:hover { color: var(--blanc); }
+  nav.site-nav .nav-link.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  main { width: 100%; max-width: 1080px; padding: 24px 16px 64px; display: grid; grid-template-columns: 1fr 320px; gap: 28px; align-items: start; }
+
+  .card { background: var(--blanc); border-radius: 16px; box-shadow: var(--ombre); overflow: hidden; }
+  .card-header { background: linear-gradient(135deg, #2d6a9f 0%, #1a3a5c 100%); padding: 24px 32px 20px; position: relative; overflow: hidden; }
+  .card-header::before { content: ''; position: absolute; right: -40px; top: -40px; width: 160px; height: 160px; border-radius: 50%; background: rgba(232,197,71,0.12); }
+  .card-header::after  { content: ''; position: absolute; right: 20px; top: 20px; width: 80px; height: 80px; border-radius: 50%; background: rgba(232,197,71,0.08); }
+  .card-header h1 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--blanc); margin-bottom: 6px; position: relative; z-index: 1; }
+  .card-header p  { color: rgba(255,255,255,0.75); font-size: 0.88rem; font-weight: 300; position: relative; z-index: 1; }
+  .card-body { padding: 32px; }
+
+  .form-group { margin-bottom: 20px; }
+  label { display: block; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gris); margin-bottom: 8px; }
+  input[type="number"], input[type="date"], select {
+    width: 100%; padding: 13px 16px;
+    border: 1.5px solid var(--gris-clair); border-radius: 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 1rem; color: var(--texte);
+    background: var(--fond);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  input[type="number"]:focus, input[type="date"]:focus, select:focus {
+    border-color: var(--bleu-clair); box-shadow: 0 0 0 3px rgba(45,106,159,0.14); background: var(--blanc);
+  }
+  .input-prefix, .input-suffix { position: relative; }
+  .input-prefix input { padding-left: 36px; }
+  .input-suffix input { padding-right: 44px; }
+  .input-prefix::before { content: attr(data-prefix); position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--gris); font-weight: 600; pointer-events: none; }
+  .input-suffix::after  { content: attr(data-suffix); position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--gris); font-weight: 600; pointer-events: none; }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .select-wrapper { position: relative; }
+  .select-wrapper select { appearance: none; cursor: pointer; padding-right: 40px; }
+  .select-wrapper::after {
+    content: '▾'; position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    color: var(--bleu); pointer-events: none; font-size: 0.9rem;
+  }
+
+  .result-banner {
+    margin-top: 24px; background: linear-gradient(135deg, #1a3a5c 0%, #2d6a9f 100%);
+    border-radius: 14px; padding: 24px 28px; position: relative; overflow: hidden;
+  }
+  .result-banner::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--accent); border-radius: 4px 0 0 4px; }
+  .result-banner-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 10px; }
+  .result-banner-main  { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--blanc); line-height: 1.1; font-weight: 700; }
+  .result-banner-sub   { font-size: 0.88rem; color: var(--accent); margin-top: 8px; font-weight: 500; }
+  .result-banner.empty .result-banner-main { color: rgba(255,255,255,0.3); font-size: 1rem; font-family: 'DM Sans', sans-serif; font-weight: 300; padding: 6px 0; }
+
+  .kpi-grid { margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .kpi { padding: 16px 18px; border-radius: 12px; border: 1.5px solid transparent; background: var(--fond); }
+  .kpi.invested { border-color: rgba(45,106,159,0.25); }
+  .kpi.gains    { border-color: rgba(198,69,69,0.25); background: #fff5f5; }
+  .kpi.final    { border-color: rgba(232,197,71,0.55); background: #fdf6e0; }
+  .kpi-label    { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gris); margin-bottom: 6px; }
+  .kpi-value    { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--bleu); line-height: 1.1; }
+  .kpi.gains .kpi-value { color: var(--rouge); }
+  .kpi.final .kpi-value { color: var(--vert-fonce); }
+  .kpi-sub      { font-size: 0.76rem; color: var(--gris); margin-top: 4px; }
+
+  .section-divider { margin: 28px 0 18px; padding-top: 22px; border-top: 1.5px dashed var(--gris-clair); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--bleu); }
+
+  .table-wrap { overflow-x: auto; background: var(--fond); border-radius: 12px; border: 1px solid var(--gris-clair); max-height: 520px; overflow-y: auto; }
+  table.schedule { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 640px; }
+  table.schedule thead th {
+    position: sticky; top: 0; background: var(--bleu); color: var(--blanc);
+    font-weight: 600; padding: 11px 12px; font-size: 0.78rem;
+    letter-spacing: 0.04em; text-align: right;
+    z-index: 1;
+  }
+  table.schedule thead th:first-child, table.schedule thead th:nth-child(2) { text-align: left; }
+  table.schedule td { padding: 9px 12px; border-bottom: 1px solid rgba(0,0,0,0.05); text-align: right; color: #333; }
+  table.schedule td:first-child { text-align: left; color: var(--bleu); font-weight: 600; }
+  table.schedule td:nth-child(2) { text-align: left; color: var(--gris); }
+  table.schedule tbody tr:hover { background: rgba(45,106,159,0.05); }
+  table.schedule tbody tr.year-end { background: #fdf6e0; font-weight: 600; }
+
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .info-card { background: var(--blanc); border-radius: 14px; box-shadow: var(--ombre); padding: 22px 24px; }
+  .info-card h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--bleu); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1.5px solid var(--gris-clair); }
+  .info-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--gris-clair); font-size: 0.88rem; }
+  .info-item:last-child { border-bottom: none; }
+  .info-item .label { color: var(--gris); }
+  .info-item .value { font-weight: 600; color: var(--bleu); }
+  .info-item .value.green { color: var(--vert-fonce); }
+
+  .disclaimer {
+    grid-column: 1 / -1; margin-top: 4px; padding: 14px 18px;
+    background: #fff8e6; border-left: 3px solid var(--accent);
+    border-radius: 8px; font-size: 0.82rem; line-height: 1.7; color: #666;
+  }
+
+  .export-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #1d6f42 0%, #2f8f5f 100%);
+    color: white; border: none; border-radius: 10px;
+    font-family: inherit; font-size: 0.9rem; font-weight: 600;
+    letter-spacing: 0.02em; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(29,111,66,0.25);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .export-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(29,111,66,0.35); }
+  .export-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+  .export-btn .xls-icon { font-size: 1rem; }
+
+  footer { width: 100%; background: var(--bleu); padding: 22px 32px; text-align: center; color: rgba(255,255,255,0.4); font-size: 0.78rem; margin-top: auto; }
+  footer a { color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 8px; }
+  footer a:hover { color: var(--accent); }
+  .footer-links { margin-bottom: 10px; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .animate { animation: fadeUp 0.3s ease forwards; }
+
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } .kpi-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 480px) {
+    .row-2 { grid-template-columns: 1fr; }
+    header { padding: 14px 16px; }
+    .lang-label { display: none; }
+    main { padding: 16px 10px 48px; gap: 18px; }
+    .card-header { padding: 20px 22px 16px; }
+    .card-header h1 { font-size: 1.35rem; }
+    .card-header p { font-size: 0.82rem; }
+    .card-body { padding: 18px 14px; }
+    .section-title { font-size: 0.95rem; }
+    table.schedule { font-size: 0.78rem; min-width: 540px; }
+    table.schedule thead th, table.schedule td { padding: 6px 8px; }
+    .table-wrap { box-shadow: inset -8px 0 8px -8px rgba(0,0,0,0.15); max-height: 420px; }
+    .export-btn { width: 100%; padding: 12px 16px; }
+    .section-divider { padding-top: 18px; margin: 22px 0 14px; }
+    .kpi { padding: 14px 16px; }
+    .info-card { padding: 18px 18px; }
+    aside.sidebar { gap: 14px; }
+  }
+  @media (max-width: 380px) {
+    .card-header h1 { font-size: 1.2rem; }
+    table.schedule { min-width: 480px; font-size: 0.74rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Calcul<span>ix</span>.ca</a>
+  <div class="header-right">
+    <span class="lang-label" id="headerSubtitle">Calculs financiers gratuits · Québec</span>
+    <div class="lang-toggle-3" onclick="toggleLang()" id="langToggle" title="Language">
+      <span class="lang-opt" data-lang="fr">FR</span>
+      <span class="lang-opt" data-lang="en">EN</span>
+      <span class="lang-opt" data-lang="es">ES</span>
+    </div>
+  </div>
+</header>
+
+<nav class="site-nav"><div class="nav-inner" id="siteNav"></div></nav>
+
+<main>
+  <div class="card">
+    <div class="card-header">
+      <h1 id="mainTitle">🏦 Calculateur d'amortissement</h1>
+      <p id="mainSubtitle">Tableau complet des paiements de votre prêt ou hypothèque</p>
+    </div>
+    <div class="card-body">
+
+      <div class="row-2">
+        <div class="form-group">
+          <label id="labelPrincipal">Montant du prêt</label>
+          <div class="input-prefix" data-prefix="$"><input type="number" id="principal" min="0" step="1000" value="300000" /></div>
+        </div>
+        <div class="form-group">
+          <label id="labelRate">Taux d'intérêt annuel</label>
+          <div class="input-suffix" data-suffix="%"><input type="number" id="rate" min="0" max="50" step="0.01" value="5.25" /></div>
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div class="form-group">
+          <label id="labelYears">Durée d'amortissement (années)</label>
+          <input type="number" id="years" min="1" max="40" step="1" value="25" />
+        </div>
+        <div class="form-group">
+          <label id="labelFreq">Fréquence de paiement</label>
+          <div class="select-wrapper">
+            <select id="freq">
+              <option value="monthly"    id="optMonthly" selected>Mensuel (12 / an)</option>
+              <option value="biweekly"   id="optBiweekly">Aux 2 semaines (26 / an)</option>
+              <option value="weekly"     id="optWeekly">Hebdomadaire (52 / an)</option>
+              <option value="accelerated-biweekly" id="optAccBi">Accéléré aux 2 semaines</option>
+              <option value="accelerated-weekly"   id="optAccWk">Accéléré hebdomadaire</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div class="form-group">
+          <label id="labelCompounding">Mode de composition</label>
+          <div class="select-wrapper">
+            <select id="compounding">
+              <option value="canadian" id="optCanadian" selected>Canadien (semi-annuel)</option>
+              <option value="standard" id="optStandard">Standard (à chaque période)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label id="labelStart">Date du premier paiement</label>
+          <input type="date" id="startDate" />
+        </div>
+      </div>
+
+      <div class="result-banner empty" id="resultBanner">
+        <div class="result-banner-label" id="resultLabel">Paiement périodique</div>
+        <div class="result-banner-main"  id="resultMain">Remplissez les champs ci-dessus</div>
+        <div class="result-banner-sub"   id="resultSub"></div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi invested">
+          <div class="kpi-label" id="kpi1Label">Capital total</div>
+          <div class="kpi-value" id="kpi1Val">—</div>
+          <div class="kpi-sub"   id="kpi1Sub"></div>
+        </div>
+        <div class="kpi gains">
+          <div class="kpi-label" id="kpi2Label">Intérêts totaux</div>
+          <div class="kpi-value" id="kpi2Val">—</div>
+          <div class="kpi-sub"   id="kpi2Sub"></div>
+        </div>
+        <div class="kpi final">
+          <div class="kpi-label" id="kpi3Label">Coût total</div>
+          <div class="kpi-value" id="kpi3Val">—</div>
+          <div class="kpi-sub"   id="kpi3Sub"></div>
+        </div>
+      </div>
+
+      <div class="section-divider">
+        <div class="section-title">📋 <span id="scheduleTitle">Tableau d'amortissement</span></div>
+        <button type="button" class="export-btn" id="exportBtn" onclick="exportToExcel()" disabled>
+          <span class="xls-icon">📊</span><span id="exportLbl">Exporter en Excel</span>
+        </button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="schedule" id="scheduleTable">
+          <thead><tr>
+            <th id="tcNum">#</th>
+            <th id="tcDate">Date</th>
+            <th id="tcPayment">Paiement</th>
+            <th id="tcPrincipal">Capital</th>
+            <th id="tcInterest">Intérêt</th>
+            <th id="tcBalance">Solde</th>
+          </tr></thead>
+          <tbody id="scheduleBody"></tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="info-card">
+      <h3 id="infoTitle">📋 Résumé</h3>
+      <div class="info-item"><span class="label" id="lblI1">Montant emprunté</span><span class="value" id="infoPrincipal">—</span></div>
+      <div class="info-item"><span class="label" id="lblI2">Taux effectif / période</span><span class="value" id="infoPeriodRate">—</span></div>
+      <div class="info-item"><span class="label" id="lblI3">Nombre de paiements</span><span class="value" id="infoNumPayments">—</span></div>
+      <div class="info-item"><span class="label" id="lblI4">Fréquence</span><span class="value" id="infoFreq">—</span></div>
+      <div class="info-item"><span class="label" id="lblI5">Date finale</span><span class="value green" id="infoEndDate">—</span></div>
+    </div>
+
+    <div class="info-card">
+      <h3 id="tipsTitle">💡 Bon à savoir</h3>
+      <p id="tipsP1" style="font-size:0.86rem; color:#555; line-height:1.6; margin-bottom:8px;">
+        Au Canada, les <strong>hypothèques</strong> sont composées <strong>semi-annuellement</strong> par la loi (Loi sur l'intérêt). Les prêts auto, personnels ou cartes utilisent souvent le mode standard.
+      </p>
+      <p id="tipsP2" style="font-size:0.86rem; color:#555; line-height:1.6;">
+        Les paiements <strong>accélérés</strong> (aux 2 semaines ou hebdomadaires) équivalent à 13 paiements mensuels par an — vous réduisez la durée et les intérêts !
+      </p>
+    </div>
+  </aside>
+
+  <div class="disclaimer" id="disclaimerText">
+    ⚠️ Les calculs sont fournis à titre indicatif. Le taux réel, les frais, les assurances et les taxes peuvent varier. Pour une hypothèque, consultez votre institution financière ou un courtier hypothécaire avant de prendre une décision.
+  </div>
+
+  <div style="grid-column: 1 / -1;">
+    <div class="partners-row" id="partnersRow"></div>
+  </div>
+
+  <section class="cx-seo" aria-label="Guide amortissement" style="grid-column: 1 / -1;">
+    <div lang="fr">
+      <div class="cx-seo-intro">
+        <h2>Tout savoir sur l'amortissement hypothécaire au Québec</h2>
+        <p>L'amortissement hypothécaire est le processus par lequel vous remboursez progressivement le capital emprunté pour l'achat d'une propriété, en effectuant des versements périodiques qui couvrent à la fois le <strong>capital</strong> et les <strong>intérêts</strong>. Au Québec, comme partout au Canada, le calcul de l'amortissement obéit à des règles précises encadrées par la <em>Loi sur l'intérêt</em>, qui impose une composition <strong>semi-annuelle</strong> pour les prêts hypothécaires garantis par un immeuble résidentiel.</p>
+        <p>Comprendre comment se décompose chaque versement, comment la fréquence de paiement influence le coût total, et quelles règles s'appliquent à votre situation peut vous faire économiser des dizaines de milliers de dollars sur la durée de votre prêt. Ce guide pratique vous aide à interpréter les résultats du calculateur ci-dessus et à prendre des décisions financières éclairées avec votre courtier hypothécaire ou votre conseiller chez Desjardins, à la Banque Nationale, à la Banque Royale ou ailleurs.</p>
+      </div>
+
+      <details open><summary>Comment fonctionne l'amortissement hypothécaire</summary>
+        <div class="cx-seo-body">
+          <p>L'amortissement repose sur une formule mathématique classique qui calcule un paiement périodique constant permettant de rembourser intégralement le capital sur la durée prévue, tout en payant les intérêts dus à chaque période sur le solde restant. La formule de base est :</p>
+          <span class="cx-formula">Paiement = P × r ÷ (1 − (1 + r)^−n)</span>
+          <p>où <strong>P</strong> est le capital emprunté, <strong>r</strong> est le taux d'intérêt par période et <strong>n</strong> est le nombre total de paiements. Pour une hypothèque canadienne, le taux par période doit être ajusté à partir du taux nominal annuel composé semi-annuellement, ce qui donne <span class="cx-formula">r = (1 + i/2)^(2/m) − 1</span>, où <strong>i</strong> est le taux annuel affiché et <strong>m</strong> est le nombre de paiements par année (12 pour mensuel, 26 pour aux deux semaines, 52 pour hebdomadaire).</p>
+          <h3>Décomposition capital / intérêts</h3>
+          <p>Chaque versement contient deux parts : la portion <strong>intérêt</strong> est calculée sur le solde restant en début de période (solde × r), et la portion <strong>capital</strong> est ce qui reste du paiement après avoir payé les intérêts. Au début de l'amortissement, le solde est élevé, donc les intérêts dominent ; à mesure que le solde diminue, la portion capital augmente et la portion intérêt diminue. C'est pourquoi vos premiers paiements semblent peu réduire votre solde — la majorité va aux intérêts.</p>
+          <h3>Plus tu paies tôt, moins tu paies d'intérêts</h3>
+          <p>Tout dollar versé en remboursement anticipé du capital élimine les intérêts qui auraient été calculés sur ce dollar pendant toutes les années restantes. Un versement forfaitaire de 5 000 $ effectué en début de prêt peut faire économiser plusieurs milliers de dollars en intérêts cumulés. C'est l'effet de la <strong>capitalisation inversée</strong> : moins de capital, moins d'intérêts, donc une plus grande part des paiements suivants attaque le capital, ce qui accélère le remboursement.</p>
+        </div>
+      </details>
+
+      <details><summary>Exemple chiffré : maison de 450 000 $ à Québec</summary>
+        <div class="cx-seo-body">
+          <p>Prenons un cas réaliste pour illustrer le fonctionnement du calculateur. Une famille achète une maison à Québec au prix de <strong>450 000 $</strong>, avec une mise de fonds de 20 % (90 000 $) et donc une hypothèque de <strong>360 000 $</strong>. Le taux affiché par leur institution financière est de <strong>5,25 %</strong> sur un terme de 5 ans, et l'amortissement est étalé sur <strong>25 ans</strong>.</p>
+          <div class="cx-example">
+            <strong>Données du prêt</strong><br>
+            Capital emprunté : 360 000 $<br>
+            Taux annuel : 5,25 % (composé semi-annuellement)<br>
+            Amortissement : 25 ans (300 paiements mensuels)<br>
+            Taux périodique effectif : (1 + 0,0525/2)^(2/12) − 1 ≈ 0,4327 % par mois<br><br>
+            <strong>Résultats calculés</strong><br>
+            Paiement mensuel : <strong>≈ 2 154,33 $</strong><br>
+            Total des paiements sur 25 ans : ≈ 646 300 $<br>
+            Intérêts totaux payés : <strong>≈ 286 300 $</strong><br>
+            Ratio intérêts / capital : environ 80 %
+          </div>
+          <p>Ce résultat surprend souvent : pour emprunter 360 000 $, on paie au final près de 646 000 $, soit presque le double. C'est la réalité d'un amortissement long à un taux moyennement élevé. Les premiers paiements contiennent environ <strong>1 558 $ d'intérêts</strong> et seulement <strong>596 $ de capital</strong>. Vers le milieu du prêt (paiement 150), les deux portions s'équilibrent. Au dernier paiement, presque tout va au capital.</p>
+          <h3>Que se passe-t-il après le terme de 5 ans ?</h3>
+          <p>Au Québec comme dans le reste du Canada, le <em>terme</em> hypothécaire est plus court que l'amortissement. Après 5 ans, l'emprunteur devra renouveler son hypothèque au taux du marché en vigueur, ce qui peut modifier le paiement mensuel à la hausse ou à la baisse. Si les taux montent à 6,5 %, le paiement passerait à environ 2 350 $/mois ; s'ils baissent à 4 %, il descendrait à 1 880 $/mois.</p>
+        </div>
+      </details>
+
+      <details><summary>Fréquence de paiement et économies réelles</summary>
+        <div class="cx-seo-body">
+          <p>La fréquence de paiement choisie a un impact majeur sur le coût total de votre hypothèque. Le calculateur Calculix vous permet de comparer cinq options : <strong>mensuel</strong>, <strong>aux deux semaines</strong>, <strong>hebdomadaire</strong>, <strong>accéléré aux deux semaines</strong> et <strong>accéléré hebdomadaire</strong>. La distinction entre paiement régulier et paiement accéléré est cruciale.</p>
+          <h3>Paiement aux 2 semaines vs accéléré aux 2 semaines</h3>
+          <p>Un paiement <strong>régulier aux 2 semaines</strong> divise simplement votre paiement mensuel en deux parts égales étalées sur 26 versements par an (52 semaines ÷ 2). Le total annuel est identique au mode mensuel : 12 paiements mensuels = 26 demi-paiements bi-mensuels. Aucune économie réelle n'en résulte.</p>
+          <p>Un paiement <strong>accéléré aux 2 semaines</strong>, par contre, prend votre paiement mensuel entier, le divise par 2, et l'effectue 26 fois par an. Vous payez donc l'équivalent de <strong>13 paiements mensuels par année</strong> au lieu de 12. Ce paiement supplémentaire annuel s'attaque directement au capital et raccourcit l'amortissement de plusieurs années.</p>
+          <div class="cx-example">
+            <strong>Comparaison sur notre exemple (360 000 $ à 5,25 %, 25 ans)</strong><br>
+            Mensuel : 2 154 $ × 300 = 646 300 $ total — durée 25 ans<br>
+            Aux 2 semaines (régulier) : 1 077 $ × 650 = 700 050 $ — durée 25 ans<br>
+            <strong>Accéléré aux 2 semaines : 1 077 $ × 568 ≈ 611 700 $ — durée ≈ 21,8 ans</strong><br>
+            Économie en intérêts : <strong>≈ 34 600 $</strong><br>
+            Réduction de durée : <strong>≈ 3,2 ans</strong>
+          </div>
+          <h3>Versements forfaitaires anticipés</h3>
+          <p>La plupart des prêts hypothécaires québécois permettent un remboursement anticipé annuel de 10 % à 20 % du capital initial sans pénalité. Un versement forfaitaire de 10 000 $ effectué en début de prêt peut éliminer plus de 25 000 $ d'intérêts futurs et raccourcir l'amortissement d'un an et demi. Vérifiez les <strong>privilèges de remboursement</strong> de votre contrat avec Desjardins, BMO ou tout autre prêteur avant de planifier ces versements.</p>
+          <p>Combiner paiement accéléré et versements forfaitaires annuels est la stratégie la plus efficace pour réduire le coût total d'un prêt hypothécaire. Sur notre exemple, ajouter 5 000 $ par an à un paiement accéléré aux 2 semaines peut faire passer la durée totale sous les 17 ans, économisant plus de 100 000 $ en intérêts cumulés.</p>
+        </div>
+      </details>
+
+      <details><summary>Spécificités hypothécaires québécoises</summary>
+        <div class="cx-seo-body">
+          <p>Le marché hypothécaire québécois suit les règles fédérales canadiennes mais comporte aussi quelques particularités locales que tout acheteur doit connaître avant de signer.</p>
+          <h3>Terme vs amortissement</h3>
+          <p>Le <strong>terme</strong> est la durée du contrat avec votre prêteur (généralement 1, 2, 3, 4 ou 5 ans), tandis que l'<strong>amortissement</strong> est la durée totale prévue pour rembourser entièrement l'hypothèque (jusqu'à 25 ans pour une mise de fonds de moins de 20 %, jusqu'à 30 ans pour une mise de fonds plus élevée). À la fin de chaque terme, vous devez renouveler ou refinancer votre hypothèque.</p>
+          <h3>Mise de fonds minimale et assurance prêt SCHL</h3>
+          <p>Au Canada, les règles fédérales fixent la mise de fonds minimale ainsi :</p>
+          <ul>
+            <li><strong>5 %</strong> sur la première tranche de 500 000 $ du prix d'achat</li>
+            <li><strong>10 %</strong> sur la portion entre 500 000 $ et 1 500 000 $</li>
+            <li><strong>20 %</strong> sur toute portion au-delà de 1 500 000 $ (et 20 % minimum si la propriété coûte plus de 1,5 M $)</li>
+          </ul>
+          <p>Si votre mise de fonds est inférieure à 20 %, vous devez obtenir une <strong>assurance prêt hypothécaire</strong> auprès de la <strong>SCHL</strong> (Société canadienne d'hypothèques et de logement), de Sagen ou de Canada Guaranty. La prime varie de 2,8 % à 4,0 % du capital emprunté, selon le ratio prêt/valeur, et est généralement ajoutée au capital de l'hypothèque (vous payez les intérêts dessus aussi).</p>
+          <h3>Droits de mutation immobilière (taxe de bienvenue)</h3>
+          <p>Au Québec, l'acheteur doit payer des <strong>droits sur les mutations immobilières</strong>, communément appelés « taxe de bienvenue ». Ces droits sont calculés sur le prix d'achat selon des tranches progressives :</p>
+          <ul>
+            <li>0,5 % sur la première tranche jusqu'à 58 900 $</li>
+            <li>1,0 % entre 58 900 $ et 294 600 $</li>
+            <li>1,5 % au-delà de 294 600 $ (jusqu'à 500 000 $ ou 1 M $ selon les municipalités)</li>
+            <li>2,0 % à 3,0 % sur les tranches supérieures (Montréal et Québec ont leurs propres barèmes)</li>
+          </ul>
+          <p>Pour notre exemple de maison à 450 000 $ à Québec, la taxe de bienvenue serait d'environ <strong>4 870 $</strong>, payable dans les 30 jours suivant la réception de l'avis de la municipalité (généralement 3 à 6 mois après l'achat). Ce coût n'est pas inclus dans le calculateur d'amortissement et doit être budgétisé séparément.</p>
+          <h3>Frais de notaire et inspection</h3>
+          <p>Au Québec, le passage chez le notaire est obligatoire pour toute transaction immobilière. Comptez de 1 200 $ à 2 000 $ pour les honoraires du notaire, plus environ 500 $ pour une inspection préachat recommandée. Ces frais s'ajoutent à votre budget d'achat sans affecter le calcul d'amortissement.</p>
+        </div>
+      </details>
+
+      <details><summary>Foire aux questions</summary>
+        <div class="cx-seo-body">
+          <p class="cx-faq-q">Quelle est la différence entre un taux fixe et un taux variable ?</p>
+          <p>Le <strong>taux fixe</strong> reste identique pendant toute la durée du terme (par exemple 5 ans à 5,25 %), ce qui garantit un paiement stable. Le <strong>taux variable</strong> fluctue selon le taux préférentiel des banques canadiennes ; le paiement peut rester fixe (avec une portion capital qui varie) ou être ajusté à chaque changement. Historiquement, le taux variable a été légèrement moins coûteux à long terme, mais comporte un risque d'augmentation. Discutez avec votre courtier hypothécaire de votre tolérance au risque.</p>
+
+          <p class="cx-faq-q">Pourquoi mes premiers paiements sont surtout des intérêts ?</p>
+          <p>Parce que les intérêts sont calculés sur le solde restant. Au début, le solde est presque égal au capital initial, donc la portion intérêt de chaque paiement est très élevée. À mesure que le capital se rembourse, le solde diminue, donc moins d'intérêts s'accumulent et plus de votre paiement va au capital. C'est ce qu'on appelle l'effet d'amortissement progressif.</p>
+
+          <p class="cx-faq-q">Puis-je rembourser plus vite mon hypothèque ?</p>
+          <p>Oui, la plupart des prêteurs québécois (Desjardins, Banque Nationale, BMO, RBC, etc.) permettent : (1) d'augmenter le montant des paiements réguliers de 10 % à 20 % par an, (2) d'effectuer un versement forfaitaire annuel de 10 % à 20 % du capital initial, et (3) de choisir un paiement accéléré aux 2 semaines. Ces options ne génèrent pas de pénalité tant que vous restez dans les limites prévues. Vérifiez toujours votre contrat avant d'agir.</p>
+
+          <p class="cx-faq-q">Que se passe-t-il à la fin du terme ?</p>
+          <p>Vous devez renouveler ou transférer votre hypothèque. Votre prêteur vous enverra une offre de renouvellement environ 4 mois avant l'échéance. C'est le moment idéal pour magasiner et négocier — un courtier hypothécaire peut comparer plusieurs offres pour vous. Vous pouvez aussi changer d'institution sans pénalité à la fin du terme. Si vous ne faites rien, votre prêteur reconduira automatiquement l'hypothèque, mais souvent à un taux moins avantageux que ce qu'on peut obtenir en négociant.</p>
+
+          <p class="cx-faq-q">Le calculateur tient-il compte des taxes municipales et scolaires ?</p>
+          <p>Non. Ce calculateur ne calcule que la portion <strong>capital + intérêts</strong> de votre hypothèque. Les <strong>taxes municipales</strong> (de 0,5 % à 1,2 % de la valeur d'évaluation par an au Québec), les <strong>taxes scolaires</strong> (environ 0,1 % de la valeur), les <strong>assurances habitation</strong> et les frais de copropriété (le cas échéant) sont à ajouter séparément. Pour une maison de 450 000 $ à Québec, prévoyez environ 400 $ à 500 $ de plus par mois pour ces postes. Plusieurs prêteurs offrent un compte d'impôts foncier intégré aux paiements hypothécaires pour faciliter la gestion.</p>
+        </div>
+      </details>
+    </div>
+
+    <div lang="en">
+      <div class="cx-seo-intro">
+        <h2>Everything you need to know about mortgage amortization in Quebec</h2>
+        <p>Mortgage amortization is the process of gradually paying off the capital borrowed to buy a property by making periodic payments that cover both <strong>principal</strong> and <strong>interest</strong>. In Quebec, as throughout Canada, mortgage calculations follow specific rules set out in the <em>Interest Act</em>, which mandates <strong>semi-annual compounding</strong> for residential mortgages secured by real property.</p>
+        <p>Understanding how each payment is broken down, how payment frequency affects the total cost, and which rules apply to your situation can save you tens of thousands of dollars over the life of your loan. This practical guide helps you interpret the results of the calculator above and make informed financial decisions with your mortgage broker or advisor at Desjardins, National Bank, RBC, or elsewhere.</p>
+      </div>
+
+      <details open><summary>How mortgage amortization works</summary>
+        <div class="cx-seo-body">
+          <p>Amortization is based on a classic mathematical formula that calculates a constant periodic payment that fully repays the capital over the planned period, while paying the interest owed each period on the remaining balance. The basic formula is:</p>
+          <span class="cx-formula">Payment = P × r ÷ (1 − (1 + r)^−n)</span>
+          <p>where <strong>P</strong> is the principal borrowed, <strong>r</strong> is the periodic interest rate, and <strong>n</strong> is the total number of payments. For a Canadian mortgage, the periodic rate must be adjusted from the nominal annual rate compounded semi-annually, giving <span class="cx-formula">r = (1 + i/2)^(2/m) − 1</span>, where <strong>i</strong> is the posted annual rate and <strong>m</strong> is the number of payments per year (12 monthly, 26 bi-weekly, 52 weekly).</p>
+          <h3>Principal vs interest breakdown</h3>
+          <p>Each payment contains two parts: the <strong>interest</strong> portion is calculated on the remaining balance at the start of the period (balance × r), and the <strong>principal</strong> portion is what remains of the payment after paying interest. At the start of the amortization, the balance is high, so interest dominates; as the balance decreases, the principal portion grows and the interest portion shrinks. This is why your first payments seem to barely reduce your balance — most of it goes to interest.</p>
+          <h3>The earlier you pay, the less interest you pay</h3>
+          <p>Every dollar applied to early principal repayment eliminates the interest that would have been calculated on that dollar for all the remaining years. A lump-sum payment of $5,000 made early in the loan can save several thousand dollars in cumulative interest. This is the effect of <strong>reverse capitalization</strong>: less principal means less interest, so a larger share of subsequent payments attacks the principal, accelerating repayment.</p>
+        </div>
+      </details>
+
+      <details><summary>Worked example: a $450,000 home in Quebec City</summary>
+        <div class="cx-seo-body">
+          <p>Let's take a realistic case to illustrate how the calculator works. A family buys a home in Quebec City for <strong>$450,000</strong>, with a 20% down payment ($90,000) and therefore a mortgage of <strong>$360,000</strong>. The rate posted by their financial institution is <strong>5.25%</strong> on a 5-year term, with the amortization spread over <strong>25 years</strong>.</p>
+          <div class="cx-example">
+            <strong>Loan inputs</strong><br>
+            Principal borrowed: $360,000<br>
+            Annual rate: 5.25% (compounded semi-annually)<br>
+            Amortization: 25 years (300 monthly payments)<br>
+            Effective period rate: (1 + 0.0525/2)^(2/12) − 1 ≈ 0.4327% per month<br><br>
+            <strong>Calculated results</strong><br>
+            Monthly payment: <strong>≈ $2,154.33</strong><br>
+            Total payments over 25 years: ≈ $646,300<br>
+            Total interest paid: <strong>≈ $286,300</strong><br>
+            Interest-to-principal ratio: about 80%
+          </div>
+          <p>This result often surprises: to borrow $360,000, you end up paying nearly $646,000 — almost double. That's the reality of long amortization at a moderately high rate. The first payments contain about <strong>$1,558 in interest</strong> and only <strong>$596 in principal</strong>. Around the middle of the loan (payment 150), the two portions are roughly balanced. By the last payment, almost everything goes to principal.</p>
+          <h3>What happens after the 5-year term?</h3>
+          <p>In Quebec, as in the rest of Canada, the mortgage <em>term</em> is shorter than the amortization. After 5 years, the borrower must renew the mortgage at the prevailing market rate, which can change the monthly payment up or down. If rates rise to 6.5%, the payment would jump to about $2,350/month; if they drop to 4%, it would fall to $1,880/month.</p>
+        </div>
+      </details>
+
+      <details><summary>Payment frequency and real savings</summary>
+        <div class="cx-seo-body">
+          <p>The chosen payment frequency has a major impact on the total cost of your mortgage. The Calculix calculator lets you compare five options: <strong>monthly</strong>, <strong>bi-weekly</strong>, <strong>weekly</strong>, <strong>accelerated bi-weekly</strong>, and <strong>accelerated weekly</strong>. The distinction between regular and accelerated payments is crucial.</p>
+          <h3>Bi-weekly vs accelerated bi-weekly</h3>
+          <p>A <strong>regular bi-weekly payment</strong> simply divides your monthly payment into two equal halves spread over 26 payments per year (52 weeks ÷ 2). The annual total is identical to monthly mode: 12 monthly payments = 26 half-payments. No real savings result from this.</p>
+          <p>An <strong>accelerated bi-weekly payment</strong>, by contrast, takes your full monthly payment, divides it by 2, and pays it 26 times per year. You're paying the equivalent of <strong>13 monthly payments per year</strong> instead of 12. That extra annual payment goes directly to principal and shortens the amortization by several years.</p>
+          <div class="cx-example">
+            <strong>Comparison on our example ($360,000 at 5.25%, 25 years)</strong><br>
+            Monthly: $2,154 × 300 = $646,300 total — 25 years<br>
+            Bi-weekly (regular): $1,077 × 650 = $700,050 — 25 years<br>
+            <strong>Accelerated bi-weekly: $1,077 × 568 ≈ $611,700 — about 21.8 years</strong><br>
+            Interest savings: <strong>≈ $34,600</strong><br>
+            Term reduction: <strong>≈ 3.2 years</strong>
+          </div>
+          <h3>Lump-sum prepayments</h3>
+          <p>Most Quebec mortgages allow annual lump-sum prepayments of 10% to 20% of the original principal without penalty. A $10,000 lump sum made early in the loan can eliminate more than $25,000 in future interest and shorten the amortization by a year and a half. Check the <strong>prepayment privileges</strong> in your contract with Desjardins, BMO, or any other lender before planning these payments.</p>
+          <p>Combining accelerated payments with annual lump sums is the most effective strategy to reduce the total cost of a mortgage. On our example, adding $5,000 per year to an accelerated bi-weekly payment can bring the total term down to under 17 years, saving over $100,000 in cumulative interest.</p>
+        </div>
+      </details>
+
+      <details><summary>Quebec-specific mortgage rules</summary>
+        <div class="cx-seo-body">
+          <p>The Quebec mortgage market follows federal Canadian rules but also includes a few local specifics that every buyer should know before signing.</p>
+          <h3>Term vs amortization</h3>
+          <p>The <strong>term</strong> is the duration of the contract with your lender (usually 1, 2, 3, 4, or 5 years), while the <strong>amortization</strong> is the total time projected to fully repay the mortgage (up to 25 years for a down payment under 20%, up to 30 years for a higher down payment). At the end of each term, you must renew or refinance your mortgage.</p>
+          <h3>Minimum down payment and CMHC insurance</h3>
+          <p>In Canada, federal rules set the minimum down payment as follows:</p>
+          <ul>
+            <li><strong>5%</strong> on the first $500,000 of the purchase price</li>
+            <li><strong>10%</strong> on the portion between $500,000 and $1,500,000</li>
+            <li><strong>20%</strong> on any portion above $1,500,000 (and 20% minimum if the property costs more than $1.5M)</li>
+          </ul>
+          <p>If your down payment is below 20%, you must obtain <strong>mortgage default insurance</strong> from the <strong>CMHC</strong> (Canada Mortgage and Housing Corporation), Sagen, or Canada Guaranty. The premium ranges from 2.8% to 4.0% of the principal, depending on the loan-to-value ratio, and is usually added to the mortgage principal (you also pay interest on it).</p>
+          <h3>Quebec land transfer tax (welcome tax)</h3>
+          <p>In Quebec, the buyer must pay <strong>land transfer duties</strong>, commonly called the "welcome tax". These duties are calculated on the purchase price using progressive brackets:</p>
+          <ul>
+            <li>0.5% on the first $58,900</li>
+            <li>1.0% between $58,900 and $294,600</li>
+            <li>1.5% above $294,600 (up to $500,000 or $1M depending on the municipality)</li>
+            <li>2.0% to 3.0% on higher brackets (Montreal and Quebec City have their own scales)</li>
+          </ul>
+          <p>For our $450,000 home in Quebec City, the welcome tax would be approximately <strong>$4,870</strong>, payable within 30 days of receiving the municipal notice (usually 3 to 6 months after purchase). This cost is not included in the amortization calculator and must be budgeted separately.</p>
+          <h3>Notary and inspection fees</h3>
+          <p>In Quebec, going through a notary is mandatory for any real estate transaction. Plan for $1,200 to $2,000 in notary fees, plus about $500 for a recommended pre-purchase inspection. These fees add to your purchase budget without affecting the amortization calculation.</p>
+        </div>
+      </details>
+
+      <details><summary>Frequently asked questions</summary>
+        <div class="cx-seo-body">
+          <p class="cx-faq-q">What's the difference between a fixed and a variable rate?</p>
+          <p>A <strong>fixed rate</strong> stays the same throughout the term (e.g. 5 years at 5.25%), guaranteeing a stable payment. A <strong>variable rate</strong> fluctuates with the prime rate of Canadian banks; the payment can stay fixed (with a varying principal portion) or be adjusted at each change. Historically, the variable rate has been slightly cheaper long-term but carries the risk of increases. Discuss your risk tolerance with your mortgage broker.</p>
+
+          <p class="cx-faq-q">Why are my first payments mostly interest?</p>
+          <p>Because interest is calculated on the remaining balance. At the start, the balance is nearly equal to the original principal, so the interest portion of each payment is very high. As the principal is paid down, the balance shrinks, less interest accrues, and more of your payment goes to principal. This is the gradual amortization effect.</p>
+
+          <p class="cx-faq-q">Can I pay off my mortgage faster?</p>
+          <p>Yes, most Quebec lenders (Desjardins, National Bank, BMO, RBC, etc.) allow you to: (1) increase your regular payment amount by 10% to 20% per year, (2) make annual lump-sum payments of 10% to 20% of the original principal, and (3) choose accelerated bi-weekly payments. These options carry no penalty as long as you stay within the limits provided. Always check your contract before acting.</p>
+
+          <p class="cx-faq-q">What happens at the end of the term?</p>
+          <p>You must renew or transfer your mortgage. Your lender will send you a renewal offer about 4 months before maturity. This is the ideal time to shop around and negotiate — a mortgage broker can compare several offers for you. You can also switch institutions without penalty at the end of the term. If you do nothing, your lender will automatically renew, often at a less favourable rate than you could negotiate.</p>
+
+          <p class="cx-faq-q">Does the calculator include municipal and school taxes?</p>
+          <p>No. This calculator only computes the <strong>principal + interest</strong> portion of your mortgage. <strong>Municipal taxes</strong> (0.5% to 1.2% of the assessed value per year in Quebec), <strong>school taxes</strong> (about 0.1% of the value), <strong>home insurance</strong>, and condo fees (where applicable) must be added separately. For a $450,000 home in Quebec City, plan for an extra $400 to $500 per month for these items. Several lenders offer integrated property-tax accounts within mortgage payments to ease management.</p>
+        </div>
+      </details>
+    </div>
+
+    <div lang="es">
+      <div class="cx-seo-intro">
+        <h2>Todo sobre la amortización hipotecaria en Quebec</h2>
+        <p>La amortización hipotecaria es el proceso por el cual usted reembolsa progresivamente el capital prestado para comprar una propiedad, mediante pagos periódicos que cubren tanto el <strong>capital</strong> como los <strong>intereses</strong>. En Quebec, como en todo Canadá, el cálculo de la amortización sigue reglas precisas establecidas por la <em>Ley de Interés</em> (Interest Act), que impone una composición <strong>semestral</strong> para los préstamos hipotecarios garantizados por un inmueble residencial.</p>
+        <p>Comprender cómo se descompone cada pago, cómo la frecuencia de pago influye en el costo total y qué reglas se aplican a su situación puede ahorrarle decenas de miles de dólares a lo largo de su préstamo. Esta guía práctica le ayuda a interpretar los resultados de la calculadora anterior y a tomar decisiones financieras informadas con su corredor hipotecario o asesor en Desjardins, Banco Nacional, RBC u otra institución.</p>
+      </div>
+
+      <details open><summary>Cómo funciona la amortización hipotecaria</summary>
+        <div class="cx-seo-body">
+          <p>La amortización se basa en una fórmula matemática clásica que calcula un pago periódico constante que permite reembolsar íntegramente el capital durante el plazo previsto, pagando los intereses adeudados en cada período sobre el saldo restante. La fórmula básica es:</p>
+          <span class="cx-formula">Pago = P × r ÷ (1 − (1 + r)^−n)</span>
+          <p>donde <strong>P</strong> es el capital prestado, <strong>r</strong> es la tasa de interés por período y <strong>n</strong> es el número total de pagos. Para una hipoteca canadiense, la tasa por período debe ajustarse a partir de la tasa nominal anual compuesta semestralmente: <span class="cx-formula">r = (1 + i/2)^(2/m) − 1</span>, donde <strong>i</strong> es la tasa anual publicada y <strong>m</strong> es el número de pagos por año (12 mensual, 26 quincenal, 52 semanal).</p>
+          <h3>Descomposición capital / intereses</h3>
+          <p>Cada pago contiene dos partes: la porción de <strong>interés</strong> se calcula sobre el saldo restante al inicio del período (saldo × r), y la porción de <strong>capital</strong> es lo que queda del pago después de pagar los intereses. Al inicio de la amortización, el saldo es alto, por lo que los intereses dominan; a medida que el saldo disminuye, la porción de capital aumenta y la de intereses disminuye. Por eso sus primeros pagos parecen reducir muy poco su saldo: la mayor parte va a intereses.</p>
+          <h3>Cuanto antes pague, menos intereses pagará</h3>
+          <p>Cada dólar pagado por adelantado al capital elimina los intereses que se habrían calculado sobre ese dólar durante todos los años restantes. Un pago global de 5 000 $ realizado al inicio del préstamo puede ahorrar varios miles de dólares en intereses acumulados. Es el efecto de la <strong>capitalización inversa</strong>: menos capital, menos intereses, por lo que una mayor parte de los pagos siguientes ataca el capital, acelerando el reembolso.</p>
+        </div>
+      </details>
+
+      <details><summary>Ejemplo numérico: casa de 450 000 $ en Quebec</summary>
+        <div class="cx-seo-body">
+          <p>Tomemos un caso realista para ilustrar el funcionamiento de la calculadora. Una familia compra una casa en la ciudad de Quebec por <strong>450 000 $</strong>, con un pago inicial del 20 % (90 000 $) y por tanto una hipoteca de <strong>360 000 $</strong>. La tasa publicada por su institución financiera es de <strong>5,25 %</strong> a un plazo de 5 años, con amortización a <strong>25 años</strong>.</p>
+          <div class="cx-example">
+            <strong>Datos del préstamo</strong><br>
+            Capital prestado: 360 000 $<br>
+            Tasa anual: 5,25 % (compuesta semestralmente)<br>
+            Amortización: 25 años (300 pagos mensuales)<br>
+            Tasa periódica efectiva: (1 + 0,0525/2)^(2/12) − 1 ≈ 0,4327 % mensual<br><br>
+            <strong>Resultados calculados</strong><br>
+            Pago mensual: <strong>≈ 2 154,33 $</strong><br>
+            Total de pagos a 25 años: ≈ 646 300 $<br>
+            Intereses totales: <strong>≈ 286 300 $</strong><br>
+            Razón intereses / capital: aproximadamente 80 %
+          </div>
+          <p>Este resultado a menudo sorprende: para pedir prestados 360 000 $, se acaba pagando casi 646 000 $, casi el doble. Es la realidad de una amortización larga a una tasa moderadamente alta. Los primeros pagos contienen aproximadamente <strong>1 558 $ de intereses</strong> y solo <strong>596 $ de capital</strong>. Hacia la mitad del préstamo (pago 150), las dos porciones se equilibran. En el último pago, casi todo va al capital.</p>
+          <h3>¿Qué pasa al final del plazo de 5 años?</h3>
+          <p>En Quebec, como en el resto de Canadá, el <em>plazo</em> hipotecario es más corto que la amortización. Después de 5 años, el prestatario debe renovar su hipoteca a la tasa de mercado vigente, lo que puede modificar el pago mensual al alza o a la baja. Si las tasas suben al 6,5 %, el pago aumentaría a unos 2 350 $/mes; si bajan al 4 %, descendería a 1 880 $/mes.</p>
+        </div>
+      </details>
+
+      <details><summary>Frecuencia de pago y ahorros reales</summary>
+        <div class="cx-seo-body">
+          <p>La frecuencia de pago elegida tiene un impacto importante en el costo total de su hipoteca. La calculadora Calculix le permite comparar cinco opciones: <strong>mensual</strong>, <strong>quincenal</strong>, <strong>semanal</strong>, <strong>quincenal acelerada</strong> y <strong>semanal acelerada</strong>. La distinción entre pago regular y pago acelerado es crucial.</p>
+          <h3>Quincenal regular vs quincenal acelerado</h3>
+          <p>Un <strong>pago quincenal regular</strong> simplemente divide su pago mensual en dos partes iguales repartidas en 26 pagos al año (52 semanas ÷ 2). El total anual es idéntico al modo mensual: 12 pagos mensuales = 26 medios pagos. No hay ahorro real.</p>
+          <p>Un <strong>pago quincenal acelerado</strong>, en cambio, toma su pago mensual completo, lo divide entre 2, y se realiza 26 veces al año. Usted paga el equivalente a <strong>13 pagos mensuales al año</strong> en lugar de 12. Ese pago extra anual va directamente al capital y acorta la amortización en varios años.</p>
+          <div class="cx-example">
+            <strong>Comparación con nuestro ejemplo (360 000 $ al 5,25 %, 25 años)</strong><br>
+            Mensual: 2 154 $ × 300 = 646 300 $ total — 25 años<br>
+            Quincenal (regular): 1 077 $ × 650 = 700 050 $ — 25 años<br>
+            <strong>Quincenal acelerada: 1 077 $ × 568 ≈ 611 700 $ — aprox. 21,8 años</strong><br>
+            Ahorro de intereses: <strong>≈ 34 600 $</strong><br>
+            Reducción del plazo: <strong>≈ 3,2 años</strong>
+          </div>
+          <h3>Pagos globales anticipados</h3>
+          <p>La mayoría de las hipotecas quebequenses permiten un reembolso anticipado anual del 10 % al 20 % del capital inicial sin penalización. Un pago global de 10 000 $ al inicio del préstamo puede eliminar más de 25 000 $ en intereses futuros y acortar la amortización en un año y medio. Verifique los <strong>privilegios de reembolso</strong> en su contrato con Desjardins, BMO u otro prestamista antes de planificar estos pagos.</p>
+          <p>Combinar pagos acelerados y pagos globales anuales es la estrategia más eficaz para reducir el costo total de un préstamo hipotecario. En nuestro ejemplo, añadir 5 000 $ al año a un pago quincenal acelerado puede llevar el plazo total a menos de 17 años, ahorrando más de 100 000 $ en intereses acumulados.</p>
+        </div>
+      </details>
+
+      <details><summary>Reglas hipotecarias específicas de Quebec</summary>
+        <div class="cx-seo-body">
+          <p>El mercado hipotecario quebequense sigue las reglas federales canadienses pero incluye también algunas particularidades locales que todo comprador debe conocer antes de firmar.</p>
+          <h3>Plazo vs amortización</h3>
+          <p>El <strong>plazo</strong> es la duración del contrato con su prestamista (generalmente 1, 2, 3, 4 o 5 años), mientras que la <strong>amortización</strong> es el tiempo total previsto para reembolsar la hipoteca por completo (hasta 25 años para un pago inicial inferior al 20 %, hasta 30 años para un pago inicial superior). Al final de cada plazo, debe renovar o refinanciar su hipoteca.</p>
+          <h3>Pago inicial mínimo y seguro hipotecario CMHC</h3>
+          <p>En Canadá, las reglas federales fijan el pago inicial mínimo así:</p>
+          <ul>
+            <li><strong>5 %</strong> sobre los primeros 500 000 $ del precio de compra</li>
+            <li><strong>10 %</strong> sobre la porción entre 500 000 $ y 1 500 000 $</li>
+            <li><strong>20 %</strong> sobre cualquier porción superior a 1 500 000 $ (y 20 % mínimo si la propiedad cuesta más de 1,5 M $)</li>
+          </ul>
+          <p>Si su pago inicial es inferior al 20 %, debe obtener un <strong>seguro de préstamo hipotecario</strong> con la <strong>CMHC</strong> (Sociedad Canadiense de Hipotecas y Vivienda), Sagen o Canada Guaranty. La prima varía del 2,8 % al 4,0 % del capital, según la relación préstamo-valor, y suele añadirse al capital de la hipoteca (también paga intereses sobre ella).</p>
+          <h3>Impuesto de transferencia (taxe de bienvenue)</h3>
+          <p>En Quebec, el comprador debe pagar <strong>derechos de mutación inmobiliaria</strong>, comúnmente llamados "impuesto de bienvenida". Estos derechos se calculan sobre el precio de compra según tramos progresivos:</p>
+          <ul>
+            <li>0,5 % sobre los primeros 58 900 $</li>
+            <li>1,0 % entre 58 900 $ y 294 600 $</li>
+            <li>1,5 % por encima de 294 600 $ (hasta 500 000 $ o 1 M $ según el municipio)</li>
+            <li>2,0 % a 3,0 % sobre tramos superiores (Montreal y Quebec tienen sus propias escalas)</li>
+          </ul>
+          <p>Para nuestra casa de 450 000 $ en la ciudad de Quebec, el impuesto de bienvenida sería de aproximadamente <strong>4 870 $</strong>, pagadero dentro de los 30 días posteriores a la recepción del aviso municipal (generalmente 3 a 6 meses después de la compra). Este costo no está incluido en la calculadora de amortización y debe presupuestarse por separado.</p>
+          <h3>Honorarios notariales y de inspección</h3>
+          <p>En Quebec, pasar por un notario es obligatorio para toda transacción inmobiliaria. Cuente entre 1 200 $ y 2 000 $ por honorarios notariales, más unos 500 $ por una inspección previa a la compra recomendada. Estos costos se suman a su presupuesto de compra sin afectar el cálculo de amortización.</p>
+        </div>
+      </details>
+
+      <details><summary>Preguntas frecuentes</summary>
+        <div class="cx-seo-body">
+          <p class="cx-faq-q">¿Cuál es la diferencia entre tasa fija y tasa variable?</p>
+          <p>La <strong>tasa fija</strong> permanece igual durante todo el plazo (por ejemplo 5 años al 5,25 %), garantizando un pago estable. La <strong>tasa variable</strong> fluctúa según la tasa preferencial de los bancos canadienses; el pago puede mantenerse fijo (con una porción de capital que varía) o ajustarse en cada cambio. Históricamente, la tasa variable ha sido ligeramente más barata a largo plazo, pero conlleva riesgo de aumento. Discuta su tolerancia al riesgo con su corredor hipotecario.</p>
+
+          <p class="cx-faq-q">¿Por qué mis primeros pagos son casi todos intereses?</p>
+          <p>Porque los intereses se calculan sobre el saldo restante. Al inicio, el saldo es casi igual al capital original, por lo que la porción de intereses de cada pago es muy alta. A medida que el capital se reembolsa, el saldo disminuye, se acumulan menos intereses y más de su pago va al capital. Es el efecto de la amortización progresiva.</p>
+
+          <p class="cx-faq-q">¿Puedo pagar mi hipoteca más rápido?</p>
+          <p>Sí, la mayoría de los prestamistas quebequenses (Desjardins, Banco Nacional, BMO, RBC, etc.) permiten: (1) aumentar el monto de los pagos regulares del 10 % al 20 % por año, (2) realizar un pago global anual del 10 % al 20 % del capital inicial, y (3) elegir un pago quincenal acelerado. Estas opciones no generan penalización mientras se respeten los límites previstos. Verifique siempre su contrato antes de actuar.</p>
+
+          <p class="cx-faq-q">¿Qué pasa al final del plazo?</p>
+          <p>Debe renovar o transferir su hipoteca. Su prestamista le enviará una oferta de renovación unos 4 meses antes del vencimiento. Es el momento ideal para comparar y negociar — un corredor hipotecario puede comparar varias ofertas. También puede cambiar de institución sin penalización al final del plazo. Si no hace nada, su prestamista renovará automáticamente, a menudo con una tasa menos ventajosa de la que se podría negociar.</p>
+
+          <p class="cx-faq-q">¿La calculadora incluye los impuestos municipales y escolares?</p>
+          <p>No. Esta calculadora solo calcula la porción <strong>capital + intereses</strong> de su hipoteca. Los <strong>impuestos municipales</strong> (del 0,5 % al 1,2 % del valor catastral por año en Quebec), los <strong>impuestos escolares</strong> (aprox. 0,1 % del valor), el <strong>seguro de hogar</strong> y las cuotas de condominio (si corresponde) deben añadirse por separado. Para una casa de 450 000 $ en la ciudad de Quebec, prevea entre 400 $ y 500 $ adicionales por mes para estos rubros. Varios prestamistas ofrecen una cuenta de impuestos prediales integrada en los pagos hipotecarios para facilitar la gestión.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-links" id="footerLinks"></div>
+  <div id="footerText">© 2026 Calculix.ca — Outil informatif uniquement. Consultez un professionnel pour votre situation personnelle.</div>
+  <div style="margin-top:8px;font-size:0.72rem;">
+    <a href="mailto:info@calculix.ca">info@calculix.ca</a>
+  </div>
+</footer>
+
+<script>
+const ACTIVE_PAGE = 'amortissement';
+let lang = (window.CXSite && CXSite.getStoredLang()) || 'fr';
+let lastSchedule = null;
+let lastSummary = null;
+
+const i18n = {
+  fr: {
+    pageTitle:"Calculateur d'amortissement — Loan Schedule | Calculix.ca",
+    mainTitle:"🏦 Calculateur d'amortissement",
+    mainSubtitle:"Tableau complet des paiements de votre prêt ou hypothèque",
+    labelPrincipal:'Montant du prêt',
+    labelRate:"Taux d'intérêt annuel",
+    labelYears:"Durée d'amortissement (années)",
+    labelFreq:'Fréquence de paiement',
+    labelCompounding:'Mode de composition',
+    labelStart:'Date du premier paiement',
+    optMonthly:'Mensuel (12 / an)',
+    optBiweekly:'Aux 2 semaines (26 / an)',
+    optWeekly:'Hebdomadaire (52 / an)',
+    optAccBi:'Accéléré aux 2 semaines',
+    optAccWk:'Accéléré hebdomadaire',
+    optCanadian:'Canadien (semi-annuel)',
+    optStandard:'Standard (à chaque période)',
+    resultLabel:'Paiement périodique',
+    resultEmpty:'Remplissez les champs ci-dessus',
+    resultSub:(n,freq)=>`${n} paiements · ${freq}`,
+    kpi1Label:'Capital total', kpi1Sub:'Montant emprunté',
+    kpi2Label:'Intérêts totaux', kpi2Sub:(pct)=>`≈ ${pct}% du capital`,
+    kpi3Label:'Coût total', kpi3Sub:'Capital + intérêts',
+    scheduleTitle:"Tableau d'amortissement",
+    exportLbl:'Exporter en Excel',
+    tcNum:'#', tcDate:'Date', tcPayment:'Paiement', tcPrincipal:'Capital', tcInterest:'Intérêt', tcBalance:'Solde',
+    infoTitle:'📋 Résumé',
+    lblI1:'Montant emprunté',
+    lblI2:'Taux effectif / période',
+    lblI3:'Nombre de paiements',
+    lblI4:'Fréquence',
+    lblI5:'Date finale',
+    freqLabels:{ monthly:'Mensuel', biweekly:'Aux 2 semaines', weekly:'Hebdomadaire', 'accelerated-biweekly':'Accéléré aux 2 sem.', 'accelerated-weekly':'Accéléré hebdo.' },
+    tipsTitle:'💡 Bon à savoir',
+    tipsP1:"Au Canada, les <strong>hypothèques</strong> sont composées <strong>semi-annuellement</strong> par la loi (Loi sur l'intérêt). Les prêts auto, personnels ou cartes utilisent souvent le mode standard.",
+    tipsP2:"Les paiements <strong>accélérés</strong> (aux 2 semaines ou hebdomadaires) équivalent à 13 paiements mensuels par an — vous réduisez la durée et les intérêts !",
+    disclaimer:"⚠️ Les calculs sont fournis à titre indicatif. Le taux réel, les frais, les assurances et les taxes peuvent varier. Pour une hypothèque, consultez votre institution financière ou un courtier hypothécaire avant de prendre une décision.",
+    xlsSheetName:'Amortissement',
+    xlsTitle:"Tableau d'amortissement — Calculix.ca",
+    xlsRowLoan:'Montant emprunté',
+    xlsRowRate:"Taux annuel",
+    xlsRowTerm:"Durée",
+    xlsRowFreq:'Fréquence',
+    xlsRowCompound:'Composition',
+    xlsRowPayment:'Paiement périodique',
+    xlsRowInterest:'Intérêts totaux',
+    xlsRowTotal:'Coût total',
+    xlsFooter:'Calculix.ca — calculs informatifs uniquement',
+    xlsFilename:'amortissement-calculix',
+    dateLocale:'fr-CA',
+  },
+  en: {
+    pageTitle:"Loan Amortization Calculator | Calculix.ca",
+    mainTitle:"🏦 Loan amortization calculator",
+    mainSubtitle:"Full payment schedule for your loan or mortgage",
+    labelPrincipal:'Loan amount',
+    labelRate:"Annual interest rate",
+    labelYears:"Amortization period (years)",
+    labelFreq:'Payment frequency',
+    labelCompounding:'Compounding method',
+    labelStart:'First payment date',
+    optMonthly:'Monthly (12 / year)',
+    optBiweekly:'Bi-weekly (26 / year)',
+    optWeekly:'Weekly (52 / year)',
+    optAccBi:'Accelerated bi-weekly',
+    optAccWk:'Accelerated weekly',
+    optCanadian:'Canadian (semi-annual)',
+    optStandard:'Standard (each period)',
+    resultLabel:'Payment per period',
+    resultEmpty:'Fill in the fields above',
+    resultSub:(n,freq)=>`${n} payments · ${freq}`,
+    kpi1Label:'Principal', kpi1Sub:'Amount borrowed',
+    kpi2Label:'Total interest', kpi2Sub:(pct)=>`≈ ${pct}% of principal`,
+    kpi3Label:'Total cost', kpi3Sub:'Principal + interest',
+    scheduleTitle:"Amortization schedule",
+    exportLbl:'Export to Excel',
+    tcNum:'#', tcDate:'Date', tcPayment:'Payment', tcPrincipal:'Principal', tcInterest:'Interest', tcBalance:'Balance',
+    infoTitle:'📋 Summary',
+    lblI1:'Amount borrowed',
+    lblI2:'Effective rate / period',
+    lblI3:'Number of payments',
+    lblI4:'Frequency',
+    lblI5:'End date',
+    freqLabels:{ monthly:'Monthly', biweekly:'Bi-weekly', weekly:'Weekly', 'accelerated-biweekly':'Accel. bi-weekly', 'accelerated-weekly':'Accel. weekly' },
+    tipsTitle:'💡 Good to know',
+    tipsP1:"In Canada, <strong>mortgages</strong> are compounded <strong>semi-annually</strong> by law (Interest Act). Car loans, personal loans and credit cards often use standard compounding.",
+    tipsP2:"<strong>Accelerated</strong> payments (bi-weekly or weekly) equal 13 monthly payments per year — you shorten the term and reduce interest!",
+    disclaimer:"⚠️ Calculations are provided for informational purposes. Actual rates, fees, insurance and taxes may vary. For a mortgage, consult your financial institution or a mortgage broker before deciding.",
+    xlsSheetName:'Amortization',
+    xlsTitle:"Amortization schedule — Calculix.ca",
+    xlsRowLoan:'Amount borrowed',
+    xlsRowRate:"Annual rate",
+    xlsRowTerm:"Period",
+    xlsRowFreq:'Frequency',
+    xlsRowCompound:'Compounding',
+    xlsRowPayment:'Payment per period',
+    xlsRowInterest:'Total interest',
+    xlsRowTotal:'Total cost',
+    xlsFooter:'Calculix.ca — informational only',
+    xlsFilename:'amortization-calculix',
+    dateLocale:'en-CA',
+  },
+  es: {
+    pageTitle:"Calculadora de amortización | Calculix.ca",
+    mainTitle:"🏦 Calculadora de amortización",
+    mainSubtitle:"Tabla completa de pagos de su préstamo o hipoteca",
+    labelPrincipal:'Monto del préstamo',
+    labelRate:"Tasa de interés anual",
+    labelYears:"Plazo (años)",
+    labelFreq:'Frecuencia de pago',
+    labelCompounding:'Método de composición',
+    labelStart:'Fecha del primer pago',
+    optMonthly:'Mensual (12 / año)',
+    optBiweekly:'Quincenal (26 / año)',
+    optWeekly:'Semanal (52 / año)',
+    optAccBi:'Quincenal acelerado',
+    optAccWk:'Semanal acelerado',
+    optCanadian:'Canadiense (semestral)',
+    optStandard:'Estándar (cada período)',
+    resultLabel:'Pago por período',
+    resultEmpty:'Complete los campos arriba',
+    resultSub:(n,freq)=>`${n} pagos · ${freq}`,
+    kpi1Label:'Capital', kpi1Sub:'Monto prestado',
+    kpi2Label:'Intereses totales', kpi2Sub:(pct)=>`≈ ${pct}% del capital`,
+    kpi3Label:'Costo total', kpi3Sub:'Capital + intereses',
+    scheduleTitle:"Tabla de amortización",
+    exportLbl:'Exportar a Excel',
+    tcNum:'#', tcDate:'Fecha', tcPayment:'Pago', tcPrincipal:'Capital', tcInterest:'Interés', tcBalance:'Saldo',
+    infoTitle:'📋 Resumen',
+    lblI1:'Monto prestado',
+    lblI2:'Tasa efectiva / período',
+    lblI3:'Número de pagos',
+    lblI4:'Frecuencia',
+    lblI5:'Fecha final',
+    freqLabels:{ monthly:'Mensual', biweekly:'Quincenal', weekly:'Semanal', 'accelerated-biweekly':'Quinc. acel.', 'accelerated-weekly':'Sem. acel.' },
+    tipsTitle:'💡 Bueno saber',
+    tipsP1:"En Canadá, las <strong>hipotecas</strong> se componen <strong>semestralmente</strong> por ley. Los préstamos para auto, personales o tarjetas de crédito a menudo usan composición estándar.",
+    tipsP2:"Los pagos <strong>acelerados</strong> (quincenales o semanales) equivalen a 13 pagos mensuales al año — ¡acorta el plazo y reduce los intereses!",
+    disclaimer:"⚠️ Los cálculos se proporcionan con fines informativos. Las tasas, comisiones, seguros e impuestos reales pueden variar. Para una hipoteca, consulte a su institución financiera o corredor hipotecario antes de decidir.",
+    xlsSheetName:'Amortización',
+    xlsTitle:"Tabla de amortización — Calculix.ca",
+    xlsRowLoan:'Monto prestado',
+    xlsRowRate:"Tasa anual",
+    xlsRowTerm:"Plazo",
+    xlsRowFreq:'Frecuencia',
+    xlsRowCompound:'Composición',
+    xlsRowPayment:'Pago por período',
+    xlsRowInterest:'Intereses totales',
+    xlsRowTotal:'Costo total',
+    xlsFooter:'Calculix.ca — solo con fines informativos',
+    xlsFilename:'amortizacion-calculix',
+    dateLocale:'es-419',
+  },
+};
+
+function setLang(l) {
+  lang = l;
+  if (window.CXSite) CXSite.setStoredLang(l);
+  document.documentElement.lang = l;
+  updateLangToggleUI();
+  applyTranslations();
+  if (window.CXSite) {
+    CXSite.renderNav(l, ACTIVE_PAGE, 'siteNav');
+    CXSite.renderFooterLinks(l, 'footerLinks');
+    var ads = document.getElementById('partnersRow');
+    if (ads) ads.innerHTML = CXSite.amazonAd(l) + CXSite.cfoMasqueAd(l) + CXSite.alchimixAd(l);
+    var shared = CXSite.SHARED[l] || CXSite.SHARED.fr;
+    document.getElementById('headerSubtitle').textContent = shared.headerSubtitle;
+    document.getElementById('footerText').textContent     = shared.footerText;
+  }
+  calculate();
+}
+
+function toggleLang() {
+  setLang(lang === 'fr' ? 'en' : (lang === 'en' ? 'es' : 'fr'));
+}
+
+function updateLangToggleUI() {
+  document.querySelectorAll('#langToggle .lang-opt').forEach(function(el) {
+    el.classList.toggle('active', el.getAttribute('data-lang') === lang);
+  });
+}
+
+function applyTranslations() {
+  var t = i18n[lang];
+  document.body.dataset.lang = lang;
+  document.title = t.pageTitle;
+  document.getElementById('mainTitle').textContent    = t.mainTitle;
+  document.getElementById('mainSubtitle').textContent = t.mainSubtitle;
+  document.getElementById('labelPrincipal').textContent = t.labelPrincipal;
+  document.getElementById('labelRate').textContent      = t.labelRate;
+  document.getElementById('labelYears').textContent     = t.labelYears;
+  document.getElementById('labelFreq').textContent      = t.labelFreq;
+  document.getElementById('labelCompounding').textContent = t.labelCompounding;
+  document.getElementById('labelStart').textContent     = t.labelStart;
+  document.getElementById('optMonthly').textContent     = t.optMonthly;
+  document.getElementById('optBiweekly').textContent    = t.optBiweekly;
+  document.getElementById('optWeekly').textContent      = t.optWeekly;
+  document.getElementById('optAccBi').textContent       = t.optAccBi;
+  document.getElementById('optAccWk').textContent       = t.optAccWk;
+  document.getElementById('optCanadian').textContent    = t.optCanadian;
+  document.getElementById('optStandard').textContent    = t.optStandard;
+  document.getElementById('resultLabel').textContent    = t.resultLabel;
+  document.getElementById('kpi1Label').textContent      = t.kpi1Label;
+  document.getElementById('kpi2Label').textContent      = t.kpi2Label;
+  document.getElementById('kpi3Label').textContent      = t.kpi3Label;
+  document.getElementById('kpi1Sub').textContent        = t.kpi1Sub;
+  document.getElementById('kpi3Sub').textContent        = t.kpi3Sub;
+  document.getElementById('scheduleTitle').textContent  = t.scheduleTitle;
+  document.getElementById('exportLbl').textContent      = t.exportLbl;
+  document.getElementById('tcNum').textContent          = t.tcNum;
+  document.getElementById('tcDate').textContent         = t.tcDate;
+  document.getElementById('tcPayment').textContent      = t.tcPayment;
+  document.getElementById('tcPrincipal').textContent    = t.tcPrincipal;
+  document.getElementById('tcInterest').textContent     = t.tcInterest;
+  document.getElementById('tcBalance').textContent      = t.tcBalance;
+  document.getElementById('infoTitle').textContent      = t.infoTitle;
+  document.getElementById('lblI1').textContent          = t.lblI1;
+  document.getElementById('lblI2').textContent          = t.lblI2;
+  document.getElementById('lblI3').textContent          = t.lblI3;
+  document.getElementById('lblI4').textContent          = t.lblI4;
+  document.getElementById('lblI5').textContent          = t.lblI5;
+  document.getElementById('tipsTitle').textContent      = t.tipsTitle;
+  document.getElementById('tipsP1').innerHTML           = t.tipsP1;
+  document.getElementById('tipsP2').innerHTML           = t.tipsP2;
+  document.getElementById('disclaimerText').textContent = t.disclaimer;
+}
+
+function freqPerYear(f) {
+  return { monthly: 12, biweekly: 26, weekly: 52, 'accelerated-biweekly': 26, 'accelerated-weekly': 52 }[f] || 12;
+}
+
+function periodRate(annualPct, freq, compounding) {
+  var r = annualPct / 100;
+  var n = freqPerYear(freq);
+  if (compounding === 'canadian') {
+    // Composé semi-annuellement par la loi au Canada :
+    //   (1 + r/2)^2 = (1 + i)^n   →   i = (1 + r/2)^(2/n) - 1
+    return Math.pow(1 + r / 2, 2 / n) - 1;
+  }
+  // Standard : r par période
+  return r / n;
+}
+
+function formatDate(date, lang) {
+  try {
+    return new Intl.DateTimeFormat(i18n[lang].dateLocale, { year: 'numeric', month: '2-digit', day: '2-digit' }).format(date);
+  } catch (e) {
+    return date.toISOString().slice(0, 10);
+  }
+}
+
+function addDays(date, days) {
+  var d = new Date(date);
+  d.setDate(d.getDate() + days);
+  return d;
+}
+function addMonths(date, months) {
+  var d = new Date(date);
+  d.setMonth(d.getMonth() + months);
+  return d;
+}
+
+function nextDateForFreq(startDate, idx, freq) {
+  // idx = numéro du paiement (1..N), startDate = date du 1er paiement
+  switch (freq) {
+    case 'monthly':                return addMonths(startDate, idx - 1);
+    case 'biweekly':
+    case 'accelerated-biweekly':   return addDays(startDate, 14 * (idx - 1));
+    case 'weekly':
+    case 'accelerated-weekly':     return addDays(startDate, 7 * (idx - 1));
+    default:                       return addMonths(startDate, idx - 1);
+  }
+}
+
+function computePayment(principal, annualPct, years, freq, compounding) {
+  var n = freqPerYear(freq);
+  var totalPeriods = Math.round(n * years);
+  var i = periodRate(annualPct, freq, compounding);
+
+  // Paiements accélérés : on calcule le paiement mensuel (sur la durée donnée),
+  // puis on divise par 2 (aux 2 sem.) ou par 4 (hebdo) → 26 ou 52 paiements / an
+  var monthlyEquivalent = null;
+  if (freq === 'accelerated-biweekly' || freq === 'accelerated-weekly') {
+    var iMonthly = periodRate(annualPct, 'monthly', compounding);
+    var nMonthly = Math.round(12 * years);
+    monthlyEquivalent = iMonthly === 0
+      ? principal / nMonthly
+      : principal * (iMonthly * Math.pow(1 + iMonthly, nMonthly)) / (Math.pow(1 + iMonthly, nMonthly) - 1);
+  }
+
+  var payment;
+  if (monthlyEquivalent !== null) {
+    payment = freq === 'accelerated-biweekly' ? monthlyEquivalent / 2 : monthlyEquivalent / 4;
+  } else if (i === 0) {
+    payment = principal / totalPeriods;
+  } else {
+    payment = principal * (i * Math.pow(1 + i, totalPeriods)) / (Math.pow(1 + i, totalPeriods) - 1);
+  }
+  return { payment: payment, i: i, totalPeriods: totalPeriods };
+}
+
+function buildSchedule(principal, annualPct, years, freq, compounding, startDate) {
+  var comp = computePayment(principal, annualPct, years, freq, compounding);
+  var payment = comp.payment;
+  var i = comp.i;
+
+  var balance = principal;
+  var schedule = [];
+  var totalInterest = 0;
+  var totalPaid = 0;
+  var p = 0;
+  // Les paiements accélérés peuvent terminer plus tôt — on boucle jusqu'à solde = 0
+  var maxPeriods = comp.totalPeriods + 10;
+  while (balance > 0.005 && p < maxPeriods) {
+    p++;
+    var interest = balance * i;
+    var principalPart = payment - interest;
+    // Dernier paiement : ajuster pour solder exactement
+    if (principalPart > balance) {
+      principalPart = balance;
+      payment = principalPart + interest;
+    }
+    balance = balance - principalPart;
+    if (balance < 0.005) balance = 0;
+    totalInterest += interest;
+    totalPaid     += (principalPart + interest);
+    schedule.push({
+      num: p,
+      date: nextDateForFreq(startDate, p, freq),
+      payment: principalPart + interest,
+      principal: principalPart,
+      interest: interest,
+      balance: balance,
+    });
+    if (balance === 0) break;
+  }
+
+  return {
+    payment: comp.payment,
+    periodRate: i,
+    numPayments: schedule.length,
+    totalInterest: totalInterest,
+    totalPaid: totalPaid,
+    schedule: schedule,
+  };
+}
+
+function renderSchedule(result) {
+  var t = i18n[lang];
+  var body = document.getElementById('scheduleBody');
+  if (!result || !result.schedule || result.schedule.length === 0) {
+    body.innerHTML = '';
+    return;
+  }
+  var rows = result.schedule.map(function(r, idx) {
+    // Mettre en surbrillance le dernier paiement de chaque année civile
+    var isYearEnd = (idx < result.schedule.length - 1)
+      && (r.date.getFullYear() !== result.schedule[idx + 1].date.getFullYear());
+    var cls = (isYearEnd || idx === result.schedule.length - 1) ? ' class="year-end"' : '';
+    return '<tr' + cls + '>' +
+      '<td>' + r.num + '</td>' +
+      '<td>' + formatDate(r.date, lang) + '</td>' +
+      '<td>' + CXSite.formatMoney(r.payment, lang) + '</td>' +
+      '<td>' + CXSite.formatMoney(r.principal, lang) + '</td>' +
+      '<td>' + CXSite.formatMoney(r.interest, lang) + '</td>' +
+      '<td>' + CXSite.formatMoney(r.balance, lang) + '</td>' +
+    '</tr>';
+  }).join('');
+  body.innerHTML = rows;
+}
+
+function calculate() {
+  var t = i18n[lang];
+  var principal = parseFloat(document.getElementById('principal').value) || 0;
+  var rate      = parseFloat(document.getElementById('rate').value)      || 0;
+  var years     = parseFloat(document.getElementById('years').value)     || 0;
+  var freq      = document.getElementById('freq').value;
+  var compounding = document.getElementById('compounding').value;
+  var startStr  = document.getElementById('startDate').value;
+  var startDate = startStr ? new Date(startStr + 'T12:00:00') : new Date();
+
+  var banner = document.getElementById('resultBanner');
+
+  if (principal > 0 && rate >= 0 && years > 0) {
+    var res = buildSchedule(principal, rate, years, freq, compounding, startDate);
+    lastSchedule = res;
+    lastSummary = {
+      principal: principal, rate: rate, years: years, freq: freq, compounding: compounding,
+      startDate: startDate,
+    };
+    banner.classList.remove('empty');
+    document.getElementById('resultMain').textContent = CXSite.formatMoney(res.payment, lang);
+    document.getElementById('resultSub').textContent  = t.resultSub(res.numPayments, t.freqLabels[freq]);
+    document.getElementById('kpi1Val').textContent = CXSite.formatMoney(principal, lang);
+    document.getElementById('kpi2Val').textContent = CXSite.formatMoney(res.totalInterest, lang);
+    var pct = principal > 0 ? (res.totalInterest / principal * 100) : 0;
+    document.getElementById('kpi2Sub').textContent = t.kpi2Sub(CXSite.formatNumber(pct, lang, 1));
+    document.getElementById('kpi3Val').textContent = CXSite.formatMoney(res.totalPaid, lang);
+    // Sidebar
+    document.getElementById('infoPrincipal').textContent  = CXSite.formatMoney(principal, lang);
+    document.getElementById('infoPeriodRate').textContent = CXSite.formatNumber(res.periodRate * 100, lang, 4) + ' %';
+    document.getElementById('infoNumPayments').textContent = res.numPayments;
+    document.getElementById('infoFreq').textContent       = t.freqLabels[freq];
+    var endDate = res.schedule.length ? res.schedule[res.schedule.length - 1].date : null;
+    document.getElementById('infoEndDate').textContent    = endDate ? formatDate(endDate, lang) : '—';
+
+    renderSchedule(res);
+    document.getElementById('exportBtn').disabled = false;
+    banner.classList.add('animate'); setTimeout(function(){ banner.classList.remove('animate'); }, 400);
+  } else {
+    lastSchedule = null;
+    banner.classList.add('empty');
+    document.getElementById('resultMain').textContent = t.resultEmpty;
+    document.getElementById('resultSub').textContent = '';
+    ['kpi1Val','kpi2Val','kpi3Val'].forEach(function(id){ document.getElementById(id).textContent = '—'; });
+    document.getElementById('kpi2Sub').textContent = '';
+    ['infoPrincipal','infoPeriodRate','infoNumPayments','infoFreq','infoEndDate'].forEach(function(id){
+      document.getElementById(id).textContent = '—';
+    });
+    document.getElementById('scheduleBody').innerHTML = '';
+    document.getElementById('exportBtn').disabled = true;
+  }
+}
+
+function exportToExcel() {
+  if (!lastSchedule || !lastSummary || typeof XLSX === 'undefined') return;
+  var t = i18n[lang];
+  var s = lastSummary;
+  var r = lastSchedule;
+
+  var wb = XLSX.utils.book_new();
+  var aoa = [];
+  aoa.push([t.xlsTitle]);
+  aoa.push([]);
+  aoa.push([t.xlsRowLoan,    s.principal]);
+  aoa.push([t.xlsRowRate,    s.rate / 100]);
+  aoa.push([t.xlsRowTerm,    s.years + ' ' + (lang === 'fr' ? 'ans' : (lang === 'es' ? 'años' : 'years'))]);
+  aoa.push([t.xlsRowFreq,    t.freqLabels[s.freq]]);
+  aoa.push([t.xlsRowCompound, s.compounding === 'canadian' ? t.optCanadian : t.optStandard]);
+  aoa.push([t.xlsRowPayment, r.payment]);
+  aoa.push([t.xlsRowInterest, r.totalInterest]);
+  aoa.push([t.xlsRowTotal,   r.totalPaid]);
+  aoa.push([]);
+  aoa.push([t.tcNum, t.tcDate, t.tcPayment, t.tcPrincipal, t.tcInterest, t.tcBalance]);
+  r.schedule.forEach(function(row) {
+    aoa.push([row.num, formatDate(row.date, lang), row.payment, row.principal, row.interest, row.balance]);
+  });
+  aoa.push([]);
+  aoa.push([t.xlsFooter]);
+
+  var ws = XLSX.utils.aoa_to_sheet(aoa);
+  ws['!cols'] = [{wch:8},{wch:14},{wch:16},{wch:16},{wch:16},{wch:18}];
+
+  // Formatage titre (row 0) — gras, fusion
+  if (ws['A1']) { ws['A1'].s = { font: { bold: true, sz: 13 } }; }
+  // Merge title across 6 columns
+  ws['!merges'] = [{ s:{r:0,c:0}, e:{r:0,c:5} }];
+
+  // Formats monétaires
+  var money = '#,##0.00 [$CAD]';
+  var pct   = '0.00%';
+  // Ligne 4 = taux annuel → format %
+  var rateCell = XLSX.utils.encode_cell({r:3, c:1});
+  if (ws[rateCell]) ws[rateCell].z = pct;
+  // Lignes résumé monétaires : Loan(2), Payment(7), Interest(8), Total(9) — col B
+  [2, 7, 8, 9].forEach(function(rr) {
+    var ref = XLSX.utils.encode_cell({r:rr, c:1});
+    if (ws[ref]) ws[ref].z = money;
+  });
+  // Header du tableau : ligne 11
+  var headerRow = 11;
+  for (var c = 0; c < 6; c++) {
+    var ref = XLSX.utils.encode_cell({r:headerRow, c:c});
+    if (ws[ref]) ws[ref].s = { font: { bold: true, color: { rgb: 'FFFFFF' } }, fill: { fgColor: { rgb: '1A3A5C' } } };
+  }
+  // Colonnes monétaires (C,D,E,F) pour toutes les lignes de schedule
+  var firstDataRow = 12;
+  var lastDataRow  = firstDataRow + r.schedule.length - 1;
+  for (var rr = firstDataRow; rr <= lastDataRow; rr++) {
+    for (var c = 2; c <= 5; c++) {
+      var ref = XLSX.utils.encode_cell({r:rr, c:c});
+      if (ws[ref]) ws[ref].z = money;
+    }
+  }
+  // Gel des volets sur l'en-tête de tableau
+  ws['!freeze'] = { xSplit: 0, ySplit: headerRow + 1 };
+
+  XLSX.utils.book_append_sheet(wb, ws, t.xlsSheetName);
+  var fn = t.xlsFilename + '-' + new Date().toISOString().slice(0,10) + '.xlsx';
+  XLSX.writeFile(wb, fn);
+}
+
+// Init date par défaut = aujourd'hui
+(function initDate() {
+  var d = new Date();
+  var iso = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  document.getElementById('startDate').value = iso;
+})();
+
+['principal','rate','years','freq','compounding','startDate'].forEach(function(id){
+  document.getElementById(id).addEventListener('input', calculate);
+  document.getElementById(id).addEventListener('change', calculate);
+});
+
+document.documentElement.lang = lang;
+updateLangToggleUI();
+applyTranslations();
+calculate();
+</script>
+
+<!-- Filet de sécurité : rend nav + footer + pubs si site-config se charge après -->
+<script>
+(function(){
+  function safetyRender() {
+    try {
+      if (!window.CXSite) return;
+      var curLang = (typeof lang === 'string' && lang) ? lang : ((CXSite.getStoredLang && CXSite.getStoredLang()) || 'fr');
+      var nav = document.getElementById('siteNav');
+      if (nav && nav.innerHTML.trim().length === 0) CXSite.renderNav(curLang, 'amortissement', 'siteNav');
+      var fl = document.getElementById('footerLinks');
+      if (fl && fl.innerHTML.trim().length === 0) CXSite.renderFooterLinks(curLang, 'footerLinks');
+      var ads = document.getElementById('partnersRow');
+      if (ads && ads.innerHTML.trim().length === 0) ads.innerHTML = CXSite.amazonAd(curLang) + CXSite.cfoMasqueAd(curLang) + CXSite.alchimixAd(curLang);
+      var shared = CXSite.SHARED[curLang] || CXSite.SHARED.fr;
+      var hs = document.getElementById('headerSubtitle');
+      var ft = document.getElementById('footerText');
+      if (hs) hs.textContent = shared.headerSubtitle;
+      if (ft) ft.textContent = shared.footerText;
+      if (CXSite.checkAdBlockAndNotify) CXSite.checkAdBlockAndNotify(curLang);
+    } catch(e) { console.warn('safetyRender amortissement:', e); }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', safetyRender);
+  else safetyRender();
+  window.addEventListener('load', safetyRender);
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8GX6M9JHC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Z8GX6M9JHC');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Budget de couple : partagez les dépenses au prorata des salaires ou par pourcentage personnalisé. Lignes suggérées, montants par jour/semaine/mois/année. Exportable en Excel.">
+<link rel="canonical" href="https://www.calculix.ca/budget-couple.html">
+<title>Budget de couple — Couple Budget | Calculix.ca</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ads.css?v=20260424k">
+<link rel="stylesheet" href="assets/seo.css?v=20260510a">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451" crossorigin="anonymous"></script>
+<script src="assets/site-config.js?v=20260424k"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+  :root {
+    --bleu: #1a3a5c; --bleu-clair: #2d6a9f; --accent: #e8c547;
+    --vert: #2f8f5f; --vert-clair: #4db37f; --vert-fonce: #1f6e45;
+    --rouge: #c64545; --rouge-clair: #e57373;
+    --rose: #d94f7a; --rose-clair: #ec7599;
+    --fond: #f4f1eb; --blanc: #ffffff; --gris: #8a8a8a;
+    --gris-clair: #e8e4dc; --texte: #1a1a1a;
+    --ombre: 0 4px 24px rgba(26,58,92,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--fond); color: var(--texte); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+
+  header { width: 100%; background: var(--bleu); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1.3rem; letter-spacing: 0.03em; text-decoration: none; }
+  .logo span { color: var(--blanc); font-weight: 300; }
+  .header-right { display: flex; align-items: center; gap: 14px; }
+  .lang-label { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.05em; }
+  .lang-toggle-3 {
+    display: inline-flex; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px;
+    overflow: hidden; cursor: pointer; background: rgba(255,255,255,0.04);
+    font-size: 0.78rem; letter-spacing: 0.08em;
+  }
+  .lang-toggle-3 .lang-opt { padding: 6px 12px; color: rgba(255,255,255,0.6); transition: all 0.15s; }
+  .lang-toggle-3 .lang-opt.active { color: var(--bleu); background: var(--accent); font-weight: 700; }
+
+  nav.site-nav { width: 100%; background: #142d47; border-bottom: 2px solid rgba(232,197,71,0.2); }
+  nav.site-nav .nav-inner { max-width: 1180px; margin: 0 auto; display: flex; align-items: center; padding: 0 16px; gap: 4px; overflow-x: auto; }
+  nav.site-nav .nav-link { display: inline-block; padding: 12px 16px; color: rgba(255,255,255,0.6); font-size: 0.85rem; font-weight: 500; text-decoration: none; letter-spacing: 0.03em; white-space: nowrap; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
+  nav.site-nav .nav-link:hover { color: var(--blanc); }
+  nav.site-nav .nav-link.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  main { width: 100%; max-width: 1180px; padding: 24px 16px 64px; display: grid; grid-template-columns: 1fr 320px; gap: 28px; align-items: start; }
+
+  .card { background: var(--blanc); border-radius: 16px; box-shadow: var(--ombre); overflow: hidden; }
+  .card-header { background: linear-gradient(135deg, #d94f7a 0%, #8a3760 100%); padding: 24px 32px 20px; position: relative; overflow: hidden; }
+  .card-header::before { content: ''; position: absolute; right: -40px; top: -40px; width: 160px; height: 160px; border-radius: 50%; background: rgba(232,197,71,0.12); }
+  .card-header::after  { content: ''; position: absolute; right: 20px; top: 20px; width: 80px; height: 80px; border-radius: 50%; background: rgba(232,197,71,0.08); }
+  .card-header h1 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--blanc); margin-bottom: 6px; position: relative; z-index: 1; }
+  .card-header p  { color: rgba(255,255,255,0.85); font-size: 0.88rem; font-weight: 300; position: relative; z-index: 1; }
+  .card-body { padding: 28px 32px; }
+
+  .form-group { margin-bottom: 16px; }
+  label { display: block; font-size: 0.74rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gris); margin-bottom: 6px; }
+  input[type="number"], input[type="text"], select {
+    width: 100%; padding: 11px 14px;
+    border: 1.5px solid var(--gris-clair); border-radius: 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--texte);
+    background: var(--fond);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  input:focus, select:focus {
+    border-color: var(--rose); box-shadow: 0 0 0 3px rgba(217,79,122,0.14); background: var(--blanc);
+  }
+  .input-prefix, .input-suffix { position: relative; }
+  .input-prefix input { padding-left: 32px; }
+  .input-prefix::before { content: attr(data-prefix); position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--gris); font-weight: 600; pointer-events: none; }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .row-3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; }
+  .select-wrapper { position: relative; }
+  .select-wrapper select { appearance: none; cursor: pointer; padding-right: 34px; }
+  .select-wrapper::after { content: '▾'; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--rose); pointer-events: none; font-size: 0.85rem; }
+
+  .partner-block { background: var(--fond); border-radius: 14px; padding: 18px 20px; border: 1.5px solid var(--gris-clair); }
+  .partner-block.p1 { border-color: rgba(45,106,159,0.35); }
+  .partner-block.p2 { border-color: rgba(217,79,122,0.35); }
+  .partner-label { font-family: 'Playfair Display', serif; font-size: 1.05rem; margin-bottom: 10px; }
+  .partner-block.p1 .partner-label { color: var(--bleu-clair); }
+  .partner-block.p2 .partner-label { color: var(--rose); }
+
+  .mode-tabs { display: flex; gap: 8px; background: var(--fond); border-radius: 10px; padding: 4px; margin-bottom: 14px; }
+  .mode-tab { flex: 1; padding: 10px 14px; text-align: center; border-radius: 8px; font-size: 0.85rem; font-weight: 500; cursor: pointer; color: var(--gris); transition: all 0.15s; border: none; background: transparent; font-family: inherit; }
+  .mode-tab.active { background: var(--blanc); color: var(--rose); box-shadow: 0 2px 6px rgba(0,0,0,0.08); font-weight: 600; }
+
+  .result-banner {
+    margin-top: 20px; background: linear-gradient(135deg, #1a3a5c 0%, #2d6a9f 100%);
+    border-radius: 14px; padding: 22px 26px; position: relative; overflow: hidden;
+  }
+  .result-banner::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--accent); border-radius: 4px 0 0 4px; }
+  .result-banner-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .result-banner-main  { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--blanc); line-height: 1.1; font-weight: 700; }
+  .result-banner-sub   { font-size: 0.88rem; color: var(--accent); margin-top: 8px; font-weight: 500; }
+  .result-banner.empty .result-banner-main { color: rgba(255,255,255,0.3); font-size: 1rem; font-family: 'DM Sans', sans-serif; font-weight: 300; padding: 6px 0; }
+
+  .share-grid { margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .share-card { padding: 16px 18px; border-radius: 12px; border: 1.5px solid transparent; background: var(--fond); }
+  .share-card.p1 { border-color: rgba(45,106,159,0.35); background: #eaf2f9; }
+  .share-card.p2 { border-color: rgba(217,79,122,0.35); background: #fbeff3; }
+  .share-label { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gris); margin-bottom: 6px; }
+  .share-value { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; line-height: 1.1; }
+  .share-card.p1 .share-value { color: var(--bleu-clair); }
+  .share-card.p2 .share-value { color: var(--rose); }
+  .share-sub { font-size: 0.78rem; color: var(--gris); margin-top: 4px; }
+
+  .section-divider { margin: 28px 0 16px; padding-top: 22px; border-top: 1.5px dashed var(--gris-clair); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--rose); }
+
+  .budget-table-wrap { overflow-x: auto; background: var(--fond); border-radius: 12px; border: 1px solid var(--gris-clair); }
+  table.budget { width: 100%; border-collapse: collapse; font-size: 0.86rem; min-width: 780px; }
+  table.budget thead th {
+    background: var(--bleu); color: var(--blanc);
+    font-weight: 600; padding: 11px 12px; font-size: 0.75rem;
+    letter-spacing: 0.04em; text-align: right; white-space: nowrap;
+  }
+  table.budget thead th.th-cat { text-align: left; }
+  table.budget thead th.th-act { width: 42px; text-align: center; }
+  table.budget td { padding: 8px 10px; border-bottom: 1px solid rgba(0,0,0,0.05); text-align: right; color: #333; vertical-align: middle; }
+  table.budget td.td-cat { text-align: left; }
+  table.budget td.td-act { text-align: center; width: 42px; }
+  table.budget td input[type="text"], table.budget td input[type="number"], table.budget td select {
+    width: 100%; padding: 7px 9px; font-size: 0.88rem;
+    border: 1px solid var(--gris-clair); border-radius: 7px; background: var(--blanc);
+  }
+  table.budget td.calc { font-weight: 600; color: var(--bleu); }
+  table.budget td.calc.p1 { color: var(--bleu-clair); }
+  table.budget td.calc.p2 { color: var(--rose); }
+  table.budget tfoot td { background: var(--bleu); color: var(--blanc); font-weight: 700; padding: 12px; font-size: 0.95rem; }
+  table.budget tfoot td.calc.p1 { background: #1e5380; color: #ffffff; text-shadow: 0 1px 1px rgba(0,0,0,0.25); }
+  table.budget tfoot td.calc.p2 { background: #6b2a4a; color: #ffffff; text-shadow: 0 1px 1px rgba(0,0,0,0.25); }
+
+  .del-btn { background: transparent; border: none; color: var(--rouge); font-size: 1.1rem; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: background 0.15s; }
+  .del-btn:hover { background: rgba(198,69,69,0.1); }
+
+  .add-row-btn {
+    margin-top: 14px; display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 18px; background: var(--blanc); color: var(--rose);
+    border: 1.5px dashed var(--rose); border-radius: 10px;
+    font-family: inherit; font-size: 0.88rem; font-weight: 600;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .add-row-btn:hover { background: #fbeff3; }
+
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .info-card { background: var(--blanc); border-radius: 14px; box-shadow: var(--ombre); padding: 22px 24px; }
+  .info-card h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--bleu); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1.5px solid var(--gris-clair); }
+  .info-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--gris-clair); font-size: 0.88rem; }
+  .info-item:last-child { border-bottom: none; }
+  .info-item .label { color: var(--gris); }
+  .info-item .value { font-weight: 600; color: var(--bleu); }
+  .info-item .value.green { color: var(--vert-fonce); }
+  .info-item .value.red { color: var(--rouge); }
+
+  .disclaimer {
+    grid-column: 1 / -1; margin-top: 4px; padding: 14px 18px;
+    background: #fff8e6; border-left: 3px solid var(--accent);
+    border-radius: 8px; font-size: 0.82rem; line-height: 1.7; color: #666;
+  }
+
+  .export-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #1d6f42 0%, #2f8f5f 100%);
+    color: white; border: none; border-radius: 10px;
+    font-family: inherit; font-size: 0.9rem; font-weight: 600;
+    letter-spacing: 0.02em; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(29,111,66,0.25);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .export-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(29,111,66,0.35); }
+  .export-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  footer { width: 100%; background: var(--bleu); padding: 22px 32px; text-align: center; color: rgba(255,255,255,0.4); font-size: 0.78rem; margin-top: auto; }
+  footer a { color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 8px; }
+  footer a:hover { color: var(--accent); }
+  .footer-links { margin-bottom: 10px; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .animate { animation: fadeUp 0.3s ease forwards; }
+
+  @media (max-width: 980px) { main { grid-template-columns: 1fr; } }
+  @media (max-width: 640px) {
+    .row-2, .row-3 { grid-template-columns: 1fr; }
+    .share-grid { grid-template-columns: 1fr; }
+    header { padding: 14px 16px; }
+    .lang-label { display: none; }
+    .card-body { padding: 20px 18px; }
+
+    /* === Tableau budget en cartes empilees sur mobile === */
+    .budget-table-wrap { overflow-x: visible; background: transparent; border: none; border-radius: 0; box-shadow: none; }
+    table.budget { display: block; min-width: 0; width: 100%; font-size: 0.86rem; }
+    table.budget thead { display: none; }
+    table.budget tbody { display: block; }
+    table.budget tbody tr {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        'cat     cat'
+        'amt     freq'
+        'monthly yearly'
+        'p1      p2'
+        'del     del';
+      gap: 10px 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+      background: var(--blanc);
+      border: 1.5px solid var(--gris-clair);
+      border-radius: 12px;
+    }
+    table.budget tbody td {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 0;
+      border: none;
+      text-align: left;
+    }
+    table.budget tbody td::before {
+      content: attr(data-label);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-bottom: 4px;
+    }
+    table.budget tbody td.td-cat     { grid-area: cat; }
+    table.budget tbody td.td-amount  { grid-area: amt; }
+    table.budget tbody td.td-freq    { grid-area: freq; }
+    table.budget tbody td.cx-monthly { grid-area: monthly; }
+    table.budget tbody td.cx-yearly  { grid-area: yearly; }
+    table.budget tbody td.cx-pp1     { grid-area: p1; }
+    table.budget tbody td.cx-pp2     { grid-area: p2; }
+    table.budget tbody td.td-act {
+      grid-area: del;
+      align-items: flex-end;
+      width: auto;
+    }
+    table.budget tbody td.td-act::before { display: none; }
+    table.budget td input[type="text"],
+    table.budget td input[type="number"],
+    table.budget td select {
+      width: 100%;
+      padding: 9px 12px;
+      font-size: 0.95rem;
+      background: var(--fond);
+      border: 1.5px solid var(--gris-clair);
+      border-radius: 8px;
+      text-align: left;
+    }
+    .del-btn { font-size: 1.3rem; padding: 6px 14px; min-height: 40px; }
+
+    /* Pied de tableau (TOTAL) : carte unique pleine largeur */
+    table.budget tfoot { display: block; }
+    table.budget tfoot tr {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        'lbl     lbl'
+        'monthly yearly'
+        'p1      p2';
+      gap: 6px 12px;
+      padding: 14px;
+      margin-bottom: 0;
+      background: var(--bleu);
+      color: var(--blanc);
+      border-radius: 12px;
+      font-size: 0.92rem;
+    }
+    table.budget tfoot td {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      background: transparent !important;
+      color: var(--blanc) !important;
+      text-align: left;
+    }
+    table.budget tfoot td:nth-child(1) { grid-area: lbl; font-weight: 700; }
+    table.budget tfoot td:nth-child(2),
+    table.budget tfoot td:nth-child(3),
+    table.budget tfoot td:nth-child(8) { display: none; }
+    table.budget tfoot td:nth-child(4) { grid-area: monthly; }
+    table.budget tfoot td:nth-child(5) { grid-area: yearly; }
+    table.budget tfoot td:nth-child(6) { grid-area: p1; }
+    table.budget tfoot td:nth-child(7) { grid-area: p2; }
+
+    /* Bouton « Ajouter une ligne » : pleine largeur, plus visible */
+    .add-row-btn {
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      padding: 13px 16px;
+      font-size: 0.95rem;
+      margin-top: 6px;
+      box-shadow: 0 2px 8px rgba(225,77,138,0.18);
+    }
+  }
+  @media (max-width: 480px) {
+    main { padding: 16px 10px 48px; gap: 18px; }
+    .card-header { padding: 20px 22px 16px; }
+    .card-header h1 { font-size: 1.35rem; }
+    .card-header p { font-size: 0.82rem; }
+    .card-body { padding: 18px 14px; }
+    .section-title { font-size: 0.95rem; }
+    .partner-block { padding: 14px 14px; }
+    .mode-tabs { gap: 4px; padding: 3px; }
+    .mode-tab { padding: 9px 8px; font-size: 0.78rem; letter-spacing: 0; }
+    .result-banner { padding: 18px 20px; }
+    .result-banner-main { font-size: 1.55rem; }
+    .share-card { padding: 13px 14px; }
+    table.budget tbody tr { padding: 12px; gap: 8px 10px; }
+    table.budget td input[type="text"],
+    table.budget td input[type="number"],
+    table.budget td select { padding: 8px 10px; font-size: 0.92rem; }
+    .export-btn { width: 100%; padding: 12px 16px; }
+    .section-divider { padding-top: 18px; margin: 22px 0 14px; }
+    .info-card { padding: 18px 18px; }
+    aside.sidebar { gap: 14px; }
+  }
+  @media (max-width: 380px) {
+    .card-header h1 { font-size: 1.2rem; }
+    table.budget { min-width: 0; font-size: 0.78rem; }
+    table.budget thead th, table.budget td { padding: 5px 4px; }
+    table.budget td input[type="text"], table.budget td input[type="number"], table.budget td select { padding: 5px 6px; font-size: 0.78rem; }
+    .mode-tab { font-size: 0.72rem; padding: 8px 4px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Calcul<span>ix</span>.ca</a>
+  <div class="header-right">
+    <span class="lang-label" id="headerSubtitle">Calculs financiers gratuits · Québec</span>
+    <div class="lang-toggle-3" onclick="toggleLang()" id="langToggle" title="Language">
+      <span class="lang-opt" data-lang="fr">FR</span>
+      <span class="lang-opt" data-lang="en">EN</span>
+      <span class="lang-opt" data-lang="es">ES</span>
+    </div>
+  </div>
+</header>
+
+<nav class="site-nav"><div class="nav-inner" id="siteNav"></div></nav>
+
+<main>
+  <div class="card">
+    <div class="card-header">
+      <h1 id="mainTitle">💞 Budget de couple</h1>
+      <p id="mainSubtitle">Partagez les dépenses au prorata des salaires ou par pourcentage personnalisé</p>
+    </div>
+    <div class="card-body">
+
+      <!-- Revenus -->
+      <div class="section-title" id="sectIncome" style="margin-bottom:14px;">💰 Revenus</div>
+      <div class="row-2">
+        <div class="partner-block p1">
+          <div class="partner-label" id="p1Label">Partenaire 1</div>
+          <div class="form-group">
+            <label id="p1NameLbl">Nom</label>
+            <input type="text" id="p1Name" value="Alex" />
+          </div>
+          <div class="form-group">
+            <label id="p1SalaryLbl">Salaire net</label>
+            <div class="input-prefix" data-prefix="$"><input type="number" id="p1Salary" min="0" step="100" value="4200" /></div>
+          </div>
+          <div class="form-group">
+            <label id="p1FreqLbl">Fréquence</label>
+            <div class="select-wrapper">
+              <select id="p1Freq">
+                <option value="yearly"  id="p1optYear">Par année</option>
+                <option value="monthly" id="p1optMonth" selected>Par mois</option>
+                <option value="biweekly" id="p1optBiwk">Aux 2 semaines</option>
+                <option value="weekly"  id="p1optWk">Par semaine</option>
+                <option value="daily"   id="p1optDay">Par jour</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="partner-block p2">
+          <div class="partner-label" id="p2Label">Partenaire 2</div>
+          <div class="form-group">
+            <label id="p2NameLbl">Nom</label>
+            <input type="text" id="p2Name" value="Sam" />
+          </div>
+          <div class="form-group">
+            <label id="p2SalaryLbl">Salaire net</label>
+            <div class="input-prefix" data-prefix="$"><input type="number" id="p2Salary" min="0" step="100" value="3300" /></div>
+          </div>
+          <div class="form-group">
+            <label id="p2FreqLbl">Fréquence</label>
+            <div class="select-wrapper">
+              <select id="p2Freq">
+                <option value="yearly"  id="p2optYear">Par année</option>
+                <option value="monthly" id="p2optMonth" selected>Par mois</option>
+                <option value="biweekly" id="p2optBiwk">Aux 2 semaines</option>
+                <option value="weekly"  id="p2optWk">Par semaine</option>
+                <option value="daily"   id="p2optDay">Par jour</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mode de partage -->
+      <div class="section-divider">
+        <div class="section-title" id="sectMode">⚖️ Mode de partage</div>
+      </div>
+      <div class="mode-tabs">
+        <button type="button" class="mode-tab active" data-mode="prorata" id="modeProrata">Prorata des salaires</button>
+        <button type="button" class="mode-tab" data-mode="percent" id="modePercent">Pourcentage personnalisé</button>
+        <button type="button" class="mode-tab" data-mode="equal" id="modeEqual">50 / 50</button>
+      </div>
+
+      <div class="row-2" id="customPercentRow" style="display:none;">
+        <div class="form-group">
+          <label id="customP1Lbl">Pourcentage du partenaire 1</label>
+          <div class="input-prefix" data-prefix="%"><input type="number" id="customP1" min="0" max="100" step="1" value="50" /></div>
+        </div>
+        <div class="form-group">
+          <label id="customP2Lbl">Pourcentage du partenaire 2 (auto)</label>
+          <div class="input-prefix" data-prefix="%"><input type="number" id="customP2" value="50" readonly style="background:#eaeaea;color:#666;" /></div>
+        </div>
+      </div>
+
+      <!-- Résultat principal -->
+      <div class="result-banner empty" id="resultBanner">
+        <div class="result-banner-label" id="resultLabel">Budget total mensuel</div>
+        <div class="result-banner-main"  id="resultMain">Ajoutez vos lignes de budget ci-dessous</div>
+        <div class="result-banner-sub"   id="resultSub"></div>
+      </div>
+
+      <div class="share-grid">
+        <div class="share-card p1">
+          <div class="share-label" id="shareP1Lbl">Part de Alex</div>
+          <div class="share-value" id="shareP1Val">—</div>
+          <div class="share-sub"   id="shareP1Sub"></div>
+        </div>
+        <div class="share-card p2">
+          <div class="share-label" id="shareP2Lbl">Part de Sam</div>
+          <div class="share-value" id="shareP2Val">—</div>
+          <div class="share-sub"   id="shareP2Sub"></div>
+        </div>
+      </div>
+
+      <!-- Table budget -->
+      <div class="section-divider">
+        <div class="section-title" id="sectBudget">📋 Lignes de budget</div>
+        <button type="button" class="export-btn" id="exportBtn" onclick="exportToExcel()" disabled>
+          <span>📊</span><span id="exportLbl">Exporter en Excel</span>
+        </button>
+      </div>
+
+      <div class="budget-table-wrap">
+        <table class="budget" id="budgetTable">
+          <thead><tr>
+            <th class="th-cat" id="tcCategory">Catégorie</th>
+            <th id="tcAmount">Montant</th>
+            <th id="tcFreq">Fréquence</th>
+            <th id="tcMonthly">Mensuel</th>
+            <th id="tcYearly">Annuel</th>
+            <th id="tcPartP1">Part P1</th>
+            <th id="tcPartP2">Part P2</th>
+            <th class="th-act">✕</th>
+          </tr></thead>
+          <tbody id="budgetBody"></tbody>
+          <tfoot><tr>
+            <td class="td-cat" id="tfTotalLbl">TOTAL</td>
+            <td></td>
+            <td></td>
+            <td class="calc" id="tfMonthly">—</td>
+            <td class="calc" id="tfYearly">—</td>
+            <td class="calc p1" id="tfP1">—</td>
+            <td class="calc p2" id="tfP2">—</td>
+            <td></td>
+          </tr></tfoot>
+        </table>
+      </div>
+
+      <button type="button" class="add-row-btn" id="addRowBtn" onclick="addBudgetRow()">
+        <span>➕</span><span id="addRowLbl">Ajouter une ligne</span>
+      </button>
+
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="info-card">
+      <h3 id="infoTitle">📋 Résumé</h3>
+      <div class="info-item"><span class="label" id="lblI1">Revenu mensuel P1</span><span class="value" id="infoP1Inc">—</span></div>
+      <div class="info-item"><span class="label" id="lblI2">Revenu mensuel P2</span><span class="value" id="infoP2Inc">—</span></div>
+      <div class="info-item"><span class="label" id="lblI3">Revenu combiné</span><span class="value green" id="infoTotalInc">—</span></div>
+      <div class="info-item"><span class="label" id="lblI4">Budget total mensuel</span><span class="value" id="infoBudget">—</span></div>
+      <div class="info-item"><span class="label" id="lblI5">Reste après budget</span><span class="value green" id="infoReste">—</span></div>
+    </div>
+
+    <div class="info-card">
+      <h3 id="tipsTitle">💡 Bon à savoir</h3>
+      <p id="tipsP1" style="font-size:0.86rem; color:#555; line-height:1.6; margin-bottom:8px;">
+        Le <strong>prorata des salaires</strong> répartit les dépenses selon la part de chacun dans le revenu total — c'est souvent perçu comme plus équitable quand les salaires sont inégaux.
+      </p>
+      <p id="tipsP2" style="font-size:0.86rem; color:#555; line-height:1.6;">
+        Les calculs sont normalisés au <strong>mensuel</strong> : 365,25 j/an, 52 sem/an, 26 périodes bi-hebdo, 12 mois/an.
+      </p>
+    </div>
+
+    <div class="partners-stack" id="partnersRow"></div>
+  </aside>
+
+  <div class="disclaimer" id="disclaimerText">
+    ⚠️ Calculix.ca fournit des outils à titre informatif uniquement. Ces calculs ne remplacent pas un conseil personnalisé d'un planificateur financier.
+  </div>
+
+<section class="cx-seo" aria-label="Guide budget couple">
+  <div lang="fr">
+    <div class="cx-seo-intro">
+      <h2>Le budget de couple : un outil de transparence et de paix financière</h2>
+      <p>Au Québec, environ 4 ménages sur 10 sont formés de couples cohabitants ou mariés selon Statistique Canada. Pourtant, l'argent demeure l'un des principaux sujets de tension dans la vie conjugale : selon plusieurs sondages québécois, plus de la moitié des conjoints disent s'être déjà disputés à propos des finances. Un budget commun, clair et négocié, est probablement le meilleur outil pour transformer ce sujet anxiogène en projet partagé. Le calculateur ci-dessus vous permet de visualiser la répartition de chaque dépense entre les deux conjoints, soit au prorata des revenus, soit moitié-moitié, soit selon un pourcentage personnalisé. Le présent guide vous aide à choisir la bonne méthode et à éviter les pièges classiques.</p>
+    </div>
+
+    <details open>
+      <summary>1. Pourquoi un budget de couple ?</summary>
+      <div class="cx-seo-body">
+        <p>Vivre à deux change la nature des dépenses : le loyer, l'épicerie, l'électricité, l'auto, les loisirs et les voyages deviennent souvent des coûts partagés, alors que le téléphone, les vêtements, les soins personnels ou les remboursements de prêts étudiants restent typiquement individuels. Sans cadre commun, on tombe vite dans deux travers opposés : la fusion totale (tout dans un seul compte, ce qui peut écraser les revenus inégaux et nuire à l'autonomie financière) ou la séparation rigide (50/50 sur tout, ce qui peut être profondément inéquitable lorsque les revenus diffèrent).</p>
+        <h3>Trois bonnes raisons d'établir un budget conjoint</h3>
+        <p><strong>Transparence.</strong> Mettre les chiffres sur la table — revenus nets, dettes, épargne, dépenses fixes — élimine les non-dits. Un conjoint endetté qui cache la situation finit toujours par créer une crise plus grande lorsqu'elle éclate.</p>
+        <p><strong>Objectifs partagés.</strong> Acheter une propriété, partir en voyage, fonder une famille, prendre une retraite anticipée : ces projets exigent une coordination de l'épargne. Sans budget commun, on s'aperçoit trop tard que l'un cotise à son REER pendant que l'autre rembourse une carte de crédit à 19,99 %.</p>
+        <p><strong>Équité.</strong> Un budget bien construit reconnaît que les revenus, les actifs et les responsabilités (enfants d'une union antérieure, soutien à un parent vieillissant) ne sont pas symétriques. La méthode du partage proportionnel, détaillée plus bas, est généralement perçue comme la plus juste.</p>
+        <h3>Quand mettre en place le budget ?</h3>
+        <p>Idéalement avant l'emménagement commun, ou dans les premières semaines suivant le déménagement. Plus on attend, plus les habitudes se cristallisent et plus les ajustements deviennent émotifs. Une révision annuelle (souvent en janvier, avec les déclarations de revenus) permet de s'ajuster aux changements de salaire, aux nouvelles dettes ou aux projets émergents.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>2. Méthode 50/30/20 et partage proportionnel</summary>
+      <div class="cx-seo-body">
+        <p>La règle 50/30/20, popularisée par la sénatrice américaine Elizabeth Warren, demeure une référence solide pour structurer un budget de couple. Elle propose de répartir le revenu net combiné ainsi :</p>
+        <p><span class="cx-formula">50 % besoins essentiels + 30 % envies + 20 % épargne et remboursement de dettes = 100 % du revenu net combiné</span></p>
+        <p><strong>Besoins essentiels (50 %)</strong> : loyer ou hypothèque, taxes municipales et scolaires, électricité, chauffage, assurance habitation, épicerie de base, transport (essence, STM, RTC, exo), assurances auto et vie, médicaments, frais de garde.</p>
+        <p><strong>Envies (30 %)</strong> : restaurants, abonnements (Netflix, Spotify, gym), loisirs, voyages, vêtements de mode, sorties culturelles, café acheté en route.</p>
+        <p><strong>Épargne et dettes (20 %)</strong> : REER, CELI, CELIAPP, fonds d'urgence, remboursement accéléré d'hypothèque, paiement minimum + supplément sur les cartes de crédit, prêts étudiants.</p>
+        <h3>Partage moitié-moitié ou au prorata des revenus ?</h3>
+        <p>Une fois le budget établi, il reste à décider qui paie quoi. Trois grandes formules existent :</p>
+        <p><strong>Moitié-moitié.</strong> Simple, mais inéquitable lorsque les revenus diffèrent significativement. Si l'un gagne 60 000 $ et l'autre 35 000 $, demander 1 000 $ de loyer chacun représente 20 % du salaire de l'un et 34 % de l'autre.</p>
+        <p><strong>Au prorata des revenus (proportionnel).</strong> Chaque conjoint paie un pourcentage du loyer égal à sa part dans le revenu total. C'est la formule recommandée par la majorité des planificateurs financiers. Le calculateur ci-dessus la calcule automatiquement.</p>
+        <p><span class="cx-formula">Part conjoint A = Revenu A ÷ (Revenu A + Revenu B) × Dépense commune</span></p>
+        <p><strong>Pourcentage personnalisé.</strong> Utile pour tenir compte d'éléments hors revenus : un conjoint apporte une mise de fonds plus importante, l'autre fait davantage de travail domestique non rémunéré, etc.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>3. Exemple chiffré : un couple à Sherbrooke</summary>
+      <div class="cx-seo-body">
+        <p>Camille et Jonathan vivent à Sherbrooke. Camille est gestionnaire à 75 000 $ brut, soit environ 4 500 $ net par mois après impôts, RRQ et assurance-emploi. Jonathan est technicien et gagne 48 000 $ brut, soit environ 3 000 $ net par mois. Leur revenu combiné net : 7 500 $/mois.</p>
+        <div class="cx-example">
+          <p><strong>Dépenses communes mensuelles</strong></p>
+          <p>Loyer 4½ proche du centre : 1 600 $<br>
+          Épicerie pour deux : 800 $<br>
+          Hydro-Québec (moyenne annuelle) : 110 $<br>
+          Internet + cellulaires (forfait conjoint) : 180 $<br>
+          Auto (essence, assurance, immatriculation, entretien) : 600 $<br>
+          Assurance habitation locataire : 35 $<br>
+          Restos et sorties communes : 350 $<br>
+          Voyage annuel (provision mensuelle) : 250 $<br>
+          <strong>Total dépenses partagées : 3 925 $</strong></p>
+        </div>
+        <h3>Application du partage proportionnel</h3>
+        <p>Camille gagne 4 500 ÷ 7 500 = 60 % du revenu du ménage; Jonathan gagne 40 %. Sur les 3 925 $ de dépenses partagées :</p>
+        <p><span class="cx-formula">Camille : 3 925 × 60 % = 2 355 $/mois</span><br>
+        <span class="cx-formula">Jonathan : 3 925 × 40 % = 1 570 $/mois</span></p>
+        <p>Après ces transferts vers le compte commun, il reste à Camille 4 500 − 2 355 = 2 145 $ pour ses dépenses individuelles et son épargne, et à Jonathan 3 000 − 1 570 = 1 430 $. Si on appliquait plutôt le 50/50, chacun paierait 1 962,50 $, ce qui amputerait le budget de Jonathan de près de 400 $/mois — montant qui peut faire la différence entre épargner pour la mise de fonds et stagner.</p>
+        <h3>Cible 50/30/20 du couple</h3>
+        <p>Sur 7 500 $ : 3 750 $ pour les besoins, 2 250 $ pour les envies et 1 500 $ pour l'épargne et le remboursement des dettes. Les besoins essentiels du couple ci-dessus (loyer, électricité, épicerie, transport, assurances) totalisent environ 3 145 $, soit 42 % du revenu : la marge est saine. Reste à canaliser au moins 1 500 $/mois en épargne, idéalement répartis entre CELIAPP (mise de fonds), REER (impôts) et CELI (urgence).</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>4. Comptes communs, séparés ou hybrides : choisir la bonne formule</summary>
+      <div class="cx-seo-body">
+        <p>L'organisation bancaire d'un couple n'est pas qu'une question pratique : elle reflète une vision du « nous » financier. Voici les trois grandes architectures et leurs forces.</p>
+        <h3>Tout en commun</h3>
+        <p><strong>Avantages</strong> : simplicité administrative, sentiment d'unité, vue d'ensemble facile.<br>
+        <strong>Inconvénients</strong> : moins d'autonomie, négociations possibles sur chaque achat individuel (un cadeau, un café, un livre), risque accru en cas de séparation, particulièrement en union de fait au Québec où il n'y a pas de patrimoine familial automatique.</p>
+        <h3>Tout séparé</h3>
+        <p><strong>Avantages</strong> : autonomie totale, simplicité en cas de rupture, protection des actifs respectifs.<br>
+        <strong>Inconvénients</strong> : nécessite une comptabilité fine de qui paie quoi, multiplie les transferts Interac, peut entretenir une logique de « comptes à régler » peu romantique.</p>
+        <h3>Hybride : le compte commun « dépenses partagées » + comptes individuels</h3>
+        <p>C'est la formule recommandée par la plupart des planificateurs financiers québécois. Chaque conjoint conserve son compte chèque et sa carte de crédit, et alimente automatiquement (par virement préautorisé) un compte commun selon la part calculée par le partage proportionnel. Toutes les dépenses partagées (loyer, épicerie, électricité, sorties communes, voyage) passent par ce compte commun. Les dépenses individuelles (vêtements, soins, sorties entre amis, cadeaux à la famille de chacun) restent dans les comptes personnels.</p>
+        <p><strong>Avantages</strong> : équité par construction, autonomie préservée, cadeaux et achats personnels sans négociation, simplicité de la rupture si elle survient. C'est aussi la formule la plus claire à expliquer aux enfants devenus jeunes adultes ou en cas de discussion avec un planificateur.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Foire aux questions</summary>
+      <div class="cx-seo-body">
+        <p class="cx-faq-q">Comment gérer si l'un des conjoints gagne beaucoup plus ?</p>
+        <p>Le partage au prorata des revenus est la meilleure réponse. Si Marie gagne 90 000 $ et Patrick 35 000 $, lui demander de payer la moitié de tout le condo serait injuste. Le calcul proportionnel attribue à chacun une part égale de son revenu, pas une part égale du chèque. Cela préserve l'épargne et l'autonomie du conjoint au revenu plus modeste, tout en honorant les obligations communes.</p>
+        <p class="cx-faq-q">Quels postes mettre dans le compte commun et quels postes garder individuels ?</p>
+        <p>Règle simple : tout ce qui est consommé conjointement va au compte commun (loyer, épicerie, services publics, auto familiale, sorties à deux, vacances). Tout ce qui est strictement personnel reste individuel (vêtements, coiffure, abonnements personnels, sorties entre amis, cadeaux à votre propre famille). Pour les zones grises (cellulaire, gym), discutez et inscrivez le choix dans votre budget.</p>
+        <p class="cx-faq-q">Que faire des dettes pré-mariage ou pré-cohabitation ?</p>
+        <p>En droit québécois, chaque conjoint reste responsable de ses dettes contractées avant l'union, même après le mariage. Toutefois, le couple peut décider que le remboursement accéléré devient une priorité commune. On peut par exemple ajouter une ligne « remboursement de dette de Patrick » dans le budget partagé avec une contribution de Marie, en échange d'une compensation ailleurs (épargne accrue à son nom, contribution moindre au CELIAPP commun, etc.).</p>
+        <p class="cx-faq-q">Faut-il un contrat (mariage ou union de fait) ?</p>
+        <p>Au Québec, un mariage civil entraîne automatiquement le patrimoine familial (résidence, meubles, véhicules, droits de retraite accumulés pendant l'union sont partagés à 50/50 en cas de divorce). L'union de fait, même de longue durée et avec enfants, n'offre AUCUN partage automatique. Un contrat de vie commune (chez le notaire, environ 500 à 1 500 $) clarifie les contributions, la propriété de la résidence, les pensions alimentaires éventuelles. Pour tout couple non marié qui achète une propriété ensemble, c'est fortement recommandé.</p>
+        <p class="cx-faq-q">Comment ajuster le budget après l'arrivée d'un enfant ?</p>
+        <p>L'arrivée d'un bébé bouleverse le budget : revenus diminués (RQAP couvre 70 à 75 % du salaire pour le parent en congé, jusqu'à un maximum), dépenses augmentées (couches, lait, garderie 9 à 22 $/jour selon le type, vêtements). Pensez à intégrer l'Allocation famille du Québec (montant variable selon le revenu, plusieurs centaines de dollars par mois pour un premier enfant) et l'Allocation canadienne pour enfants (jusqu'à environ 7 800 $/an par enfant de moins de 6 ans pour les revenus modestes). Recalculez le partage proportionnel : si l'un est en congé prolongé, son revenu net baisse, et sa part des dépenses communes doit baisser en conséquence.</p>
+      </div>
+    </details>
+  </div>
+
+  <div lang="en">
+    <div class="cx-seo-intro">
+      <h2>The couple's budget: a tool for transparency and financial peace</h2>
+      <p>In Quebec, roughly four households out of ten are made up of cohabiting or married couples, according to Statistics Canada. Yet money remains one of the leading sources of tension in conjugal life: several Quebec surveys show that over half of partners say they've argued about finances. A clear, jointly negotiated budget is probably the best tool to turn this anxiety-inducing topic into a shared project. The calculator above lets you visualize how each expense is split between partners — proportionally to income, fifty-fifty, or with a custom percentage. This guide helps you choose the right approach and avoid common pitfalls.</p>
+    </div>
+
+    <details open>
+      <summary>1. Why build a couple's budget?</summary>
+      <div class="cx-seo-body">
+        <p>Living together changes the nature of expenses: rent, groceries, electricity, the car, leisure and trips often become shared costs, while phone, clothing, personal care or student-loan payments typically remain individual. Without a common framework, couples easily fall into one of two opposite traps: full financial fusion (everything in one account, which can crush unequal incomes and harm financial autonomy) or rigid separation (50/50 on everything, which can be deeply unfair when incomes differ).</p>
+        <h3>Three good reasons to set up a joint budget</h3>
+        <p><strong>Transparency.</strong> Putting the numbers on the table — net income, debts, savings, fixed expenses — eliminates unspoken issues. A partner hiding debt always ends up creating a much larger crisis when the truth emerges.</p>
+        <p><strong>Shared goals.</strong> Buying property, traveling, starting a family, retiring early: these projects require coordinated savings. Without a joint budget, one partner may be contributing to an RRSP while the other is paying off a 19.99% credit card.</p>
+        <p><strong>Fairness.</strong> A well-built budget recognizes that incomes, assets and responsibilities (children from a previous relationship, supporting an aging parent) are not symmetrical. The proportional-split method, detailed below, is generally seen as the fairest.</p>
+        <h3>When should you set up the budget?</h3>
+        <p>Ideally before moving in together, or in the first weeks after the move. The longer you wait, the more habits crystallize and the more emotional adjustments become. An annual review (often in January, alongside tax filings) helps adjust to salary changes, new debts or new projects.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>2. The 50/30/20 rule and proportional sharing</summary>
+      <div class="cx-seo-body">
+        <p>The 50/30/20 rule, popularized by U.S. Senator Elizabeth Warren, remains a solid reference for structuring a couple's budget. It splits combined net income as follows:</p>
+        <p><span class="cx-formula">50% essential needs + 30% wants + 20% savings and debt repayment = 100% of combined net income</span></p>
+        <p><strong>Essential needs (50%)</strong>: rent or mortgage, municipal and school taxes, electricity, heating, home insurance, basic groceries, transit (gas, STM, RTC, exo), auto and life insurance, medication, daycare fees.</p>
+        <p><strong>Wants (30%)</strong>: restaurants, subscriptions (Netflix, Spotify, gym), leisure, travel, fashion clothing, cultural outings, takeout coffee.</p>
+        <p><strong>Savings and debt (20%)</strong>: RRSP, TFSA, FHSA, emergency fund, accelerated mortgage payments, minimum + extra on credit cards, student loans.</p>
+        <h3>Fifty-fifty or proportional to income?</h3>
+        <p>Once the budget is set, you still have to decide who pays what. Three main formulas exist:</p>
+        <p><strong>Fifty-fifty.</strong> Simple, but unfair when incomes differ significantly. If one earns $60,000 and the other $35,000, asking each to pay $1,000 in rent represents 20% of one salary and 34% of the other.</p>
+        <p><strong>Proportional to income.</strong> Each partner pays a percentage of rent equal to their share of total income. This is the formula recommended by most financial planners. The calculator above computes it automatically.</p>
+        <p><span class="cx-formula">Partner A's share = Income A ÷ (Income A + Income B) × Shared expense</span></p>
+        <p><strong>Custom percentage.</strong> Useful when factoring elements beyond income: one partner brings a larger down payment, the other contributes more unpaid domestic work, etc.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>3. Numerical example: a couple in Sherbrooke</summary>
+      <div class="cx-seo-body">
+        <p>Camille and Jonathan live in Sherbrooke. Camille is a manager earning $75,000 gross, about $4,500 net per month after taxes, QPP and EI. Jonathan is a technician earning $48,000 gross, about $3,000 net per month. Their combined net income: $7,500/month.</p>
+        <div class="cx-example">
+          <p><strong>Monthly shared expenses</strong></p>
+          <p>4½ apartment near downtown: $1,600<br>
+          Groceries for two: $800<br>
+          Hydro-Québec (annual average): $110<br>
+          Internet + cellphones (joint plan): $180<br>
+          Car (gas, insurance, registration, maintenance): $600<br>
+          Tenant home insurance: $35<br>
+          Restaurants and shared outings: $350<br>
+          Annual trip (monthly set-aside): $250<br>
+          <strong>Total shared expenses: $3,925</strong></p>
+        </div>
+        <h3>Applying proportional sharing</h3>
+        <p>Camille earns 4,500 ÷ 7,500 = 60% of household income; Jonathan earns 40%. On the $3,925 shared expenses:</p>
+        <p><span class="cx-formula">Camille: 3,925 × 60% = $2,355/month</span><br>
+        <span class="cx-formula">Jonathan: 3,925 × 40% = $1,570/month</span></p>
+        <p>After these transfers to the joint account, Camille has 4,500 − 2,355 = $2,145 left for individual expenses and savings, and Jonathan 3,000 − 1,570 = $1,430. If they applied 50/50 instead, each would pay $1,962.50, cutting Jonathan's discretionary budget by nearly $400/month — an amount that can make the difference between saving for a down payment and stagnating.</p>
+        <h3>Couple's 50/30/20 target</h3>
+        <p>On $7,500: $3,750 for needs, $2,250 for wants and $1,500 for savings and debt. The couple's essential needs above (rent, electricity, groceries, transport, insurance) total about $3,145, or 42% of income — a healthy margin. They should now channel at least $1,500/month into savings, ideally split between FHSA (down payment), RRSP (taxes) and TFSA (emergency).</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>4. Joint, separate or hybrid accounts: choosing the right setup</summary>
+      <div class="cx-seo-body">
+        <p>A couple's banking setup is more than a practical issue — it reflects a vision of the financial "us." Here are the three main architectures and their strengths.</p>
+        <h3>Everything joint</h3>
+        <p><strong>Pros</strong>: administrative simplicity, sense of unity, easy overview.<br>
+        <strong>Cons</strong>: less autonomy, possible negotiation over each individual purchase (a gift, a coffee, a book), increased risk in case of separation — especially under Quebec common-law unions, which have no automatic family patrimony.</p>
+        <h3>Everything separate</h3>
+        <p><strong>Pros</strong>: full autonomy, simplicity in case of breakup, protection of each partner's assets.<br>
+        <strong>Cons</strong>: requires meticulous bookkeeping of who pays what, multiplies Interac transfers, can foster a transactional mindset that hurts intimacy.</p>
+        <h3>Hybrid: a "shared expenses" joint account + individual accounts</h3>
+        <p>This is the formula recommended by most Quebec financial planners. Each partner keeps a personal chequing account and credit card, and automatically funds (by pre-authorized transfer) a joint account based on the share computed by proportional sharing. All shared expenses (rent, groceries, electricity, joint outings, travel) flow through this joint account. Individual expenses (clothing, personal care, outings with friends, gifts to one's own family) stay in personal accounts.</p>
+        <p><strong>Pros</strong>: fairness by design, preserved autonomy, gifts and personal purchases without negotiation, clean unwinding if a breakup occurs. It's also the easiest setup to explain to grown children or to discuss with a planner.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Frequently asked questions</summary>
+      <div class="cx-seo-body">
+        <p class="cx-faq-q">How do we manage things if one partner earns much more?</p>
+        <p>Income-proportional sharing is the best answer. If Marie earns $90,000 and Patrick $35,000, asking him to pay half of all condo expenses would be unfair. The proportional calculation gives each an equal share of their own income, not an equal share of the bill. This preserves the lower-income partner's savings and autonomy while honouring shared obligations.</p>
+        <p class="cx-faq-q">Which expenses go in the joint account and which stay individual?</p>
+        <p>Simple rule: anything consumed jointly goes to the joint account (rent, groceries, utilities, family car, outings as a couple, vacations). Anything strictly personal stays individual (clothing, haircuts, personal subscriptions, outings with friends, gifts to one's own family). For grey areas (cellphone, gym), discuss and write the choice into your budget.</p>
+        <p class="cx-faq-q">What about pre-marriage or pre-cohabitation debts?</p>
+        <p>Under Quebec law, each partner remains responsible for debts contracted before the union, even after marriage. However, the couple can decide that accelerated repayment becomes a shared priority. You might add a "Patrick's debt repayment" line in the joint budget with a contribution from Marie, in exchange for compensation elsewhere (more savings in her name, lower contribution to the joint FHSA, etc.).</p>
+        <p class="cx-faq-q">Do we need a contract (marriage or common-law)?</p>
+        <p>In Quebec, a civil marriage automatically creates the family patrimony (residence, furniture, vehicles, retirement rights accumulated during the union are split 50/50 in case of divorce). Common-law unions, even long ones with children, offer NO automatic split. A cohabitation contract (drafted by a notary, around $500 to $1,500) clarifies contributions, property ownership of the residence, possible support payments. For any unmarried couple buying a property together, it is strongly recommended.</p>
+        <p class="cx-faq-q">How do we adjust the budget after a baby arrives?</p>
+        <p>A baby's arrival shakes up the budget: lower income (QPIP covers 70% to 75% of salary for the parent on leave, up to a maximum), higher expenses (diapers, milk, daycare $9 to $22/day depending on the type, clothing). Don't forget the Quebec Family Allowance (variable based on income, several hundred dollars per month for a first child) and the Canada Child Benefit (up to about $7,800/year per child under 6 for low incomes). Recalculate the proportional split: if one partner is on extended leave, their net income drops, and their share of common expenses should drop accordingly.</p>
+      </div>
+    </details>
+  </div>
+
+  <div lang="es">
+    <div class="cx-seo-intro">
+      <h2>El presupuesto de pareja: una herramienta de transparencia y paz financiera</h2>
+      <p>En Quebec, alrededor de cuatro hogares de cada diez están formados por parejas en cohabitación o casadas, según Statistics Canada. Sin embargo, el dinero sigue siendo una de las principales fuentes de tensión en la vida conyugal: varias encuestas quebequenses muestran que más de la mitad de las parejas dicen haber discutido por finanzas. Un presupuesto común, claro y negociado, es probablemente la mejor herramienta para transformar este tema ansioso en un proyecto compartido. La calculadora superior permite visualizar la repartición de cada gasto entre los dos cónyuges, ya sea proporcional al ingreso, mitad y mitad, o con un porcentaje personalizado. Esta guía les ayudará a elegir el método correcto y a evitar las trampas clásicas.</p>
+    </div>
+
+    <details open>
+      <summary>1. ¿Por qué un presupuesto de pareja?</summary>
+      <div class="cx-seo-body">
+        <p>Vivir en pareja cambia la naturaleza de los gastos: el alquiler, la comida, la electricidad, el auto, el ocio y los viajes a menudo se vuelven costos compartidos, mientras que el teléfono, la ropa, el cuidado personal o los pagos de préstamos estudiantiles suelen permanecer individuales. Sin un marco común, se cae rápidamente en uno de dos errores opuestos: la fusión total (todo en una cuenta, lo que puede aplastar los ingresos desiguales y dañar la autonomía financiera) o la separación rígida (50/50 en todo, lo que puede ser profundamente injusto cuando los ingresos difieren).</p>
+        <h3>Tres buenas razones para establecer un presupuesto conjunto</h3>
+        <p><strong>Transparencia.</strong> Poner las cifras sobre la mesa — ingresos netos, deudas, ahorros, gastos fijos — elimina los secretos. Un cónyuge endeudado que oculta su situación siempre acaba creando una crisis mayor cuando estalla la verdad.</p>
+        <p><strong>Objetivos compartidos.</strong> Comprar una propiedad, viajar, formar una familia, jubilarse temprano: estos proyectos requieren coordinación de los ahorros. Sin presupuesto común, uno se da cuenta demasiado tarde de que un cónyuge cotiza al RRSP mientras que el otro paga una tarjeta de crédito al 19,99%.</p>
+        <p><strong>Equidad.</strong> Un buen presupuesto reconoce que los ingresos, los activos y las responsabilidades (hijos de una unión anterior, apoyo a un padre mayor) no son simétricos. El método de reparto proporcional, detallado abajo, suele percibirse como el más justo.</p>
+        <h3>¿Cuándo establecer el presupuesto?</h3>
+        <p>Idealmente antes de mudarse juntos, o en las primeras semanas tras la mudanza. Cuanto más se espera, más se cristalizan los hábitos y más emocionales se vuelven los ajustes. Una revisión anual (a menudo en enero, junto con la declaración de impuestos) permite ajustarse a cambios de salario, nuevas deudas o proyectos emergentes.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>2. Regla 50/30/20 y reparto proporcional</summary>
+      <div class="cx-seo-body">
+        <p>La regla 50/30/20, popularizada por la senadora estadounidense Elizabeth Warren, sigue siendo una referencia sólida para estructurar un presupuesto de pareja. Distribuye el ingreso neto combinado así:</p>
+        <p><span class="cx-formula">50% necesidades esenciales + 30% deseos + 20% ahorro y pago de deudas = 100% del ingreso neto combinado</span></p>
+        <p><strong>Necesidades esenciales (50%)</strong>: alquiler o hipoteca, impuestos municipales y escolares, electricidad, calefacción, seguro de hogar, comida básica, transporte (gasolina, STM, RTC, exo), seguros de auto y vida, medicamentos, guardería.</p>
+        <p><strong>Deseos (30%)</strong>: restaurantes, suscripciones (Netflix, Spotify, gimnasio), ocio, viajes, ropa de moda, salidas culturales, café para llevar.</p>
+        <p><strong>Ahorro y deudas (20%)</strong>: RRSP, TFSA, FHSA, fondo de emergencia, pago acelerado de hipoteca, mínimo + extra en tarjetas de crédito, préstamos estudiantiles.</p>
+        <h3>¿Mitad-mitad o proporcional al ingreso?</h3>
+        <p>Una vez establecido el presupuesto, queda decidir quién paga qué. Existen tres fórmulas principales:</p>
+        <p><strong>Mitad-mitad.</strong> Simple, pero injusto cuando los ingresos difieren mucho. Si uno gana 60.000 $ y el otro 35.000 $, pedir 1.000 $ de alquiler a cada uno representa el 20% del salario de uno y el 34% del otro.</p>
+        <p><strong>Proporcional al ingreso.</strong> Cada cónyuge paga un porcentaje del alquiler igual a su parte del ingreso total. Es la fórmula recomendada por la mayoría de los planificadores financieros. La calculadora superior la calcula automáticamente.</p>
+        <p><span class="cx-formula">Parte cónyuge A = Ingreso A ÷ (Ingreso A + Ingreso B) × Gasto común</span></p>
+        <p><strong>Porcentaje personalizado.</strong> Útil para tener en cuenta elementos más allá del ingreso: un cónyuge aporta una entrada inicial mayor, el otro hace más trabajo doméstico no remunerado, etc.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>3. Ejemplo numérico: una pareja en Sherbrooke</summary>
+      <div class="cx-seo-body">
+        <p>Camille y Jonathan viven en Sherbrooke. Camille es gerente con 75.000 $ brutos, unos 4.500 $ netos al mes después de impuestos, RRQ y seguro de empleo. Jonathan es técnico y gana 48.000 $ brutos, unos 3.000 $ netos al mes. Ingreso combinado neto: 7.500 $/mes.</p>
+        <div class="cx-example">
+          <p><strong>Gastos comunes mensuales</strong></p>
+          <p>Apartamento 4½ cerca del centro: 1.600 $<br>
+          Comida para dos: 800 $<br>
+          Hydro-Québec (media anual): 110 $<br>
+          Internet + celulares (plan conjunto): 180 $<br>
+          Auto (gasolina, seguro, matrícula, mantenimiento): 600 $<br>
+          Seguro de inquilino: 35 $<br>
+          Restaurantes y salidas comunes: 350 $<br>
+          Viaje anual (provisión mensual): 250 $<br>
+          <strong>Total gastos compartidos: 3.925 $</strong></p>
+        </div>
+        <h3>Aplicación del reparto proporcional</h3>
+        <p>Camille gana 4.500 ÷ 7.500 = 60% del ingreso del hogar; Jonathan, el 40%. Sobre los 3.925 $ compartidos:</p>
+        <p><span class="cx-formula">Camille: 3.925 × 60% = 2.355 $/mes</span><br>
+        <span class="cx-formula">Jonathan: 3.925 × 40% = 1.570 $/mes</span></p>
+        <p>Tras estas transferencias a la cuenta común, a Camille le quedan 4.500 − 2.355 = 2.145 $ para gastos individuales y ahorro, y a Jonathan 3.000 − 1.570 = 1.430 $. Si aplicaran el 50/50, cada uno pagaría 1.962,50 $, recortando casi 400 $/mes al presupuesto de Jonathan — una cantidad que puede significar la diferencia entre ahorrar para una entrada y estancarse.</p>
+        <h3>Objetivo 50/30/20 de la pareja</h3>
+        <p>Sobre 7.500 $: 3.750 $ para necesidades, 2.250 $ para deseos y 1.500 $ para ahorro y deudas. Las necesidades esenciales arriba (alquiler, electricidad, comida, transporte, seguros) suman unos 3.145 $, o el 42% del ingreso — un margen saludable. Deben ahora canalizar al menos 1.500 $/mes a ahorro, idealmente repartido entre FHSA (entrada), RRSP (impuestos) y TFSA (emergencia).</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>4. Cuentas comunes, separadas o híbridas: elegir bien</summary>
+      <div class="cx-seo-body">
+        <p>La organización bancaria de una pareja no es solo una cuestión práctica: refleja una visión del "nosotros" financiero. Aquí están las tres arquitecturas principales y sus fortalezas.</p>
+        <h3>Todo en común</h3>
+        <p><strong>Ventajas</strong>: simplicidad administrativa, sentimiento de unidad, vista de conjunto fácil.<br>
+        <strong>Desventajas</strong>: menos autonomía, posibles negociaciones por cada compra individual (un regalo, un café, un libro), mayor riesgo en caso de separación, especialmente en uniones de hecho en Quebec donde no hay patrimonio familiar automático.</p>
+        <h3>Todo separado</h3>
+        <p><strong>Ventajas</strong>: autonomía total, simplicidad en caso de ruptura, protección de los activos respectivos.<br>
+        <strong>Desventajas</strong>: requiere una contabilidad fina de quién paga qué, multiplica las transferencias Interac, puede mantener una lógica de "cuentas a saldar" poco romántica.</p>
+        <h3>Híbrido: cuenta común "gastos compartidos" + cuentas individuales</h3>
+        <p>Es la fórmula recomendada por la mayoría de los planificadores financieros quebequenses. Cada cónyuge conserva su cuenta corriente y su tarjeta de crédito, y alimenta automáticamente (por transferencia preautorizada) una cuenta común según la parte calculada por el reparto proporcional. Todos los gastos compartidos (alquiler, comida, electricidad, salidas comunes, viajes) pasan por esta cuenta común. Los gastos individuales (ropa, cuidado personal, salidas con amigos, regalos a la propia familia) permanecen en las cuentas personales.</p>
+        <p><strong>Ventajas</strong>: equidad por construcción, autonomía preservada, regalos y compras personales sin negociación, simplicidad ante una ruptura. También es la fórmula más clara para explicar a hijos adultos o para discutir con un planificador.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Preguntas frecuentes</summary>
+      <div class="cx-seo-body">
+        <p class="cx-faq-q">¿Cómo gestionar si un cónyuge gana mucho más?</p>
+        <p>El reparto proporcional al ingreso es la mejor respuesta. Si María gana 90.000 $ y Patricio 35.000 $, pedirle que pague la mitad de todo el condominio sería injusto. El cálculo proporcional asigna a cada uno una parte igual de su propio ingreso, no una parte igual de la factura. Esto preserva el ahorro y la autonomía del cónyuge con menor ingreso, y a la vez honra las obligaciones comunes.</p>
+        <p class="cx-faq-q">¿Qué partidas van en la cuenta común y cuáles permanecen individuales?</p>
+        <p>Regla simple: todo lo consumido conjuntamente va a la cuenta común (alquiler, comida, servicios, auto familiar, salidas en pareja, vacaciones). Todo lo estrictamente personal queda individual (ropa, peluquería, suscripciones personales, salidas con amigos, regalos a la propia familia). Para zonas grises (celular, gimnasio), discutan y registren la decisión en su presupuesto.</p>
+        <p class="cx-faq-q">¿Qué hacer con las deudas previas a la unión?</p>
+        <p>Bajo el derecho quebequense, cada cónyuge sigue siendo responsable de las deudas contraídas antes de la unión, incluso tras el matrimonio. Sin embargo, la pareja puede decidir que el pago acelerado se convierta en una prioridad común. Pueden agregar una línea "pago de deuda de Patricio" en el presupuesto compartido con una contribución de María, a cambio de una compensación en otro lugar (más ahorro a su nombre, menor contribución al FHSA común, etc.).</p>
+        <p class="cx-faq-q">¿Hace falta un contrato (matrimonio o unión de hecho)?</p>
+        <p>En Quebec, el matrimonio civil crea automáticamente el patrimonio familiar (residencia, muebles, vehículos, derechos de jubilación acumulados durante la unión se reparten 50/50 en caso de divorcio). La unión de hecho, incluso prolongada y con hijos, NO ofrece reparto automático. Un contrato de vida común (ante notario, unos 500 a 1.500 $) aclara las contribuciones, la propiedad de la residencia, posibles pensiones. Para toda pareja no casada que compra una propiedad juntos, es muy recomendable.</p>
+        <p class="cx-faq-q">¿Cómo ajustar el presupuesto tras la llegada de un hijo?</p>
+        <p>La llegada de un bebé sacude el presupuesto: ingresos reducidos (RQAP cubre 70% a 75% del salario para el padre/madre en licencia, hasta un máximo), gastos aumentados (pañales, leche, guardería 9 a 22 $/día según el tipo, ropa). Integren la Asignación familiar de Quebec (variable según el ingreso, varios cientos de dólares mensuales para un primer hijo) y la Asignación canadiense para niños (hasta unos 7.800 $/año por hijo menor de 6 años para ingresos modestos). Recalculen el reparto proporcional: si uno está en licencia prolongada, su ingreso neto baja, y su parte de los gastos comunes debe bajar en consecuencia.</p>
+      </div>
+    </details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="footer-links" id="footerLinks"></div>
+  <div id="footerText">© 2026 Calculix.ca — Outil informatif uniquement.</div>
+</footer>
+
+<script>
+  // ========== i18n ==========
+  const i18n = {
+    fr: {
+      mainTitle: '💞 Budget de couple',
+      mainSubtitle: 'Partagez les dépenses au prorata des salaires ou par pourcentage personnalisé',
+      sectIncome: '💰 Revenus',
+      p1Label: 'Partenaire 1', p2Label: 'Partenaire 2',
+      nameLbl: 'Nom', salaryLbl: 'Salaire net', freqLbl: 'Fréquence',
+      optYear: 'Par année', optMonth: 'Par mois', optBiwk: 'Aux 2 semaines', optWk: 'Par semaine', optDay: 'Par jour',
+      sectMode: '⚖️ Mode de partage',
+      modeProrata: 'Prorata des salaires', modePercent: 'Pourcentage personnalisé', modeEqual: '50 / 50',
+      customP1Lbl: 'Pourcentage du partenaire 1', customP2Lbl: 'Pourcentage du partenaire 2 (auto)',
+      resultLabel: 'Budget total mensuel', resultEmpty: 'Ajoutez vos lignes de budget ci-dessous',
+      resultSubMonthly: function(y){ return y + ' par année'; },
+      shareLblFor: function(n){ return 'Part de ' + n; },
+      shareSub: function(pct){ return pct + '% du total'; },
+      sectBudget: '📋 Lignes de budget',
+      exportLbl: 'Exporter en Excel',
+      tcCategory: 'Catégorie', tcAmount: 'Montant', tcFreq: 'Fréquence',
+      tcMonthly: 'Mensuel', tcYearly: 'Annuel', tcPartP1: 'Part P1', tcPartP2: 'Part P2',
+      tfTotalLbl: 'TOTAL',
+      addRowLbl: 'Ajouter une ligne',
+      infoTitle: '📋 Résumé',
+      infoP1Inc: 'Revenu mensuel P1', infoP2Inc: 'Revenu mensuel P2',
+      infoTotalInc: 'Revenu combiné', infoBudget: 'Budget total mensuel', infoReste: 'Reste après budget',
+      tipsTitle: '💡 Bon à savoir',
+      tipsP1: 'Le <strong>prorata des salaires</strong> répartit les dépenses selon la part de chacun dans le revenu total — c\'est souvent perçu comme plus équitable quand les salaires sont inégaux.',
+      tipsP2: 'Les calculs sont normalisés au <strong>mensuel</strong> : 365,25 j/an, 52 sem/an, 26 périodes bi-hebdo, 12 mois/an.',
+      disclaimer: '⚠️ Calculix.ca fournit des outils à titre informatif uniquement. Ces calculs ne remplacent pas un conseil personnalisé d\'un planificateur financier.',
+      suggestedLines: [
+        { cat: '🏠 Loyer / Hypothèque',     amount: 1800, freq: 'monthly' },
+        { cat: '⚡ Électricité',              amount: 120,  freq: 'monthly' },
+        { cat: '🌐 Internet',                 amount: 80,   freq: 'monthly' },
+        { cat: '📱 Téléphones',               amount: 90,   freq: 'monthly' },
+        { cat: '🛒 Épicerie',                 amount: 200,  freq: 'weekly' },
+        { cat: '🚗 Transport / Essence',      amount: 300,  freq: 'monthly' },
+        { cat: '🛡️ Assurances',              amount: 150,  freq: 'monthly' },
+        { cat: '💰 Épargne',                  amount: 500,  freq: 'monthly' },
+        { cat: '🎬 Loisirs / Abonnements',    amount: 60,   freq: 'monthly' },
+        { cat: '🍽️ Restaurants',              amount: 150,  freq: 'monthly' },
+      ],
+      xlsSheetName: 'Budget',
+      xlsTitle: 'Budget de couple — Calculix.ca',
+      xlsRowP1Income: 'Revenu mensuel P1',
+      xlsRowP2Income: 'Revenu mensuel P2',
+      xlsRowTotalIncome: 'Revenu combiné mensuel',
+      xlsRowMode: 'Mode de partage',
+      xlsRowSharePct: function(n, p){ return 'Part ' + n + ' (%)'; },
+      xlsColCategory: 'Catégorie', xlsColAmount: 'Montant', xlsColFreq: 'Fréquence',
+      xlsColMonthly: 'Mensuel ($)', xlsColYearly: 'Annuel ($)',
+      xlsColPartP1: function(n){ return 'Part ' + n + ' ($)'; },
+      xlsColPartP2: function(n){ return 'Part ' + n + ' ($)'; },
+      xlsRowTotal: 'TOTAL',
+      xlsRowReste: 'Reste après budget (mensuel)',
+      xlsFooter: 'Calculix.ca · Outil informatif',
+      xlsFilename: 'budget-couple',
+    },
+    en: {
+      mainTitle: '💞 Couple Budget',
+      mainSubtitle: 'Split expenses proportionally to salaries or by custom percentage',
+      sectIncome: '💰 Income',
+      p1Label: 'Partner 1', p2Label: 'Partner 2',
+      nameLbl: 'Name', salaryLbl: 'Net salary', freqLbl: 'Frequency',
+      optYear: 'Per year', optMonth: 'Per month', optBiwk: 'Bi-weekly', optWk: 'Per week', optDay: 'Per day',
+      sectMode: '⚖️ Split mode',
+      modeProrata: 'Prorated by salary', modePercent: 'Custom percentage', modeEqual: '50 / 50',
+      customP1Lbl: 'Partner 1 percentage', customP2Lbl: 'Partner 2 percentage (auto)',
+      resultLabel: 'Total monthly budget', resultEmpty: 'Add your budget lines below',
+      resultSubMonthly: function(y){ return y + ' per year'; },
+      shareLblFor: function(n){ return n + '\'s share'; },
+      shareSub: function(pct){ return pct + '% of total'; },
+      sectBudget: '📋 Budget lines',
+      exportLbl: 'Export to Excel',
+      tcCategory: 'Category', tcAmount: 'Amount', tcFreq: 'Frequency',
+      tcMonthly: 'Monthly', tcYearly: 'Yearly', tcPartP1: 'P1 share', tcPartP2: 'P2 share',
+      tfTotalLbl: 'TOTAL',
+      addRowLbl: 'Add a line',
+      infoTitle: '📋 Summary',
+      infoP1Inc: 'P1 monthly income', infoP2Inc: 'P2 monthly income',
+      infoTotalInc: 'Combined income', infoBudget: 'Total monthly budget', infoReste: 'Remaining after budget',
+      tipsTitle: '💡 Good to know',
+      tipsP1: '<strong>Prorated</strong> splitting divides expenses based on each person\'s share of combined income — often seen as fairer when salaries differ significantly.',
+      tipsP2: 'All values are normalized to <strong>monthly</strong>: 365.25 d/yr, 52 wk/yr, 26 bi-weekly periods, 12 months/yr.',
+      disclaimer: '⚠️ Calculix.ca provides tools for informational purposes only. These calculations do not replace personalized advice from a financial planner.',
+      suggestedLines: [
+        { cat: '🏠 Rent / Mortgage',        amount: 1800, freq: 'monthly' },
+        { cat: '⚡ Electricity',             amount: 120,  freq: 'monthly' },
+        { cat: '🌐 Internet',                amount: 80,   freq: 'monthly' },
+        { cat: '📱 Phones',                  amount: 90,   freq: 'monthly' },
+        { cat: '🛒 Groceries',               amount: 200,  freq: 'weekly' },
+        { cat: '🚗 Transport / Gas',         amount: 300,  freq: 'monthly' },
+        { cat: '🛡️ Insurance',              amount: 150,  freq: 'monthly' },
+        { cat: '💰 Savings',                 amount: 500,  freq: 'monthly' },
+        { cat: '🎬 Entertainment / Subs',    amount: 60,   freq: 'monthly' },
+        { cat: '🍽️ Restaurants',             amount: 150,  freq: 'monthly' },
+      ],
+      xlsSheetName: 'Budget',
+      xlsTitle: 'Couple Budget — Calculix.ca',
+      xlsRowP1Income: 'P1 monthly income',
+      xlsRowP2Income: 'P2 monthly income',
+      xlsRowTotalIncome: 'Combined monthly income',
+      xlsRowMode: 'Split mode',
+      xlsRowSharePct: function(n, p){ return n + ' share (%)'; },
+      xlsColCategory: 'Category', xlsColAmount: 'Amount', xlsColFreq: 'Frequency',
+      xlsColMonthly: 'Monthly ($)', xlsColYearly: 'Yearly ($)',
+      xlsColPartP1: function(n){ return n + ' share ($)'; },
+      xlsColPartP2: function(n){ return n + ' share ($)'; },
+      xlsRowTotal: 'TOTAL',
+      xlsRowReste: 'Remaining after budget (monthly)',
+      xlsFooter: 'Calculix.ca · Informational tool',
+      xlsFilename: 'couple-budget',
+    },
+    es: {
+      mainTitle: '💞 Presupuesto de pareja',
+      mainSubtitle: 'Divida los gastos proporcionalmente a los salarios o por porcentaje personalizado',
+      sectIncome: '💰 Ingresos',
+      p1Label: 'Pareja 1', p2Label: 'Pareja 2',
+      nameLbl: 'Nombre', salaryLbl: 'Salario neto', freqLbl: 'Frecuencia',
+      optYear: 'Por año', optMonth: 'Por mes', optBiwk: 'Cada 2 semanas', optWk: 'Por semana', optDay: 'Por día',
+      sectMode: '⚖️ Modo de división',
+      modeProrata: 'Prorrateo por salario', modePercent: 'Porcentaje personalizado', modeEqual: '50 / 50',
+      customP1Lbl: 'Porcentaje de la pareja 1', customP2Lbl: 'Porcentaje de la pareja 2 (auto)',
+      resultLabel: 'Presupuesto mensual total', resultEmpty: 'Añade tus líneas de presupuesto abajo',
+      resultSubMonthly: function(y){ return y + ' por año'; },
+      shareLblFor: function(n){ return 'Parte de ' + n; },
+      shareSub: function(pct){ return pct + '% del total'; },
+      sectBudget: '📋 Líneas de presupuesto',
+      exportLbl: 'Exportar a Excel',
+      tcCategory: 'Categoría', tcAmount: 'Monto', tcFreq: 'Frecuencia',
+      tcMonthly: 'Mensual', tcYearly: 'Anual', tcPartP1: 'Parte P1', tcPartP2: 'Parte P2',
+      tfTotalLbl: 'TOTAL',
+      addRowLbl: 'Añadir una línea',
+      infoTitle: '📋 Resumen',
+      infoP1Inc: 'Ingreso mensual P1', infoP2Inc: 'Ingreso mensual P2',
+      infoTotalInc: 'Ingreso combinado', infoBudget: 'Presupuesto mensual total', infoReste: 'Restante tras presupuesto',
+      tipsTitle: '💡 Bueno saber',
+      tipsP1: 'El <strong>prorrateo</strong> divide los gastos según la parte de cada uno en el ingreso total — se considera más justo cuando los salarios difieren mucho.',
+      tipsP2: 'Los cálculos se normalizan a <strong>mensual</strong>: 365,25 d/año, 52 sem/año, 26 períodos quincenales, 12 meses/año.',
+      disclaimer: '⚠️ Calculix.ca proporciona herramientas solo con fines informativos. Estos cálculos no reemplazan el consejo personalizado de un planificador financiero.',
+      suggestedLines: [
+        { cat: '🏠 Alquiler / Hipoteca',    amount: 1800, freq: 'monthly' },
+        { cat: '⚡ Electricidad',            amount: 120,  freq: 'monthly' },
+        { cat: '🌐 Internet',                amount: 80,   freq: 'monthly' },
+        { cat: '📱 Teléfonos',               amount: 90,   freq: 'monthly' },
+        { cat: '🛒 Supermercado',            amount: 200,  freq: 'weekly' },
+        { cat: '🚗 Transporte / Gasolina',   amount: 300,  freq: 'monthly' },
+        { cat: '🛡️ Seguros',                amount: 150,  freq: 'monthly' },
+        { cat: '💰 Ahorro',                  amount: 500,  freq: 'monthly' },
+        { cat: '🎬 Ocio / Suscripciones',    amount: 60,   freq: 'monthly' },
+        { cat: '🍽️ Restaurantes',            amount: 150,  freq: 'monthly' },
+      ],
+      xlsSheetName: 'Presupuesto',
+      xlsTitle: 'Presupuesto de pareja — Calculix.ca',
+      xlsRowP1Income: 'Ingreso mensual P1',
+      xlsRowP2Income: 'Ingreso mensual P2',
+      xlsRowTotalIncome: 'Ingreso mensual combinado',
+      xlsRowMode: 'Modo de división',
+      xlsRowSharePct: function(n, p){ return 'Parte ' + n + ' (%)'; },
+      xlsColCategory: 'Categoría', xlsColAmount: 'Monto', xlsColFreq: 'Frecuencia',
+      xlsColMonthly: 'Mensual ($)', xlsColYearly: 'Anual ($)',
+      xlsColPartP1: function(n){ return 'Parte ' + n + ' ($)'; },
+      xlsColPartP2: function(n){ return 'Parte ' + n + ' ($)'; },
+      xlsRowTotal: 'TOTAL',
+      xlsRowReste: 'Restante tras presupuesto (mensual)',
+      xlsFooter: 'Calculix.ca · Herramienta informativa',
+      xlsFilename: 'presupuesto-pareja',
+    }
+  };
+
+  // ========== Langue ==========
+  let lang = (window.CXSite && CXSite.getStoredLang) ? CXSite.getStoredLang() : 'fr';
+
+  function updateLangToggleUI() {
+    document.querySelectorAll('.lang-opt').forEach(function(el){
+      el.classList.toggle('active', el.getAttribute('data-lang') === lang);
+    });
+  }
+  function toggleLang() {
+    if (window.CXSite && CXSite.cycleLang) { lang = CXSite.cycleLang(lang); CXSite.setStoredLang(lang); }
+    else { lang = lang === 'fr' ? 'en' : lang === 'en' ? 'es' : 'fr'; }
+    document.documentElement.lang = lang;
+    updateLangToggleUI();
+    applyTranslations();
+    renderBudgetTable();
+    calculate();
+  }
+
+  function applyTranslations() {
+    const t = i18n[lang];
+    function setText(id, v) { const el = document.getElementById(id); if (el) el.textContent = v; }
+    function setHTML(id, v) { const el = document.getElementById(id); if (el) el.innerHTML = v; }
+    document.body.dataset.lang = lang;
+
+    document.title = t.mainTitle.replace(/^\S+\s/, '') + ' | Calculix.ca';
+    setText('mainTitle', t.mainTitle);
+    setText('mainSubtitle', t.mainSubtitle);
+    setText('sectIncome', t.sectIncome);
+    setText('p1Label', t.p1Label);
+    setText('p2Label', t.p2Label);
+    setText('p1NameLbl', t.nameLbl);
+    setText('p2NameLbl', t.nameLbl);
+    setText('p1SalaryLbl', t.salaryLbl);
+    setText('p2SalaryLbl', t.salaryLbl);
+    setText('p1FreqLbl', t.freqLbl);
+    setText('p2FreqLbl', t.freqLbl);
+
+    ['p1','p2'].forEach(function(p) {
+      setText(p+'optYear', t.optYear);
+      setText(p+'optMonth', t.optMonth);
+      setText(p+'optBiwk', t.optBiwk);
+      setText(p+'optWk', t.optWk);
+      setText(p+'optDay', t.optDay);
+    });
+
+    setText('sectMode', t.sectMode);
+    setText('modeProrata', t.modeProrata);
+    setText('modePercent', t.modePercent);
+    setText('modeEqual', t.modeEqual);
+    setText('customP1Lbl', t.customP1Lbl);
+    setText('customP2Lbl', t.customP2Lbl);
+    setText('resultLabel', t.resultLabel);
+    setText('sectBudget', t.sectBudget);
+    setText('exportLbl', t.exportLbl);
+    setText('tcCategory', t.tcCategory);
+    setText('tcAmount', t.tcAmount);
+    setText('tcFreq', t.tcFreq);
+    setText('tcMonthly', t.tcMonthly);
+    setText('tcYearly', t.tcYearly);
+    setText('tcPartP1', t.tcPartP1);
+    setText('tcPartP2', t.tcPartP2);
+    setText('tfTotalLbl', t.tfTotalLbl);
+    setText('addRowLbl', t.addRowLbl);
+    setText('infoTitle', t.infoTitle);
+    setText('lblI1', t.infoP1Inc);
+    setText('lblI2', t.infoP2Inc);
+    setText('lblI3', t.infoTotalInc);
+    setText('lblI4', t.infoBudget);
+    setText('lblI5', t.infoReste);
+    setText('tipsTitle', t.tipsTitle);
+    setHTML('tipsP1', t.tipsP1);
+    setHTML('tipsP2', t.tipsP2);
+    setText('disclaimerText', t.disclaimer);
+
+    if (window.CXSite) {
+      var shared = CXSite.SHARED[lang];
+      if (shared) {
+        setText('headerSubtitle', shared.headerSubtitle);
+        setText('footerText', shared.footerText);
+      }
+      CXSite.renderNav(lang, 'budget', 'siteNav');
+      CXSite.renderFooterLinks(lang, 'footerLinks');
+      var ads = document.getElementById('partnersRow');
+      if (ads) ads.innerHTML = CXSite.amazonAd(lang) + CXSite.cfoMasqueAd(lang) + CXSite.alchimixAd(lang);
+    }
+  }
+
+  // ========== Lignes de budget ==========
+  let budgetLines = []; // { cat, amount, freq }
+  let nextRowId = 1;
+
+  function initBudgetLines() {
+    const t = i18n[lang];
+    budgetLines = t.suggestedLines.map(function(line) {
+      return { id: nextRowId++, cat: line.cat, amount: line.amount, freq: line.freq };
+    });
+  }
+
+  function renderBudgetTable() {
+    const t = i18n[lang];
+    const body = document.getElementById('budgetBody');
+    body.innerHTML = '';
+
+    budgetLines.forEach(function(row) {
+      const tr = document.createElement('tr');
+      tr.setAttribute('data-id', row.id);
+      tr.innerHTML =
+        '<td class="td-cat" data-label="' + escapeHtml(t.tcCategory) + '"><input type="text" class="cx-cat" value="' + escapeHtml(row.cat) + '" /></td>' +
+        '<td class="td-amount" data-label="' + escapeHtml(t.tcAmount) + '"><input type="number" class="cx-amount" min="0" step="1" value="' + row.amount + '" /></td>' +
+        '<td class="td-freq" data-label="' + escapeHtml(t.tcFreq) + '">' +
+          '<div class="select-wrapper"><select class="cx-freq">' +
+            '<option value="daily"' + (row.freq==='daily'?' selected':'') + '>' + t.optDay + '</option>' +
+            '<option value="weekly"' + (row.freq==='weekly'?' selected':'') + '>' + t.optWk + '</option>' +
+            '<option value="biweekly"' + (row.freq==='biweekly'?' selected':'') + '>' + t.optBiwk + '</option>' +
+            '<option value="monthly"' + (row.freq==='monthly'?' selected':'') + '>' + t.optMonth + '</option>' +
+            '<option value="yearly"' + (row.freq==='yearly'?' selected':'') + '>' + t.optYear + '</option>' +
+          '</select></div>' +
+        '</td>' +
+        '<td class="calc cx-monthly" data-label="' + escapeHtml(t.tcMonthly) + '">—</td>' +
+        '<td class="calc cx-yearly" data-label="' + escapeHtml(t.tcYearly) + '">—</td>' +
+        '<td class="calc p1 cx-pp1" data-label="' + escapeHtml(t.tcPartP1) + '">—</td>' +
+        '<td class="calc p2 cx-pp2" data-label="' + escapeHtml(t.tcPartP2) + '">—</td>' +
+        '<td class="td-act"><button type="button" class="del-btn" title="Supprimer" aria-label="Supprimer">✕</button></td>';
+      body.appendChild(tr);
+
+      // Wire events
+      tr.querySelector('.cx-cat').addEventListener('input', function(e){ row.cat = e.target.value; calculate(); });
+      tr.querySelector('.cx-amount').addEventListener('input', function(e){ row.amount = parseFloat(e.target.value) || 0; calculate(); });
+      tr.querySelector('.cx-freq').addEventListener('change', function(e){ row.freq = e.target.value; calculate(); });
+      tr.querySelector('.del-btn').addEventListener('click', function(){ removeBudgetRow(row.id); });
+    });
+  }
+
+  function addBudgetRow() {
+    const t = i18n[lang];
+    budgetLines.push({ id: nextRowId++, cat: lang==='fr'?'Nouvelle ligne':(lang==='es'?'Nueva línea':'New line'), amount: 0, freq: 'monthly' });
+    renderBudgetTable();
+    calculate();
+  }
+
+  function removeBudgetRow(id) {
+    budgetLines = budgetLines.filter(function(r){ return r.id !== id; });
+    renderBudgetTable();
+    calculate();
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  // ========== Calculs ==========
+  // Conversion en montant mensuel
+  function toMonthly(amount, freq) {
+    switch (freq) {
+      case 'daily':    return amount * 365.25 / 12;
+      case 'weekly':   return amount * 52 / 12;
+      case 'biweekly': return amount * 26 / 12;
+      case 'monthly':  return amount;
+      case 'yearly':   return amount / 12;
+      default: return amount;
+    }
+  }
+
+  let currentMode = 'prorata';
+
+  function setMode(m) {
+    currentMode = m;
+    document.querySelectorAll('.mode-tab').forEach(function(el){
+      el.classList.toggle('active', el.getAttribute('data-mode') === m);
+    });
+    document.getElementById('customPercentRow').style.display = (m === 'percent') ? 'grid' : 'none';
+    calculate();
+  }
+
+  function getSharePcts() {
+    const p1Sal = toMonthly(parseFloat(document.getElementById('p1Salary').value) || 0, document.getElementById('p1Freq').value);
+    const p2Sal = toMonthly(parseFloat(document.getElementById('p2Salary').value) || 0, document.getElementById('p2Freq').value);
+    const total = p1Sal + p2Sal;
+
+    let p1Pct = 50, p2Pct = 50;
+    if (currentMode === 'prorata') {
+      if (total > 0) { p1Pct = p1Sal / total * 100; p2Pct = p2Sal / total * 100; }
+    } else if (currentMode === 'percent') {
+      p1Pct = parseFloat(document.getElementById('customP1').value) || 0;
+      if (p1Pct < 0) p1Pct = 0;
+      if (p1Pct > 100) p1Pct = 100;
+      p2Pct = 100 - p1Pct;
+      document.getElementById('customP2').value = p2Pct.toFixed(0);
+    }
+    return { p1Pct: p1Pct, p2Pct: p2Pct, p1Inc: p1Sal, p2Inc: p2Sal };
+  }
+
+  let lastResult = null;
+
+  function calculate() {
+    const t = i18n[lang];
+    const banner = document.getElementById('resultBanner');
+    const shares = getSharePcts();
+
+    let totalMonthly = 0;
+    const bodyRows = document.querySelectorAll('#budgetBody tr');
+    budgetLines.forEach(function(row, idx) {
+      const monthly = toMonthly(row.amount, row.freq);
+      totalMonthly += monthly;
+      const tr = bodyRows[idx];
+      if (tr) {
+        tr.querySelector('.cx-monthly').textContent = CXSite.formatMoney(monthly, lang);
+        tr.querySelector('.cx-yearly').textContent  = CXSite.formatMoney(monthly * 12, lang);
+        tr.querySelector('.cx-pp1').textContent     = CXSite.formatMoney(monthly * shares.p1Pct / 100, lang);
+        tr.querySelector('.cx-pp2').textContent     = CXSite.formatMoney(monthly * shares.p2Pct / 100, lang);
+      }
+    });
+
+    const partP1 = totalMonthly * shares.p1Pct / 100;
+    const partP2 = totalMonthly * shares.p2Pct / 100;
+    const p1Name = document.getElementById('p1Name').value || 'P1';
+    const p2Name = document.getElementById('p2Name').value || 'P2';
+
+    // Footer totaux
+    document.getElementById('tfMonthly').textContent = CXSite.formatMoney(totalMonthly, lang);
+    document.getElementById('tfYearly').textContent  = CXSite.formatMoney(totalMonthly * 12, lang);
+    document.getElementById('tfP1').textContent      = CXSite.formatMoney(partP1, lang);
+    document.getElementById('tfP2').textContent      = CXSite.formatMoney(partP2, lang);
+
+    // Share cards
+    document.getElementById('shareP1Lbl').textContent = t.shareLblFor(p1Name);
+    document.getElementById('shareP2Lbl').textContent = t.shareLblFor(p2Name);
+
+    if (totalMonthly > 0) {
+      lastResult = {
+        p1Name: p1Name, p2Name: p2Name,
+        p1Inc: shares.p1Inc, p2Inc: shares.p2Inc,
+        p1Pct: shares.p1Pct, p2Pct: shares.p2Pct,
+        totalMonthly: totalMonthly, partP1: partP1, partP2: partP2,
+        mode: currentMode, lines: budgetLines.slice()
+      };
+      document.getElementById('exportBtn').disabled = false;
+
+      banner.classList.remove('empty');
+      document.getElementById('resultMain').textContent = CXSite.formatMoney(totalMonthly, lang);
+      document.getElementById('resultSub').textContent  = t.resultSubMonthly(CXSite.formatMoney(totalMonthly * 12, lang));
+      document.getElementById('shareP1Val').textContent = CXSite.formatMoney(partP1, lang);
+      document.getElementById('shareP1Sub').textContent = t.shareSub(CXSite.formatNumber(shares.p1Pct, lang, 1));
+      document.getElementById('shareP2Val').textContent = CXSite.formatMoney(partP2, lang);
+      document.getElementById('shareP2Sub').textContent = t.shareSub(CXSite.formatNumber(shares.p2Pct, lang, 1));
+      banner.classList.add('animate'); setTimeout(function(){ banner.classList.remove('animate'); }, 400);
+    } else {
+      lastResult = null;
+      document.getElementById('exportBtn').disabled = true;
+      banner.classList.add('empty');
+      document.getElementById('resultMain').textContent = t.resultEmpty;
+      document.getElementById('resultSub').textContent = '';
+      document.getElementById('shareP1Val').textContent = '—';
+      document.getElementById('shareP2Val').textContent = '—';
+      document.getElementById('shareP1Sub').textContent = '';
+      document.getElementById('shareP2Sub').textContent = '';
+    }
+
+    // Sidebar info
+    const totalInc = shares.p1Inc + shares.p2Inc;
+    document.getElementById('infoP1Inc').textContent = CXSite.formatMoney(shares.p1Inc, lang);
+    document.getElementById('infoP2Inc').textContent = CXSite.formatMoney(shares.p2Inc, lang);
+    document.getElementById('infoTotalInc').textContent = CXSite.formatMoney(totalInc, lang);
+    document.getElementById('infoBudget').textContent = CXSite.formatMoney(totalMonthly, lang);
+    const reste = totalInc - totalMonthly;
+    const elReste = document.getElementById('infoReste');
+    elReste.textContent = CXSite.formatMoney(reste, lang);
+    elReste.className = 'value ' + (reste >= 0 ? 'green' : 'red');
+  }
+
+  // ========== Export Excel ==========
+  function exportToExcel() {
+    if (!lastResult || typeof XLSX === 'undefined') return;
+    const t = i18n[lang];
+    const r = lastResult;
+    const freqLbl = { daily:t.optDay, weekly:t.optWk, biweekly:t.optBiwk, monthly:t.optMonth, yearly:t.optYear };
+    const modeLbl = { prorata:t.modeProrata, percent:t.modePercent, equal:t.modeEqual };
+
+    const wb = XLSX.utils.book_new();
+    const aoa = [];
+    aoa.push([t.xlsTitle]);
+    aoa.push([]);
+    aoa.push([t.xlsRowP1Income, r.p1Inc]);
+    aoa.push([t.xlsRowP2Income, r.p2Inc]);
+    aoa.push([t.xlsRowTotalIncome, r.p1Inc + r.p2Inc]);
+    aoa.push([t.xlsRowMode, modeLbl[r.mode] || r.mode]);
+    aoa.push([t.xlsRowSharePct(r.p1Name), r.p1Pct / 100]);
+    aoa.push([t.xlsRowSharePct(r.p2Name), r.p2Pct / 100]);
+    aoa.push([]);
+    aoa.push([t.xlsColCategory, t.xlsColAmount, t.xlsColFreq, t.xlsColMonthly, t.xlsColYearly, t.xlsColPartP1(r.p1Name), t.xlsColPartP2(r.p2Name)]);
+    r.lines.forEach(function(line) {
+      const monthly = toMonthly(line.amount, line.freq);
+      aoa.push([line.cat, line.amount, freqLbl[line.freq] || line.freq, monthly, monthly * 12, monthly * r.p1Pct / 100, monthly * r.p2Pct / 100]);
+    });
+    aoa.push([t.xlsRowTotal, '', '', r.totalMonthly, r.totalMonthly * 12, r.partP1, r.partP2]);
+    aoa.push([]);
+    const reste = (r.p1Inc + r.p2Inc) - r.totalMonthly;
+    aoa.push([t.xlsRowReste, '', '', reste]);
+    aoa.push([]);
+    aoa.push([t.xlsFooter]);
+
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    ws['!cols'] = [{wch:30},{wch:14},{wch:16},{wch:14},{wch:14},{wch:16},{wch:16}];
+    ws['!merges'] = [{ s:{r:0,c:0}, e:{r:0,c:6} }];
+
+    const money = '#,##0.00 [$CAD]';
+    const pct   = '0.0%';
+
+    // Cellules monétaires : revenus rows 2,3,4 col B; pct rows 6,7 col B
+    [2, 3, 4].forEach(function(rr) {
+      const ref = XLSX.utils.encode_cell({r:rr, c:1});
+      if (ws[ref]) ws[ref].z = money;
+    });
+    [6, 7].forEach(function(rr) {
+      const ref = XLSX.utils.encode_cell({r:rr, c:1});
+      if (ws[ref]) ws[ref].z = pct;
+    });
+
+    // Header tableau = ligne 9
+    const headerRow = 9;
+    for (let c = 0; c < 7; c++) {
+      const ref = XLSX.utils.encode_cell({r:headerRow, c:c});
+      if (ws[ref]) ws[ref].s = { font: { bold: true, color: { rgb: 'FFFFFF' } }, fill: { fgColor: { rgb: '1A3A5C' } } };
+    }
+    // Lignes de données
+    const firstDataRow = 10;
+    const lastDataRow  = firstDataRow + r.lines.length - 1;
+    for (let rr = firstDataRow; rr <= lastDataRow; rr++) {
+      for (let c = 1; c <= 6; c++) {
+        if (c === 2) continue; // col freq est texte
+        const ref = XLSX.utils.encode_cell({r:rr, c:c});
+        if (ws[ref]) ws[ref].z = money;
+      }
+    }
+    // TOTAL row
+    const totalRow = lastDataRow + 1;
+    for (let c = 3; c <= 6; c++) {
+      const ref = XLSX.utils.encode_cell({r:totalRow, c:c});
+      if (ws[ref]) { ws[ref].z = money; ws[ref].s = { font: { bold: true } }; }
+    }
+    // Reste row
+    const resteRow = totalRow + 2;
+    const resteRef = XLSX.utils.encode_cell({r:resteRow, c:3});
+    if (ws[resteRef]) ws[resteRef].z = money;
+
+    XLSX.utils.book_append_sheet(wb, ws, t.xlsSheetName);
+    const fn = t.xlsFilename + '-' + new Date().toISOString().slice(0,10) + '.xlsx';
+    XLSX.writeFile(wb, fn);
+  }
+
+  // ========== Event listeners ==========
+  document.querySelectorAll('.mode-tab').forEach(function(el){
+    el.addEventListener('click', function(){ setMode(el.getAttribute('data-mode')); });
+  });
+  ['p1Name','p2Name','p1Salary','p2Salary','p1Freq','p2Freq','customP1'].forEach(function(id){
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('input', calculate);
+      el.addEventListener('change', calculate);
+    }
+  });
+
+  // ========== Init ==========
+  document.documentElement.lang = lang;
+  updateLangToggleUI();
+  initBudgetLines();
+  applyTranslations();
+  renderBudgetTable();
+  calculate();
+</script>
+
+<!-- Filet de sécurité -->
+<script>
+(function(){
+  function safetyRender() {
+    try {
+      if (!window.CXSite) return;
+      var curLang = (typeof lang === 'string' && lang) ? lang : ((CXSite.getStoredLang && CXSite.getStoredLang()) || 'fr');
+      var nav = document.getElementById('siteNav');
+      if (nav && nav.innerHTML.trim().length === 0) CXSite.renderNav(curLang, 'budget', 'siteNav');
+      var fl = document.getElementById('footerLinks');
+      if (fl && fl.innerHTML.trim().length === 0) CXSite.renderFooterLinks(curLang, 'footerLinks');
+      var ads = document.getElementById('partnersRow');
+      if (ads && ads.innerHTML.trim().length === 0) ads.innerHTML = CXSite.amazonAd(curLang) + CXSite.cfoMasqueAd(curLang) + CXSite.alchimixAd(curLang);
+      var shared = CXSite.SHARED[curLang] || CXSite.SHARED.fr;
+      var hs = document.getElementById('headerSubtitle');
+      var ft = document.getElementById('footerText');
+      if (hs) hs.textContent = shared.headerSubtitle;
+      if (ft) ft.textContent = shared.footerText;
+      if (CXSite.checkAdBlockAndNotify) CXSite.checkAdBlockAndNotify(curLang);
+    } catch(e) { console.warn('safetyRender budget-couple:', e); }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', safetyRender);
+  else safetyRender();
+  window.addEventListener('load', safetyRender);
+})();
+</script>
+
+</body>
+</html>

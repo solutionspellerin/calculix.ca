@@ -1,69 +1,267 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://www.calculix.ca/</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/"/>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.calculix.ca/en/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/"/>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.calculix.ca/es/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/"/>
+    <lastmod>2026-11-04</lastmod>
   </url>
   <url>
     <loc>https://www.calculix.ca/pourboires.html</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/pourboires.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/pourboires.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/pourboires.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/pourboires.html"/>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.calculix.ca/en/pourboires.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/pourboires.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/pourboires.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/pourboires.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/pourboires.html"/>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.calculix.ca/es/pourboires.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/pourboires.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/pourboires.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/pourboires.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/pourboires.html"/>
+    <lastmod>2026-11-04</lastmod>
   </url>
   <url>
     <loc>https://www.calculix.ca/investissement.html</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/investissement.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/investissement.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/investissement.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/investissement.html"/>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.calculix.ca/en/investissement.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/investissement.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/investissement.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/investissement.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/investissement.html"/>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.calculix.ca/es/investissement.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/investissement.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/investissement.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/investissement.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/investissement.html"/>
+    <lastmod>2026-11-04</lastmod>
   </url>
   <url>
     <loc>https://www.calculix.ca/van.html</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/van.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/van.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/van.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/van.html"/>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.calculix.ca/en/van.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/van.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/van.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/van.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/van.html"/>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.calculix.ca/es/van.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/van.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/van.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/van.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/van.html"/>
+    <lastmod>2026-11-04</lastmod>
   </url>
   <url>
     <loc>https://www.calculix.ca/amortissement.html</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/amortissement.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/amortissement.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/amortissement.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/amortissement.html"/>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.calculix.ca/en/amortissement.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/amortissement.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/amortissement.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/amortissement.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/amortissement.html"/>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.calculix.ca/es/amortissement.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/amortissement.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/amortissement.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/amortissement.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/amortissement.html"/>
+    <lastmod>2026-11-04</lastmod>
   </url>
   <url>
     <loc>https://www.calculix.ca/budget-couple.html</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/budget-couple.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/budget-couple.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/budget-couple.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/budget-couple.html"/>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.calculix.ca/en/budget-couple.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/budget-couple.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/budget-couple.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/budget-couple.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/budget-couple.html"/>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.calculix.ca/es/budget-couple.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/budget-couple.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/budget-couple.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/budget-couple.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/budget-couple.html"/>
+    <lastmod>2026-11-04</lastmod>
   </url>
   <url>
     <loc>https://www.calculix.ca/budget-personne-seule.html</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/budget-personne-seule.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/budget-personne-seule.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/budget-personne-seule.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/budget-personne-seule.html"/>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.calculix.ca/en/budget-personne-seule.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/budget-personne-seule.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/budget-personne-seule.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/budget-personne-seule.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/budget-personne-seule.html"/>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.calculix.ca/es/budget-personne-seule.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/budget-personne-seule.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/budget-personne-seule.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/budget-personne-seule.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/budget-personne-seule.html"/>
+    <lastmod>2026-11-04</lastmod>
   </url>
   <url>
     <loc>https://www.calculix.ca/equite-salariale.html</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/equite-salariale.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/equite-salariale.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/equite-salariale.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/equite-salariale.html"/>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.calculix.ca/en/equite-salariale.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/equite-salariale.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/equite-salariale.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/equite-salariale.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/equite-salariale.html"/>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.calculix.ca/es/equite-salariale.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/equite-salariale.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/equite-salariale.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/equite-salariale.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/equite-salariale.html"/>
+    <lastmod>2026-11-04</lastmod>
   </url>
   <url>
     <loc>https://www.calculix.ca/factures-recus.html</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/factures-recus.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/factures-recus.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/factures-recus.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/factures-recus.html"/>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.calculix.ca/en/factures-recus.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/factures-recus.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/factures-recus.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/factures-recus.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/factures-recus.html"/>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.calculix.ca/es/factures-recus.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/factures-recus.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/factures-recus.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/factures-recus.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/factures-recus.html"/>
+    <lastmod>2026-11-04</lastmod>
   </url>
   <url>
     <loc>https://www.calculix.ca/about.html</loc>
-    <lastmod>2026-04-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/about.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/about.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/about.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/about.html"/>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.calculix.ca/en/about.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/about.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/about.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/about.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/about.html"/>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.calculix.ca/es/about.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/about.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/about.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/about.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/about.html"/>
+    <lastmod>2026-11-04</lastmod>
   </url>
   <url>
     <loc>https://www.calculix.ca/privacy-policy.html</loc>
-    <lastmod>2026-04-24</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/privacy-policy.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/privacy-policy.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/privacy-policy.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/privacy-policy.html"/>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.calculix.ca/en/privacy-policy.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/privacy-policy.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/privacy-policy.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/privacy-policy.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/privacy-policy.html"/>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.calculix.ca/es/privacy-policy.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.calculix.ca/privacy-policy.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.calculix.ca/en/privacy-policy.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.calculix.ca/es/privacy-policy.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.calculix.ca/privacy-policy.html"/>
+    <lastmod>2026-11-04</lastmod>
   </url>
 </urlset>

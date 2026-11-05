@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-Z8GX6M9JHC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Z8GX6M9JHC');
+</script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="Evalúe categorías de empleo con factores y subfactores ponderados, según la Ley de equidad salarial de Quebec. Exportación a Excel." name="description"/>
+<title>Calculadora de equidad salarial (Quebec) | Calculix.ca</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/ads.css?v=20260424j" rel="stylesheet"/>
+<link href="../assets/seo.css?v=20260510a" rel="stylesheet"/>
+<script async="" crossorigin="anonymous" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451"></script>
+<script src="../assets/site-config.js?v=20260424j"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+  :root {
+    --bleu: #1a3a5c; --bleu-clair: #2d6a9f; --accent: #e8c547;
+    --vert: #2f8f5f; --vert-clair: #4db37f; --vert-fonce: #1f6e45;
+    --rouge: #c64545; --rouge-clair: #e57373;
+    --violet: #6a4c93; --violet-clair: #8a6cb3;
+    --fond: #f4f1eb; --blanc: #ffffff; --gris: #8a8a8a;
+    --gris-clair: #e8e4dc; --texte: #1a1a1a;
+    --ombre: 0 4px 24px rgba(26,58,92,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--fond); color: var(--texte); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+
+  header { width: 100%; background: var(--bleu); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1.3rem; letter-spacing: 0.03em; text-decoration: none; }
+  .logo span { color: var(--blanc); font-weight: 300; }
+  .header-right { display: flex; align-items: center; gap: 14px; }
+  .lang-label { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.05em; }
+  .lang-toggle-3 {
+    display: inline-flex; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px;
+    overflow: hidden; cursor: pointer; background: rgba(255,255,255,0.04);
+    font-size: 0.78rem; letter-spacing: 0.08em;
+  }
+  .lang-toggle-3 .lang-opt { padding: 6px 12px; color: rgba(255,255,255,0.6); transition: all 0.15s; }
+  .lang-toggle-3 .lang-opt.active { color: var(--bleu); background: var(--accent); font-weight: 700; }
+
+  nav.site-nav { width: 100%; background: #142d47; border-bottom: 2px solid rgba(232,197,71,0.2); }
+  nav.site-nav .nav-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; padding: 0 16px; gap: 4px; overflow-x: auto; }
+  nav.site-nav .nav-link { display: inline-block; padding: 12px 16px; color: rgba(255,255,255,0.6); font-size: 0.85rem; font-weight: 500; text-decoration: none; letter-spacing: 0.03em; white-space: nowrap; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
+  nav.site-nav .nav-link:hover { color: var(--blanc); }
+  nav.site-nav .nav-link.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  main { width: 100%; max-width: 1280px; padding: 24px 16px 64px; display: grid; grid-template-columns: 1fr 300px; gap: 28px; align-items: start; }
+
+  .card { background: var(--blanc); border-radius: 16px; box-shadow: var(--ombre); overflow: hidden; }
+  .card-header { background: linear-gradient(135deg, #6a4c93 0%, #3e2c5b 100%); padding: 24px 32px 20px; position: relative; overflow: hidden; }
+  .card-header::before { content: ''; position: absolute; right: -40px; top: -40px; width: 160px; height: 160px; border-radius: 50%; background: rgba(232,197,71,0.12); }
+  .card-header::after  { content: ''; position: absolute; right: 20px; top: 20px; width: 80px; height: 80px; border-radius: 50%; background: rgba(232,197,71,0.08); }
+  .card-header h1 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--blanc); margin-bottom: 6px; position: relative; z-index: 1; }
+  .card-header p  { color: rgba(255,255,255,0.85); font-size: 0.88rem; font-weight: 300; position: relative; z-index: 1; }
+  .card-body { padding: 28px 32px; }
+
+  input[type="number"], input[type="text"], select {
+    padding: 9px 12px;
+    border: 1.5px solid var(--gris-clair); border-radius: 8px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: var(--texte);
+    background: var(--blanc);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    width: 100%;
+  }
+  input:focus, select:focus {
+    border-color: var(--violet); box-shadow: 0 0 0 3px rgba(106,76,147,0.14);
+  }
+
+  .section-divider { margin: 24px 0 16px; padding-top: 20px; border-top: 1.5px dashed var(--gris-clair); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--violet); }
+  .section-intro { font-size: 0.87rem; color: #555; line-height: 1.6; margin-bottom: 14px; }
+
+  /* ===== Table des facteurs ===== */
+  .factors-wrap { background: var(--fond); border-radius: 12px; border: 1px solid var(--gris-clair); padding: 14px; }
+  .factor-group { margin-bottom: 14px; background: var(--blanc); border-radius: 10px; padding: 14px 16px; border: 1.5px solid transparent; }
+  .factor-group.color-0 { border-color: rgba(106,76,147,0.25); }
+  .factor-group.color-1 { border-color: rgba(45,106,159,0.25); }
+  .factor-group.color-2 { border-color: rgba(232,197,71,0.4); }
+  .factor-group.color-3 { border-color: rgba(47,143,95,0.28); }
+  .factor-group.color-4 { border-color: rgba(198,69,69,0.25); }
+
+  .factor-head { display: grid; grid-template-columns: 1fr 90px 32px; gap: 10px; align-items: center; margin-bottom: 10px; }
+  .factor-head input[type="text"] { font-weight: 600; color: var(--violet); background: var(--fond); }
+  .factor-head .pct-input { position: relative; }
+  .factor-head .pct-input::after { content: '%'; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: var(--gris); font-weight: 600; pointer-events: none; font-size: 0.85rem; }
+  .factor-head .pct-input input { padding-right: 26px; text-align: right; font-weight: 700; color: var(--violet); }
+
+  .subfactor-row { display: grid; grid-template-columns: 24px 1fr 90px 32px; gap: 10px; align-items: center; margin-bottom: 6px; padding-left: 8px; }
+  .subfactor-row .bullet { color: var(--gris); font-size: 0.9rem; }
+  .subfactor-row input[type="text"] { font-size: 0.88rem; }
+  .subfactor-row .pct-input { position: relative; }
+  .subfactor-row .pct-input::after { content: '%'; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: var(--gris); font-weight: 600; pointer-events: none; font-size: 0.85rem; }
+  .subfactor-row .pct-input input { padding-right: 26px; text-align: right; }
+
+  .sum-pill { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 8px; }
+  .sum-pill.ok  { background: #e5f4ec; color: var(--vert-fonce); }
+  .sum-pill.bad { background: #fde8e8; color: var(--rouge); }
+
+  .del-btn { background: transparent; border: none; color: var(--rouge); font-size: 1rem; cursor: pointer; padding: 4px 6px; border-radius: 6px; transition: background 0.15s; }
+  .del-btn:hover { background: rgba(198,69,69,0.1); }
+
+  .add-btn {
+    margin-top: 8px; display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 14px; background: transparent; color: var(--violet);
+    border: 1.5px dashed var(--violet); border-radius: 8px;
+    font-family: inherit; font-size: 0.82rem; font-weight: 600;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .add-btn:hover { background: rgba(106,76,147,0.06); }
+
+  /* ===== Table des professionnels ===== */
+  .pros-wrap { overflow-x: auto; background: var(--fond); border-radius: 12px; border: 1px solid var(--gris-clair); }
+  table.pros { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 800px; }
+  table.pros thead th {
+    background: var(--violet); color: var(--blanc);
+    font-weight: 600; padding: 10px 8px; font-size: 0.75rem;
+    letter-spacing: 0.03em; text-align: center;
+  }
+  table.pros thead th.th-name { text-align: left; min-width: 140px; }
+  table.pros thead th.th-sal { min-width: 110px; }
+  table.pros thead th.th-score { min-width: 60px; font-size: 0.7rem; line-height: 1.2; }
+  table.pros thead th.th-act { width: 36px; }
+  table.pros thead th.th-calc { background: var(--bleu); }
+  table.pros td { padding: 6px 6px; border-bottom: 1px solid rgba(0,0,0,0.05); text-align: center; color: #333; vertical-align: middle; }
+  table.pros td.td-name { text-align: left; }
+  table.pros td.calc { font-weight: 600; background: #eef5fb; color: var(--bleu); }
+  table.pros td.calc.equity { color: var(--vert-fonce); }
+  table.pros td.calc.equity.negative { color: var(--rouge); }
+  table.pros td input[type="text"], table.pros td input[type="number"] {
+    padding: 6px 8px; font-size: 0.85rem;
+    border: 1px solid var(--gris-clair); border-radius: 6px; background: var(--blanc);
+    width: 100%;
+  }
+  table.pros td input.score { text-align: center; }
+  table.pros td input.sal { text-align: right; }
+
+  .result-banner {
+    margin-top: 20px; background: linear-gradient(135deg, #1a3a5c 0%, #2d6a9f 100%);
+    border-radius: 14px; padding: 22px 26px; position: relative; overflow: hidden;
+  }
+  .result-banner::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--accent); border-radius: 4px 0 0 4px; }
+  .result-banner-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .result-banner-main  { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--blanc); line-height: 1.2; font-weight: 700; }
+  .result-banner-sub   { font-size: 0.88rem; color: var(--accent); margin-top: 8px; font-weight: 500; }
+  .result-banner.empty .result-banner-main { color: rgba(255,255,255,0.3); font-size: 1rem; font-family: 'DM Sans', sans-serif; font-weight: 300; padding: 6px 0; }
+
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .info-card { background: var(--blanc); border-radius: 14px; box-shadow: var(--ombre); padding: 22px 24px; }
+  .info-card h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--bleu); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1.5px solid var(--gris-clair); }
+  .info-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--gris-clair); font-size: 0.88rem; }
+  .info-item:last-child { border-bottom: none; }
+  .info-item .label { color: var(--gris); }
+  .info-item .value { font-weight: 600; color: var(--bleu); }
+
+  .disclaimer {
+    grid-column: 1 / -1; margin-top: 4px; padding: 14px 18px;
+    background: #fff8e6; border-left: 3px solid var(--accent);
+    border-radius: 8px; font-size: 0.82rem; line-height: 1.7; color: #666;
+  }
+
+  .export-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #1d6f42 0%, #2f8f5f 100%);
+    color: white; border: none; border-radius: 10px;
+    font-family: inherit; font-size: 0.9rem; font-weight: 600;
+    letter-spacing: 0.02em; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(29,111,66,0.25);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .export-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(29,111,66,0.35); }
+  .export-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  footer { width: 100%; background: var(--bleu); padding: 22px 32px; text-align: center; color: rgba(255,255,255,0.4); font-size: 0.78rem; margin-top: auto; }
+  footer a { color: rgba(255,255,255,0.5); text-decoration: none; margin: 0 8px; }
+  footer a:hover { color: var(--accent); }
+  .footer-links { margin-bottom: 10px; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .animate { animation: fadeUp 0.3s ease forwards; }
+
+  /* ===== Tableau de reference des bornes ===== */
+  .bornes-wrap { background: var(--fond); border-radius: 12px; border: 1px solid var(--gris-clair); padding: 4px; margin-bottom: 22px; overflow-x: auto; }
+  table.bornes { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 560px; }
+  table.bornes thead th {
+    background: var(--violet); color: var(--blanc);
+    font-weight: 600; padding: 10px 10px; font-size: 0.74rem;
+    letter-spacing: 0.04em; text-align: left;
+  }
+  table.bornes thead th.num { text-align: right; }
+  table.bornes td { padding: 8px 10px; border-bottom: 1px solid rgba(0,0,0,0.06); color: #333; vertical-align: middle; }
+  table.bornes td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  table.bornes td.num.val { font-weight: 700; color: var(--violet); }
+  table.bornes td.factor-cell { font-weight: 700; vertical-align: middle; }
+  table.bornes tbody tr.g0 td { background: rgba(106,76,147,0.06); }
+  table.bornes tbody tr.g0 td.factor-cell { background: rgba(106,76,147,0.18); color: var(--violet); }
+  table.bornes tbody tr.g1 td { background: rgba(47,143,95,0.06); }
+  table.bornes tbody tr.g1 td.factor-cell { background: rgba(47,143,95,0.18); color: var(--vert-fonce); }
+  table.bornes tbody tr.g2 td { background: rgba(232,197,71,0.08); }
+  table.bornes tbody tr.g2 td.factor-cell { background: rgba(232,197,71,0.28); color: #8a6d0a; }
+  table.bornes tbody tr.g3 td { background: rgba(45,106,159,0.06); }
+  table.bornes tbody tr.g3 td.factor-cell { background: rgba(45,106,159,0.18); color: var(--bleu); }
+  table.bornes tbody tr.subtotal td { font-weight: 700; background: rgba(0,0,0,0.03) !important; color: #555; border-top: 1.5px solid rgba(0,0,0,0.12); }
+  table.bornes tbody tr.grand-total td { font-weight: 800; background: var(--bleu) !important; color: var(--blanc) !important; font-size: 0.95rem; }
+  table.bornes tbody tr.grand-total td.num.val { color: var(--accent) !important; }
+
+  /* ===== Callout Formulaire d'evaluation ===== */
+  .form-callout {
+    margin: 0 0 22px;
+    padding: 18px 22px;
+    background: linear-gradient(135deg, rgba(106,76,147,0.08) 0%, rgba(232,197,71,0.10) 100%);
+    border: 1.5px solid rgba(106,76,147,0.25);
+    border-left: 4px solid var(--violet);
+    border-radius: 12px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: center;
+  }
+  .form-callout .fc-text { min-width: 0; }
+  .form-callout .fc-title { font-family: 'Playfair Display', serif; font-size: 1.02rem; color: var(--violet); margin-bottom: 4px; }
+  .form-callout .fc-desc { font-size: 0.86rem; color: #555; line-height: 1.55; }
+  .form-callout .fc-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 18px;
+    background: linear-gradient(135deg, var(--violet) 0%, var(--violet-clair) 100%);
+    color: white; border: none; border-radius: 10px;
+    font-family: inherit; font-size: 0.88rem; font-weight: 600;
+    text-decoration: none; letter-spacing: 0.02em;
+    box-shadow: 0 4px 14px rgba(106,76,147,0.25);
+    transition: transform 0.15s, box-shadow 0.15s;
+    white-space: nowrap;
+  }
+  .form-callout .fc-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(106,76,147,0.35); }
+  .form-callout .fc-btn .fc-icon { font-size: 1.05rem; }
+
+  .form-info-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+    width: 100%; padding: 10px 14px; margin-top: 12px;
+    background: linear-gradient(135deg, var(--violet) 0%, var(--violet-clair) 100%);
+    color: white; border: none; border-radius: 9px;
+    font-family: inherit; font-size: 0.85rem; font-weight: 600;
+    text-decoration: none; letter-spacing: 0.02em;
+    box-shadow: 0 3px 10px rgba(106,76,147,0.20);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .form-info-btn:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(106,76,147,0.30); }
+
+  .reset-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 8px; margin-left: 8px;
+    padding: 8px 14px;
+    background: transparent; color: var(--rouge);
+    border: 1.5px dashed var(--rouge); border-radius: 8px;
+    font-family: inherit; font-size: 0.82rem; font-weight: 600;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .reset-btn:hover { background: rgba(198,69,69,0.08); }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 0; align-items: center; }
+  .info-card .fc-desc-side { font-size: 0.86rem; color: #555; line-height: 1.55; }
+
+  @media (max-width: 700px) {
+    .form-callout { grid-template-columns: 1fr; }
+    .form-callout .fc-btn { width: 100%; justify-content: center; }
+  }
+
+  @media (max-width: 1080px) { main { grid-template-columns: 1fr; } }
+  @media (max-width: 640px) {
+    header { padding: 14px 16px; }
+    .lang-label { display: none; }
+    .card-body { padding: 20px 18px; }
+    .factor-head { grid-template-columns: 1fr 80px 28px; }
+    .subfactor-row { grid-template-columns: 20px 1fr 80px 28px; }
+  }
+  @media (max-width: 480px) {
+    main { padding: 16px 10px 48px; gap: 18px; }
+    .card-header { padding: 20px 22px 16px; }
+    .card-header h1 { font-size: 1.35rem; }
+    .card-header p { font-size: 0.82rem; }
+    .card-body { padding: 18px 14px; }
+    .section-title { font-size: 0.95rem; }
+    .factor-head { grid-template-columns: 1fr 64px 26px; gap: 6px; }
+    .subfactor-row { grid-template-columns: 16px 1fr 64px 26px; gap: 6px; padding-left: 4px; }
+    .factor-head input[type="text"], .subfactor-row input[type="text"] { padding: 9px 10px; font-size: 0.88rem; }
+    .factor-head .pct-input input, .subfactor-row .pct-input input { padding: 8px 22px 8px 8px; font-size: 0.85rem; }
+    .factor-head .pct-input::after, .subfactor-row .pct-input::after { right: 6px; font-size: 0.78rem; }
+    table.pros { font-size: 0.78rem; min-width: 720px; }
+    table.pros td { padding: 5px 5px; }
+    table.pros td input[type="text"], table.pros td input[type="number"] { padding: 6px 6px; font-size: 0.8rem; }
+    table.bornes { font-size: 0.76rem; min-width: 0; }
+    table.bornes thead th, table.bornes td { padding: 6px 6px; }
+    .pros-wrap, .bornes-wrap { box-shadow: inset -8px 0 8px -8px rgba(0,0,0,0.15); }
+    .export-btn { width: 100%; padding: 12px 16px; }
+    .section-divider { padding-top: 18px; margin: 22px 0 14px; }
+    .add-pro-btn, .add-btn { width: 100%; justify-content: center; }
+    .sum-pill { font-size: 0.78rem; }
+    .info-card { padding: 18px 18px; }
+    aside.sidebar { gap: 14px; }
+  }
+  @media (max-width: 380px) {
+    .factor-head { grid-template-columns: 1fr 56px 24px; }
+    .subfactor-row { grid-template-columns: 14px 1fr 56px 24px; }
+    .card-header h1 { font-size: 1.2rem; }
+    table.pros { min-width: 640px; }
+  }
+</style>
+<link href="https://www.calculix.ca/es/equite-salariale.html" rel="canonical"/><link href="https://www.calculix.ca/equite-salariale.html" hreflang="fr" rel="alternate"/><link href="https://www.calculix.ca/en/equite-salariale.html" hreflang="en" rel="alternate"/><link href="https://www.calculix.ca/es/equite-salariale.html" hreflang="es" rel="alternate"/><link href="https://www.calculix.ca/equite-salariale.html" hreflang="x-default" rel="alternate"/></head>
+<body>
+<header>
+<a class="logo" href="index.html">Calcul<span>ix</span>.ca</a>
+<div class="header-right">
+<span class="lang-label" id="headerSubtitle">Calculadoras financieras gratuitas · Québec</span>
+<div class="lang-toggle-3" id="langToggle" onclick="toggleLang()" title="Language">
+<span class="lang-opt" data-lang="fr">FR</span>
+<span class="lang-opt" data-lang="en">EN</span>
+<span class="lang-opt" data-lang="es">ES</span>
+</div>
+</div>
+</header>
+<nav class="site-nav"><div class="nav-inner" id="siteNav"></div></nav>
+<main>
+<div class="card">
+<div class="card-header">
+<h1 id="mainTitle">⚖️ Equidad salarial</h1>
+<p id="mainSubtitle">Evalúe los empleos con factores y sub-factores ponderados, compare salarios y detecte brechas</p>
+</div>
+<div class="card-body">
+<!-- Callout : Formulaire d'evaluation a telecharger -->
+<div class="form-callout">
+<div class="fc-text">
+<div class="fc-title" id="formCalloutTitle">✍️ Formulario de evaluación de categorías de empleo</div>
+<div class="fc-desc" id="formCalloutDesc">Antes de ponderar los factores, evalúe cada categoría de empleo con nuestro formulario PDF rellenable. Refleja los mismos 4 factores y 10 sub-factores que esta calculadora, con los niveles y descripciones comúnmente utilizados en Quebec (formulario en francés).</div>
+</div>
+<a class="fc-btn" download="formulaire-evaluation-categories-emploi.pdf" href="../assets/formulaire-evaluation-categories-emploi.pdf" id="formCalloutBtn" rel="noopener" target="_blank">
+<span class="fc-icon">⬇️</span><span id="formCalloutBtnLbl">Descargar el formulario (PDF)</span>
+</a>
+</div>
+<!-- Tableau de reference des bornes -->
+<div class="section-divider" style="margin-top:0;border-top:none;padding-top:0;">
+<div class="section-title" id="sectBornes">📚 Rangos generalmente reconocidos</div>
+</div>
+<p class="section-intro" id="bornesIntro">Valores de referencia según las prácticas habituales de evaluación de empleos. Úselos como punto de partida para ponderar sus factores a continuación.</p>
+<div class="bornes-wrap">
+<table class="bornes" id="bornesTable">
+<thead>
+<tr>
+<th id="thFactor">Factor</th>
+<th id="thSubfactor">Sub-factor</th>
+<th id="thBorne">Rango generalmente reconocido</th>
+<th class="num" id="thValue">Valor por sub-factor</th>
+</tr>
+</thead>
+<tbody id="bornesBody"><tr class="g0"><td class="factor-cell" rowspan="3">Calificaciones requeridas</td><td>Formación</td><td>10 a 15%</td><td class="num val">12%</td></tr><tr class="g0"><td>Experiencia</td><td>6 a 12%</td><td class="num val">10%</td></tr><tr class="g0"><td>Destreza y coordinación</td><td>4 a 8%</td><td class="num val">8%</td></tr><tr class="subtotal"><td colspan="3" style="text-align:right;">TOTAL (debe estar entre 20 a 35%)</td><td class="num val">30%</td></tr><tr class="g1"><td class="factor-cell" rowspan="3">Responsabilidades asumidas</td><td>Responsabilización</td><td>9 a 10%</td><td class="num val">10%</td></tr><tr class="g1"><td>Comunicaciones</td><td>9 a 10%</td><td class="num val">10%</td></tr><tr class="g1"><td>Supervisión</td><td>7 a 10%</td><td class="num val">10%</td></tr><tr class="subtotal"><td colspan="3" style="text-align:right;">TOTAL (debe estar entre 25 a 30%)</td><td class="num val">30%</td></tr><tr class="g2"><td class="factor-cell" rowspan="3">Esfuerzos requeridos</td><td>Esfuerzo intelectual</td><td>8 a 14%</td><td class="num val">10%</td></tr><tr class="g2"><td>Concentración y atención sensorial</td><td>6 a 13%</td><td class="num val">10%</td></tr><tr class="g2"><td>Esfuerzo físico</td><td>6 a 13%</td><td class="num val">10%</td></tr><tr class="subtotal"><td colspan="3" style="text-align:right;">TOTAL (debe estar entre 20 a 40%)</td><td class="num val">30%</td></tr><tr class="g3"><td class="factor-cell" rowspan="1">Condiciones de trabajo</td><td>Inconvenientes y riesgos</td><td>5 a 15%</td><td class="num val">10%</td></tr><tr class="subtotal"><td colspan="3" style="text-align:right;">TOTAL (debe estar entre 5 a 15%)</td><td class="num val">10%</td></tr><tr class="grand-total"><td colspan="3" style="text-align:right;">GRAN TOTAL (debe ser igual a 100%)</td><td class="num val">100%</td></tr></tbody>
+</table>
+</div>
+<!-- Facteurs -->
+<div class="section-divider" style="margin-top:0;border-top:none;padding-top:0;">
+<div class="section-title" id="sectFactors">📐 Factores de evaluación</div>
+<span class="sum-pill" id="totalFactorsPct">Total: 100 %</span>
+</div>
+<p class="section-intro" id="factorsIntro">Los cuatro factores principales de la Ley de Equidad Salarial de Quebec. Ajuste las ponderaciones según su método — los factores y los sub-factores de cada grupo deben sumar 100 %.</p>
+<div class="factors-wrap" id="factorsWrap"><div class="factor-group color-0" data-fid="1"><div class="factor-head"><input class="cx-fac-name" type="text" value="Calificaciones requeridas"/><div class="pct-input"><input class="cx-fac-pct" readonly="" tabindex="-1" title="= Σ sous-facteurs" type="number" value="30"/></div><button class="del-btn cx-fac-del" title="Eliminar" type="button">✕</button></div><div class="subfactor-row" data-sid="1"><span class="bullet">•</span><input class="cx-sub-name" type="text" value="Formación"/><div class="pct-input"><input class="cx-sub-pct" max="100" min="0" step="1" type="number" value="12"/></div><button class="del-btn cx-sub-del" title="Eliminar" type="button">✕</button></div><div class="subfactor-row" data-sid="2"><span class="bullet">•</span><input class="cx-sub-name" type="text" value="Experiencia"/><div class="pct-input"><input class="cx-sub-pct" max="100" min="0" step="1" type="number" value="10"/></div><button class="del-btn cx-sub-del" title="Eliminar" type="button">✕</button></div><div class="subfactor-row" data-sid="3"><span class="bullet">•</span><input class="cx-sub-name" type="text" value="Destreza y coordinación"/><div class="pct-input"><input class="cx-sub-pct" max="100" min="0" step="1" type="number" value="8"/></div><button class="del-btn cx-sub-del" title="Eliminar" type="button">✕</button></div><div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;"><button class="add-btn cx-add-sub" type="button"><span>➕</span><span>+ Añadir un sub-factor</span></button><span class="sum-pill ok">Total: 30 %</span></div></div><div class="factor-group color-1" data-fid="2"><div class="factor-head"><input class="cx-fac-name" type="text" value="Responsabilidades asumidas"/><div class="pct-input"><input class="cx-fac-pct" readonly="" tabindex="-1" title="= Σ sous-facteurs" type="number" value="30"/></div><button class="del-btn cx-fac-del" title="Eliminar" type="button">✕</button></div><div class="subfactor-row" data-sid="4"><span class="bullet">•</span><input class="cx-sub-name" type="text" value="Responsabilización"/><div class="pct-input"><input class="cx-sub-pct" max="100" min="0" step="1" type="number" value="10"/></div><button class="del-btn cx-sub-del" title="Eliminar" type="button">✕</button></div><div class="subfactor-row" data-sid="5"><span class="bullet">•</span><input class="cx-sub-name" type="text" value="Comunicaciones"/><div class="pct-input"><input class="cx-sub-pct" max="100" min="0" step="1" type="number" value="10"/></div><button class="del-btn cx-sub-del" title="Eliminar" type="button">✕</button></div><div class="subfactor-row" data-sid="6"><span class="bullet">•</span><input class="cx-sub-name" type="text" value="Supervisión"/><div class="pct-input"><input class="cx-sub-pct" max="100" min="0" step="1" type="number" value="10"/></div><button class="del-btn cx-sub-del" title="Eliminar" type="button">✕</button></div><div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;"><button class="add-btn cx-add-sub" type="button"><span>➕</span><span>+ Añadir un sub-factor</span></button><span class="sum-pill ok">Total: 30 %</span></div></div><div class="factor-group color-2" data-fid="3"><div class="factor-head"><input class="cx-fac-name" type="text" value="Esfuerzos requeridos"/><div class="pct-input"><input class="cx-fac-pct" readonly="" tabindex="-1" title="= Σ sous-facteurs" type="number" value="30"/></div><button class="del-btn cx-fac-del" title="Eliminar" type="button">✕</button></div><div class="subfactor-row" data-sid="7"><span class="bullet">•</span><input class="cx-sub-name" type="text" value="Esfuerzo intelectual"/><div class="pct-input"><input class="cx-sub-pct" max="100" min="0" step="1" type="number" value="10"/></div><button class="del-btn cx-sub-del" title="Eliminar" type="button">✕</button></div><div class="subfactor-row" data-sid="8"><span class="bullet">•</span><input class="cx-sub-name" type="text" value="Concentración y atención sensorial"/><div class="pct-input"><input class="cx-sub-pct" max="100" min="0" step="1" type="number" value="10"/></div><button class="del-btn cx-sub-del" title="Eliminar" type="button">✕</button></div><div class="subfactor-row" data-sid="9"><span class="bullet">•</span><input class="cx-sub-name" type="text" value="Esfuerzo físico"/><div class="pct-input"><input class="cx-sub-pct" max="100" min="0" step="1" type="number" value="10"/></div><button class="del-btn cx-sub-del" title="Eliminar" type="button">✕</button></div><div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;"><button class="add-btn cx-add-sub" type="button"><span>➕</span><span>+ Añadir un sub-factor</span></button><span class="sum-pill ok">Total: 30 %</span></div></div><div class="factor-group color-3" data-fid="4"><div class="factor-head"><input class="cx-fac-name" type="text" value="Condiciones de trabajo"/><div class="pct-input"><input class="cx-fac-pct" readonly="" tabindex="-1" title="= Σ sous-facteurs" type="number" value="10"/></div><button class="del-btn cx-fac-del" title="Eliminar" type="button">✕</button></div><div class="subfactor-row" data-sid="10"><span class="bullet">•</span><input class="cx-sub-name" type="text" value="Inconvenientes y riesgos"/><div class="pct-input"><input class="cx-sub-pct" max="100" min="0" step="1" type="number" value="10"/></div><button class="del-btn cx-sub-del" title="Eliminar" type="button">✕</button></div><div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;"><button class="add-btn cx-add-sub" type="button"><span>➕</span><span>+ Añadir un sub-factor</span></button><span class="sum-pill ok">Total: 10 %</span></div></div></div>
+<!-- Professionnels -->
+<div class="section-divider">
+<div class="section-title" id="sectPros">👥 Profesionales y puntajes</div>
+<button class="export-btn" disabled="" id="exportBtn" onclick="exportToExcel()" type="button">
+<span>📊</span><span id="exportLbl">Exportar a Excel</span>
+</button>
+</div>
+<p class="section-intro" id="prosIntro">Asigne un puntaje de 0 a 100 para cada sub-factor a cada profesional. El total ponderado se calcula automáticamente junto con el salario por punto y la brecha de equidad.</p>
+<div class="pros-wrap">
+<table class="pros" id="prosTable">
+<thead>
+<tr id="prosHeader"><th class="th-name">Profesional</th><th class="th-sal">Salario anual</th><th class="th-score" title="Calificaciones requeridas – Formación">Formación</th><th class="th-score" title="Calificaciones requeridas – Experiencia">Experiencia</th><th class="th-score" title="Calificaciones requeridas – Destreza y coordinación">Destreza y coordinación</th><th class="th-score" title="Responsabilidades asumidas – Responsabilización">Responsabilización</th><th class="th-score" title="Responsabilidades asumidas – Comunicaciones">Comunicaciones</th><th class="th-score" title="Responsabilidades asumidas – Supervisión">Supervisión</th><th class="th-score" title="Esfuerzos requeridos – Esfuerzo intelectual">Esfuerzo intelectual</th><th class="th-score" title="Esfuerzos requeridos – Concentración y atención sensorial">Concentración y atención sensorial</th><th class="th-score" title="Esfuerzos requeridos – Esfuerzo físico">Esfuerzo físico</th><th class="th-score" title="Condiciones de trabajo – Inconvenientes y riesgos">Inconvenientes y riesgos</th><th class="th-calc">Total ponderado</th><th class="th-calc">$/punto</th><th class="th-calc">Brecha de equidad</th><th class="th-act">✕</th></tr>
+</thead>
+<tbody id="prosBody"><tr data-pid="1"><td class="td-name"><input class="cx-name" type="text" value="Técnico/a contable"/></td><td><input class="sal cx-sal" min="0" step="100" type="number" value="62000"/></td><td><input class="score cx-score" data-sid="1" max="100" min="0" step="1" type="number" value="64"/></td><td><input class="score cx-score" data-sid="2" max="100" min="0" step="1" type="number" value="72"/></td><td><input class="score cx-score" data-sid="3" max="100" min="0" step="1" type="number" value="76"/></td><td><input class="score cx-score" data-sid="4" max="100" min="0" step="1" type="number" value="73"/></td><td><input class="score cx-score" data-sid="5" max="100" min="0" step="1" type="number" value="65"/></td><td><input class="score cx-score" data-sid="6" max="100" min="0" step="1" type="number" value="65"/></td><td><input class="score cx-score" data-sid="7" max="100" min="0" step="1" type="number" value="69"/></td><td><input class="score cx-score" data-sid="8" max="100" min="0" step="1" type="number" value="63"/></td><td><input class="score cx-score" data-sid="9" max="100" min="0" step="1" type="number" value="76"/></td><td><input class="score cx-score" data-sid="10" max="100" min="0" step="1" type="number" value="74"/></td><td class="calc cx-total">69,46</td><td class="calc cx-rate">892,60 CAD</td><td class="calc equity cx-equity negative">-997,63 CAD</td><td><button class="del-btn cx-pro-del" title="Supprimer" type="button">✕</button></td></tr><tr data-pid="2"><td class="td-name"><input class="cx-name" type="text" value="Asistente administrativo/a"/></td><td><input class="sal cx-sal" min="0" step="100" type="number" value="48000"/></td><td><input class="score cx-score" data-sid="1" max="100" min="0" step="1" type="number" value="74"/></td><td><input class="score cx-score" data-sid="2" max="100" min="0" step="1" type="number" value="64"/></td><td><input class="score cx-score" data-sid="3" max="100" min="0" step="1" type="number" value="67"/></td><td><input class="score cx-score" data-sid="4" max="100" min="0" step="1" type="number" value="76"/></td><td><input class="score cx-score" data-sid="5" max="100" min="0" step="1" type="number" value="73"/></td><td><input class="score cx-score" data-sid="6" max="100" min="0" step="1" type="number" value="62"/></td><td><input class="score cx-score" data-sid="7" max="100" min="0" step="1" type="number" value="63"/></td><td><input class="score cx-score" data-sid="8" max="100" min="0" step="1" type="number" value="79"/></td><td><input class="score cx-score" data-sid="9" max="100" min="0" step="1" type="number" value="60"/></td><td><input class="score cx-score" data-sid="10" max="100" min="0" step="1" type="number" value="78"/></td><td class="calc cx-total">69,74</td><td class="calc cx-rate">688,27 CAD</td><td class="calc equity cx-equity negative">-15.251,58 CAD</td><td><button class="del-btn cx-pro-del" title="Supprimer" type="button">✕</button></td></tr><tr data-pid="3"><td class="td-name"><input class="cx-name" type="text" value="Analista financiero"/></td><td><input class="sal cx-sal" min="0" step="100" type="number" value="78000"/></td><td><input class="score cx-score" data-sid="1" max="100" min="0" step="1" type="number" value="75"/></td><td><input class="score cx-score" data-sid="2" max="100" min="0" step="1" type="number" value="67"/></td><td><input class="score cx-score" data-sid="3" max="100" min="0" step="1" type="number" value="79"/></td><td><input class="score cx-score" data-sid="4" max="100" min="0" step="1" type="number" value="63"/></td><td><input class="score cx-score" data-sid="5" max="100" min="0" step="1" type="number" value="64"/></td><td><input class="score cx-score" data-sid="6" max="100" min="0" step="1" type="number" value="66"/></td><td><input class="score cx-score" data-sid="7" max="100" min="0" step="1" type="number" value="73"/></td><td><input class="score cx-score" data-sid="8" max="100" min="0" step="1" type="number" value="76"/></td><td><input class="score cx-score" data-sid="9" max="100" min="0" step="1" type="number" value="62"/></td><td><input class="score cx-score" data-sid="10" max="100" min="0" step="1" type="number" value="60"/></td><td class="calc cx-total">68,42</td><td class="calc cx-rate">1140,02 CAD</td><td class="calc equity cx-equity">+15.945,61 CAD</td><td><button class="del-btn cx-pro-del" title="Supprimer" type="button">✕</button></td></tr></tbody>
+</table>
+</div>
+<div class="btn-row">
+<button class="add-btn" id="addProBtn" onclick="addPro()" type="button">
+<span>➕</span><span id="addProLbl">Añadir un profesional</span>
+</button>
+<button class="reset-btn" id="resetBtn" onclick="resetAll()" type="button">
+<span>🗑️</span><span id="resetLbl">Restablecer todo</span>
+</button>
+</div>
+<!-- Résultat -->
+<div class="result-banner empty" id="resultBanner">
+<div class="result-banner-label" id="resultLabel">Análisis de equidad</div>
+<div class="result-banner-main" id="resultMain">Salario promedio por punto: 906,96 CAD</div>
+<div class="result-banner-sub" id="resultSub">Análisis basado en 3 profesionales</div>
+</div>
+</div>
+</div>
+<aside class="sidebar">
+<div class="info-card">
+<h3 id="infoTitle">📋 Resumen</h3>
+<div class="info-item"><span class="label" id="lblI1">Número de factores</span><span class="value" id="infoNbFac">4</span></div>
+<div class="info-item"><span class="label" id="lblI2">Número de sub-factores</span><span class="value" id="infoNbSub">10</span></div>
+<div class="info-item"><span class="label" id="lblI3">Número de profesionales</span><span class="value" id="infoNbPro">3</span></div>
+<div class="info-item"><span class="label" id="lblI4">Salario promedio / punto</span><span class="value" id="infoAvgRate">906,96 CAD</span></div>
+</div>
+<div class="info-card">
+<h3 id="formSidebarTitle">✍️ Formulario rellenable</h3>
+<p class="fc-desc-side" id="formSidebarDesc">Evalúe sus categorías de empleo sobre los 4 factores y 10 sub-factores con un PDF rellenable, luego transfiera los niveles aquí.</p>
+<a class="form-info-btn" download="formulaire-evaluation-categories-emploi.pdf" href="../assets/formulaire-evaluation-categories-emploi.pdf" id="formSidebarBtn" rel="noopener" target="_blank">
+<span>⬇️</span><span id="formSidebarBtnLbl">Descargar el PDF</span>
+</a>
+</div>
+<div class="info-card">
+<h3 id="tipsTitle">💡 Bueno saber</h3>
+<p id="tipsP1" style="font-size:0.86rem; color:#555; line-height:1.6; margin-bottom:8px;">En Quebec, la <strong>Ley de Equidad Salarial</strong> define 4 factores: calificaciones, responsabilidades, esfuerzos y condiciones de trabajo.</p>
+<p id="tipsP2" style="font-size:0.86rem; color:#555; line-height:1.6;">El <strong>total ponderado</strong> de un empleo = Σ (puntaje × peso absoluto del sub-factor / 100). Una brecha positiva significa que el empleo se paga <strong>por encima</strong> del promedio $/punto.</p>
+</div>
+<div class="partners-stack" id="partnersRow"><a class="partner-amz" href="https://www.amazon.ca/?tag=amazingam068f-20" rel="sponsored noopener" target="_blank">
+<div class="partner-amz-inner">
+<img alt="Amazon" class="partner-amz-logo" loading="lazy" src="../images/amazon.svg?v=20260424f"/>
+<div class="partner-amz-text">
+<div class="partner-amz-headline">Nuestras recomendaciones Amazon</div>
+<div class="partner-amz-subline">Libros, herramientas y recursos para gestionar sus finanzas personales.</div>
+<div class="partner-amz-cta">Ver en Amazon → <span aria-hidden="true">›</span></div>
+</div>
+</div>
+<div class="partner-label">Socio</div>
+</a><a class="partner-cfo" href="https://lecfomasque.com/ref/107/" rel="sponsored noopener" target="_blank">
+<div class="partner-cfo-inner">
+<img alt="Le CFO masqué" class="partner-cfo-logo" loading="lazy" src="../images/cfo-masque.svg?v=20260424f"/>
+<div class="partner-cfo-text">
+<div class="partner-cfo-headline">Conviértase en experto de Excel y Power BI</div>
+<div class="partner-cfo-subline">Formaciones en francés para analistas, contables y gerentes.</div>
+<div class="partner-cfo-promo">Use el código promo <span class="partner-cfo-code">MPP5%Rabais</span></div>
+<div class="partner-cfo-cta">Ver las formaciones →</div>
+</div>
+</div>
+<div class="partner-label">Socio</div>
+</a><a class="partner-alch" href="https://alchimix-app.com/" rel="sponsored noopener" target="_blank">
+<div class="partner-alch-inner">
+<img alt="Alchimix" class="partner-alch-banner" loading="lazy" src="../images/alchimix.png?v=20260424f"/>
+<div class="partner-alch-text">
+<div class="partner-alch-headline">Alchimix — el juego de cartas</div>
+<div class="partner-alch-subline">El juego de cartas estratégico y mágico. ¡Gratis para probar!</div>
+<div class="partner-alch-cta">¡Juega ahora! →</div>
+</div>
+</div>
+<div class="partner-label">Socio</div>
+</a></div>
+</aside>
+<div class="disclaimer" id="disclaimerText">⚠️ Calculix.ca ofrece herramientas solo con fines informativos. Para un ejercicio de equidad salarial conforme a la Ley, consulte a un asesor de RR. HH. o a la CNESST.</div>
+<section aria-label="Guide équité salariale" class="cx-seo">
+<div lang="es">
+<div class="cx-seo-intro">
+<h2>Comprender la equidad salarial en Quebec</h2>
+<p>La equidad salarial es a la vez una obligación legal y un principio de justicia que busca corregir las brechas de remuneración entre los empleos tradicionalmente ocupados por mujeres y aquellos tradicionalmente ocupados por hombres, cuando esos empleos son de valor equivalente. Esta página reúne las referencias esenciales para comprender la <strong>Ley sobre la Equidad Salarial</strong> de Quebec, saber qué empresas están afectadas, cómo se evalúan las categorías de empleo y cuáles son las obligaciones de mantenimiento cada cinco años.</p>
+</div>
+<details open="">
+<summary>La Ley sobre la Equidad Salarial de Quebec — ¿qué es?</summary>
+<div class="cx-seo-body">
+<p>La <strong>Ley sobre la Equidad Salarial</strong> fue adoptada por la Asamblea Nacional de Quebec en 1996 y entró en vigor en noviembre de 1997. Su objetivo es claro: corregir las brechas salariales que resultan de la <strong>discriminación sistémica</strong> contra los empleos de predominio femenino. La ley reconoce que, históricamente, los empleos ocupados mayoritariamente por mujeres han sido subvalorados frente a empleos de valor comparable ocupados por hombres — secretariado, cuidados, enseñanza preescolar, caja, limpieza, etc.</p>
+<p>La equidad salarial no se confunde con la <em>igualdad salarial</em>. La igualdad exige que a igual trabajo, igual salario — un hombre y una mujer que realizan el mismo empleo deben recibir la misma remuneración. La equidad va más allá: exige que <strong>a trabajo equivalente</strong>, la remuneración sea equivalente, aunque los empleos sean distintos. Una enfermera auxiliar y un mecánico de fábrica no hacen el mismo trabajo, pero sus puestos pueden tener un valor equivalente medido con criterios neutros.</p>
+<p>La ley es administrada por la <strong>Comisión de Normas, Equidad, Salud y Seguridad en el Trabajo (CNESST)</strong>. Esta publica guías, pone a disposición un software de evaluación, recibe quejas de los trabajadores y puede imponer multas administrativas a los empleadores que no cumplan.</p>
+</div>
+</details>
+<details>
+<summary>¿Qué empresas están afectadas?</summary>
+<div class="cx-seo-body">
+<p>Toda empresa de Quebec que cuente con <strong>10 o más asalariados</strong> debe realizar un ejercicio de equidad salarial. El cálculo del número de empleados se hace sobre el promedio durante el período de referencia de 12 meses. Las empresas con menos de 10 personas no están obligadas a realizar el ejercicio formal, pero siguen sujetas a la prohibición general de discriminación salarial prevista en la <em>Carta de los Derechos y Libertades de la Persona</em>.</p>
+<p>La ley distingue tres niveles según el tamaño:</p>
+<ul>
+<li><strong>10 a 49 asalariados</strong> — el empleador debe hacer el ejercicio sin comité de equidad obligatorio. Un procedimiento simplificado está disponible.</li>
+<li><strong>50 a 99 asalariados</strong> — el ejercicio completo es obligatorio; un comité de equidad es opcional pero recomendado.</li>
+<li><strong>100 o más asalariados</strong> — debe constituirse un <strong>comité de equidad salarial</strong> formal, con representación de los asalariados y de los empleos de predominio femenino.</li>
+</ul>
+<p>Una vez completado el ejercicio inicial, el empleador debe realizar una <strong>evaluación de mantenimiento</strong> de la equidad cada <strong>cinco años</strong>. Esta evaluación periódica verifica que los cambios ocurridos (nuevos puestos, modificaciones de tareas, fusiones, reestructuraciones, convenios colectivos) no hayan reintroducido una brecha discriminatoria. Los resultados deben publicarse y permanecer visibles durante 60 días en los lugares de trabajo.</p>
+</div>
+</details>
+<details>
+<summary>La metodología de evaluación</summary>
+<div class="cx-seo-body">
+<p>El ejercicio de equidad salarial sigue cuatro grandes etapas metodológicas:</p>
+<ol>
+<li><strong>Identificar las categorías de empleo</strong> — agrupar los puestos que comparten funciones, cualificaciones, responsabilidades y remuneración similares.</li>
+<li><strong>Determinar la predominancia</strong> — una categoría se considera de predominio femenino o masculino si al menos el <span class="cx-formula">60 %</span> de las personas pertenecen al mismo género. Las demás se denominan mixtas (o neutras).</li>
+<li><strong>Evaluar cada categoría</strong> según los cuatro factores previstos por la ley.</li>
+<li><strong>Comparar las remuneraciones</strong> entre categorías de valor equivalente y calcular los ajustes necesarios.</li>
+</ol>
+<p>Los <strong>cuatro factores de evaluación</strong> obligatorios son:</p>
+<ul>
+<li><strong>Cualificaciones requeridas</strong> — formación, experiencia, habilidades, destreza, autonomía de juicio.</li>
+<li><strong>Responsabilidades asumidas</strong> — supervisión de personal, gestión de recursos financieros o materiales, comunicaciones internas y externas, impacto de las decisiones.</li>
+<li><strong>Esfuerzos requeridos</strong> — esfuerzos intelectuales (concentración, atención sostenida) y físicos (manipulación, posturas, destreza fina).</li>
+<li><strong>Condiciones de trabajo</strong> — ambiente físico (ruido, temperaturas, peligros), riesgos psicosociales, desplazamientos, horarios atípicos.</li>
+</ul>
+<p>Cada factor se descompone en subfactores ponderados en porcentaje. Los empleos reciben una <strong>puntuación total</strong> que los sitúa en una rejilla comparativa. El método debe estar <strong>libre de sesgos sexistas</strong>: un subfactor "fuerza física" no puede pesar de manera desproporcionada sin que subfactores típicos de empleos femeninos (ej.: exigencias relacionales, atención al detalle) sean también reconocidos.</p>
+</div>
+</details>
+<details>
+<summary>Ejemplo — pyme quebequense</summary>
+<div class="cx-seo-body">
+<p>Tomemos un <strong>estudio de arquitectura</strong> de 30 empleados en Trois-Rivières. La empresa cae en el nivel 10–49. Así se desarrolla el ejercicio:</p>
+<div class="cx-example">
+<p><strong>Categorías identificadas:</strong></p>
+<ul>
+<li>Arquitectos seniors y juniors — 14 personas — categoría <strong>mixta</strong> (50 % H / 50 % M).</li>
+<li>Técnicos en arquitectura — 9 personas — categoría <strong>mixta</strong> (78 % H).</li>
+<li>Asistentes administrativas y recepción — 7 personas — categoría de <strong>predominio femenino</strong> (100 % M).</li>
+</ul>
+<p><strong>Evaluación por puntos (sobre 1 000):</strong></p>
+<ul>
+<li>Arquitecto sénior: 760 pts — salario medio 95 000 $.</li>
+<li>Técnico en arquitectura: 540 pts — salario medio 58 000 $.</li>
+<li>Asistente administrativa: 380 pts — salario medio 42 000 $.</li>
+</ul>
+<p><strong>Resultado:</strong> trazando la línea de comparación entre los empleos mixtos (arquitecto / técnico), el salario correspondiente a 380 puntos debería ser de 47 200 $. La brecha de 5 200 $ por asistente debe corregirse durante 4 años (cuotas anuales) con ajuste retroactivo a la fecha de la publicación inicial.</p>
+</div>
+<p>Los ajustes no se limitan al salario base: los <strong>beneficios vinculados a la remuneración</strong> (primas, complementos, planes de pensión, bonificaciones) deben tenerse en cuenta cuando las condiciones difieren significativamente entre categorías. El empleador publica los resultados durante 60 días, período durante el cual los trabajadores pueden plantear preguntas o solicitar revisiones por escrito.</p>
+</div>
+</details>
+<details>
+<summary>Preguntas frecuentes</summary>
+<div class="cx-seo-body">
+<p class="cx-faq-q">¿Qué ocurre si una empresa no realiza el ejercicio?</p>
+<p>La CNESST puede imponer <strong>multas administrativas que superan los 45 000 $</strong> por infracción y emitir una orden de realización del ejercicio. Los ajustes salariales se vuelven exigibles con intereses desde la fecha en que debieron pagarse. La reincidencia duplica las sanciones.</p>
+<p class="cx-faq-q">¿Cómo se realiza la publicación de resultados?</p>
+<p>La publicación debe incluir un resumen del proceso, la lista de categorías de empleo, el porcentaje de brecha constatado, los ajustes a pagar y las modalidades de pago. Es <strong>visible durante 60 días</strong> en un lugar frecuentado por los trabajadores (la intranet es aceptable si todos tienen acceso), acompañada del contacto de un responsable.</p>
+<p class="cx-faq-q">¿Qué hacer si no hay ninguna categoría masculina de comparación?</p>
+<p>Cuando no existe una categoría de predominio masculino comparable en la empresa, se utilizan <strong>categorías de comparación externas</strong> definidas por reglamento. La CNESST publica dos categorías tipo (por ejemplo: oficinista y operador de equipos de producción) con datos salariales de referencia.</p>
+<p class="cx-faq-q">¿El mantenimiento cada 5 años es obligatorio?</p>
+<p>Sí, sin excepción. Aunque no parezca haber cambios mayores, la evaluación de mantenimiento debe documentarse y publicarse. Las modificaciones introducidas por convenios colectivos, planes de clasificación o reestructuraciones importantes deben analizarse desde la perspectiva de la equidad.</p>
+<p class="cx-faq-q">¿Existe una herramienta de la CNESST?</p>
+<p>Sí — la CNESST pone a disposición el <strong>software PRES</strong> (Progiciel pour réaliser l'équité salariale), un programa gratuito que guía a las pymes en todas las etapas: identificación de categorías, elección de factores, ponderación, cálculo de brechas. Nuestro calculador Calculix complementa esa herramienta con visualización rápida por profesional y exportación Excel.</p>
+</div>
+</details>
+</div>
+</section>
+</main>
+<footer>
+<div class="footer-links" id="footerLinks"></div>
+<div id="footerText">© 2026 Calculix.ca — Solo con fines informativos. Consulte a un profesional para su situación personal.</div>
+</footer>
+<script>
+  // ========== i18n ==========
+  const i18n = {
+    fr: {
+      mainTitle: '⚖️ Équité salariale',
+      mainSubtitle: 'Évaluez les emplois par facteurs et sous-facteurs pondérés, comparez les salaires et détectez les écarts',
+      sectFactors: '📐 Facteurs d\'évaluation',
+      factorsIntro: 'Les quatre grands facteurs de la Loi sur l\'équité salariale du Québec. Modifiez les pondérations selon votre méthode d\'évaluation — le total des facteurs et des sous-facteurs de chaque groupe doit atteindre 100 %.',
+      sectPros: '👥 Professionnels et scores',
+      prosIntro: 'Attribuez un score de 0 à 100 pour chaque sous-facteur à chaque professionnel. Le total pondéré est calculé automatiquement ainsi que le salaire par point et l\'écart d\'équité.',
+      exportLbl: 'Exporter en Excel',
+      addProLbl: 'Ajouter un professionnel',
+      addSubLbl: '+ Ajouter un sous-facteur',
+      delTooltip: 'Supprimer',
+      resultLabel: 'Analyse d\'équité',
+      resultEmpty: 'Entrez les salaires et les scores',
+      resultMain: function(avgRate) { return 'Salaire moyen par point : ' + avgRate; },
+      resultSub: function(n) { return 'Analyse basée sur ' + n + ' professionnel' + (n>1?'s':''); },
+      colName: 'Professionnel', colSalary: 'Salaire annuel',
+      colTotal: 'Total pondéré', colRate: '$ / point', colEquity: 'Écart d\'équité',
+      sumOk: 'Total : ', sumBad: 'Total : ',
+      infoTitle: '📋 Résumé',
+      infoNbFac: 'Nombre de facteurs', infoNbSub: 'Nombre de sous-facteurs',
+      infoNbPro: 'Nombre de professionnels', infoAvgRate: 'Salaire par point moyen',
+      tipsTitle: '💡 Bon à savoir',
+      tipsP1: 'Au Québec, la <strong>Loi sur l\'équité salariale</strong> identifie 4 facteurs : qualifications, responsabilités, efforts et conditions de travail.',
+      tipsP2: 'Le <strong>total pondéré</strong> d\'un emploi = Σ (score × poids absolu du sous-facteur / 100). Un écart d\'équité positif signifie que l\'emploi est payé <strong>au-dessus</strong> de la moyenne $/point.',
+      disclaimer: '⚠️ Calculix.ca fournit des outils à titre informatif uniquement. Pour un exercice d\'équité salariale conforme à la Loi, consultez un conseiller en ressources humaines ou la CNESST.',
+      sectBornes: '📚 Bornes généralement reconnues',
+      bornesIntro: 'Valeurs de référence selon les pratiques habituelles d\'évaluation d\'emplois. Utilisez-les comme point de départ pour pondérer vos facteurs ci-dessous.',
+      thFactor: 'Facteur', thSubfactor: 'Sous-facteur', thBorne: 'Bornes généralement reconnues', thValue: 'Valeur par sous-facteur',
+      totalRowLabel: 'TOTAL (doit être entre {range})', grandTotalLabel: 'GRAND TOTAL (doit être égal à 100%)',
+      bornesData: [
+        { name: 'Qualifications requises', groupRange: '20 à 35%', subs: [
+          { name: 'Formation', borne: '10 à 15%', value: 12 },
+          { name: 'Expérience', borne: '6 à 12%', value: 10 },
+          { name: 'Dextérité et coordination', borne: '4 à 8%', value: 8 }
+        ]},
+        { name: 'Responsabilités assumées', groupRange: '25 à 30%', subs: [
+          { name: 'Imputabilité', borne: '9 à 10%', value: 10 },
+          { name: 'Communications', borne: '9 à 10%', value: 10 },
+          { name: 'Supervision', borne: '7 à 10%', value: 10 }
+        ]},
+        { name: 'Efforts requis', groupRange: '20 à 40%', subs: [
+          { name: 'Effort intellectuel', borne: '8 à 14%', value: 10 },
+          { name: 'Concentration et attention sensorielle', borne: '6 à 13%', value: 10 },
+          { name: 'Effort physique', borne: '6 à 13%', value: 10 }
+        ]},
+        { name: 'Conditions de travail', groupRange: '5 à 15%', subs: [
+          { name: 'Inconvénients et risques', borne: '5 à 15%', value: 10 }
+        ]}
+      ],
+      defaultFactors: [
+        { name: 'Qualifications requises', pct: 30, subs: [
+          { name: 'Formation', pct: 12 },
+          { name: 'Expérience', pct: 10 },
+          { name: 'Dextérité et coordination', pct: 8 }
+        ]},
+        { name: 'Responsabilités assumées', pct: 30, subs: [
+          { name: 'Imputabilité', pct: 10 },
+          { name: 'Communications', pct: 10 },
+          { name: 'Supervision', pct: 10 }
+        ]},
+        { name: 'Efforts requis', pct: 30, subs: [
+          { name: 'Effort intellectuel', pct: 10 },
+          { name: 'Concentration et attention sensorielle', pct: 10 },
+          { name: 'Effort physique', pct: 10 }
+        ]},
+        { name: 'Conditions de travail', pct: 10, subs: [
+          { name: 'Inconvénients et risques', pct: 10 }
+        ]}
+      ],
+      defaultPros: [
+        { name: 'Technicien·ne comptable', salary: 62000 },
+        { name: 'Adjoint·e administrative', salary: 48000 },
+        { name: 'Analyste financier', salary: 78000 }
+      ],
+      xlsSheetName: 'Équité salariale',
+      xlsTitle: 'Analyse d\'équité salariale — Calculix.ca',
+      xlsFactorsHead: 'Facteurs et sous-facteurs',
+      xlsColFactor: 'Facteur', xlsColSubFactor: 'Sous-facteur', xlsColWeight: 'Poids effectif (%)',
+      xlsProsHead: 'Professionnels',
+      xlsColPro: 'Professionnel', xlsColSalary: 'Salaire annuel',
+      xlsColTotal: 'Total pondéré', xlsColRate: '$ / point', xlsColEquity: 'Écart d\'équité ($)', xlsColEquityPct: 'Écart (%)',
+      xlsRowAvg: 'Moyenne',
+      xlsFooter: 'Calculix.ca · Outil informatif — Loi sur l\'équité salariale (Québec)',
+      xlsFilename: 'equite-salariale',
+      formCalloutTitle: '✍️ Formulaire d\'évaluation des catégories d\'emploi',
+      formCalloutDesc: 'Avant de pondérer les facteurs, évaluez chaque catégorie d\'emploi à l\'aide de notre formulaire PDF remplissable. Il reprend les mêmes 4 facteurs et 10 sous-facteurs que ce calculateur, avec les niveaux et descriptions habituellement utilisés au Québec.',
+      formCalloutBtn: 'Télécharger le formulaire (PDF)',
+      formSidebarTitle: '✍️ Formulaire à remplir',
+      formSidebarDesc: 'Évaluez vos catégories d\'emploi sur les 4 facteurs et 10 sous-facteurs avec un PDF remplissable, puis reportez les niveaux ici.',
+      formSidebarBtn: 'Télécharger le PDF',
+      resetLbl: 'Tout remettre à zéro',
+      resetConfirm: 'Effacer toutes les pondérations et tous les professionnels ? Le calculateur sera réinitialisé aux valeurs par défaut.',
+    },
+    en: {
+      mainTitle: '⚖️ Pay Equity',
+      mainSubtitle: 'Evaluate jobs using weighted factors and sub-factors, compare salaries and detect equity gaps',
+      sectFactors: '📐 Evaluation factors',
+      factorsIntro: 'The four main factors under Quebec\'s Pay Equity Act. Adjust the weightings to your evaluation method — the factors and the sub-factors within each group should each total 100 %.',
+      sectPros: '👥 Professionals and scores',
+      prosIntro: 'Assign a score from 0 to 100 for each sub-factor for each professional. The weighted total is computed automatically along with the pay-per-point rate and equity gap.',
+      exportLbl: 'Export to Excel',
+      addProLbl: 'Add a professional',
+      addSubLbl: '+ Add a sub-factor',
+      delTooltip: 'Delete',
+      resultLabel: 'Equity analysis',
+      resultEmpty: 'Enter salaries and scores',
+      resultMain: function(avgRate) { return 'Average $/point: ' + avgRate; },
+      resultSub: function(n) { return 'Analysis based on ' + n + ' professional' + (n>1?'s':''); },
+      colName: 'Professional', colSalary: 'Annual salary',
+      colTotal: 'Weighted total', colRate: '$/point', colEquity: 'Equity gap',
+      sumOk: 'Total: ', sumBad: 'Total: ',
+      infoTitle: '📋 Summary',
+      infoNbFac: 'Number of factors', infoNbSub: 'Number of sub-factors',
+      infoNbPro: 'Number of professionals', infoAvgRate: 'Average $/point',
+      tipsTitle: '💡 Good to know',
+      tipsP1: 'In Quebec, the <strong>Pay Equity Act</strong> defines 4 factors: qualifications, responsibilities, efforts and working conditions.',
+      tipsP2: 'A job\'s <strong>weighted total</strong> = Σ (score × absolute sub-factor weight / 100). A positive equity gap means the job is paid <strong>above</strong> the average $/point.',
+      disclaimer: '⚠️ Calculix.ca provides tools for informational purposes only. For a pay equity exercise compliant with the Act, consult an HR advisor or CNESST.',
+      sectBornes: '📚 Generally accepted ranges',
+      bornesIntro: 'Reference values based on common job evaluation practices. Use them as a starting point for weighting your factors below.',
+      thFactor: 'Factor', thSubfactor: 'Sub-factor', thBorne: 'Generally accepted range', thValue: 'Value per sub-factor',
+      totalRowLabel: 'TOTAL (must be between {range})', grandTotalLabel: 'GRAND TOTAL (must equal 100%)',
+      bornesData: [
+        { name: 'Required qualifications', groupRange: '20 to 35%', subs: [
+          { name: 'Education', borne: '10 to 15%', value: 12 },
+          { name: 'Experience', borne: '6 to 12%', value: 10 },
+          { name: 'Dexterity and coordination', borne: '4 to 8%', value: 8 }
+        ]},
+        { name: 'Responsibilities', groupRange: '25 to 30%', subs: [
+          { name: 'Accountability', borne: '9 to 10%', value: 10 },
+          { name: 'Communication', borne: '9 to 10%', value: 10 },
+          { name: 'Supervision', borne: '7 to 10%', value: 10 }
+        ]},
+        { name: 'Required effort', groupRange: '20 to 40%', subs: [
+          { name: 'Intellectual effort', borne: '8 to 14%', value: 10 },
+          { name: 'Concentration and sensory attention', borne: '6 to 13%', value: 10 },
+          { name: 'Physical effort', borne: '6 to 13%', value: 10 }
+        ]},
+        { name: 'Working conditions', groupRange: '5 to 15%', subs: [
+          { name: 'Inconveniences and risks', borne: '5 to 15%', value: 10 }
+        ]}
+      ],
+      defaultFactors: [
+        { name: 'Required qualifications', pct: 30, subs: [
+          { name: 'Education', pct: 12 },
+          { name: 'Experience', pct: 10 },
+          { name: 'Dexterity and coordination', pct: 8 }
+        ]},
+        { name: 'Responsibilities', pct: 30, subs: [
+          { name: 'Accountability', pct: 10 },
+          { name: 'Communication', pct: 10 },
+          { name: 'Supervision', pct: 10 }
+        ]},
+        { name: 'Required effort', pct: 30, subs: [
+          { name: 'Intellectual effort', pct: 10 },
+          { name: 'Concentration and sensory attention', pct: 10 },
+          { name: 'Physical effort', pct: 10 }
+        ]},
+        { name: 'Working conditions', pct: 10, subs: [
+          { name: 'Inconveniences and risks', pct: 10 }
+        ]}
+      ],
+      defaultPros: [
+        { name: 'Accounting technician', salary: 62000 },
+        { name: 'Administrative assistant', salary: 48000 },
+        { name: 'Financial analyst', salary: 78000 }
+      ],
+      xlsSheetName: 'Pay equity',
+      xlsTitle: 'Pay equity analysis — Calculix.ca',
+      xlsFactorsHead: 'Factors and sub-factors',
+      xlsColFactor: 'Factor', xlsColSubFactor: 'Sub-factor', xlsColWeight: 'Effective weight (%)',
+      xlsProsHead: 'Professionals',
+      xlsColPro: 'Professional', xlsColSalary: 'Annual salary',
+      xlsColTotal: 'Weighted total', xlsColRate: '$ / point', xlsColEquity: 'Equity gap ($)', xlsColEquityPct: 'Gap (%)',
+      xlsRowAvg: 'Average',
+      xlsFooter: 'Calculix.ca · Informational tool — Pay Equity Act (Quebec)',
+      xlsFilename: 'pay-equity',
+      formCalloutTitle: '✍️ Job category evaluation form',
+      formCalloutDesc: 'Before weighting the factors, evaluate each job category using our fillable PDF form. It mirrors the same 4 factors and 10 sub-factors as this calculator, with the levels and descriptions commonly used in Quebec (form is in French).',
+      formCalloutBtn: 'Download the form (PDF)',
+      formSidebarTitle: '✍️ Fillable form',
+      formSidebarDesc: 'Evaluate your job categories across the 4 factors and 10 sub-factors using a fillable PDF, then transfer the levels here.',
+      formSidebarBtn: 'Download the PDF',
+      resetLbl: 'Reset everything',
+      resetConfirm: 'Clear all weights and all professionals ? The calculator will be reset to default values.',
+    },
+    es: {
+      mainTitle: '⚖️ Equidad salarial',
+      mainSubtitle: 'Evalúe los empleos con factores y sub-factores ponderados, compare salarios y detecte brechas',
+      sectFactors: '📐 Factores de evaluación',
+      factorsIntro: 'Los cuatro factores principales de la Ley de Equidad Salarial de Quebec. Ajuste las ponderaciones según su método — los factores y los sub-factores de cada grupo deben sumar 100 %.',
+      sectPros: '👥 Profesionales y puntajes',
+      prosIntro: 'Asigne un puntaje de 0 a 100 para cada sub-factor a cada profesional. El total ponderado se calcula automáticamente junto con el salario por punto y la brecha de equidad.',
+      exportLbl: 'Exportar a Excel',
+      addProLbl: 'Añadir un profesional',
+      addSubLbl: '+ Añadir un sub-factor',
+      delTooltip: 'Eliminar',
+      resultLabel: 'Análisis de equidad',
+      resultEmpty: 'Ingrese salarios y puntajes',
+      resultMain: function(avgRate) { return 'Salario promedio por punto: ' + avgRate; },
+      resultSub: function(n) { return 'Análisis basado en ' + n + ' profesional' + (n>1?'es':''); },
+      colName: 'Profesional', colSalary: 'Salario anual',
+      colTotal: 'Total ponderado', colRate: '$/punto', colEquity: 'Brecha de equidad',
+      sumOk: 'Total: ', sumBad: 'Total: ',
+      infoTitle: '📋 Resumen',
+      infoNbFac: 'Número de factores', infoNbSub: 'Número de sub-factores',
+      infoNbPro: 'Número de profesionales', infoAvgRate: 'Salario promedio / punto',
+      tipsTitle: '💡 Bueno saber',
+      tipsP1: 'En Quebec, la <strong>Ley de Equidad Salarial</strong> define 4 factores: calificaciones, responsabilidades, esfuerzos y condiciones de trabajo.',
+      tipsP2: 'El <strong>total ponderado</strong> de un empleo = Σ (puntaje × peso absoluto del sub-factor / 100). Una brecha positiva significa que el empleo se paga <strong>por encima</strong> del promedio $/punto.',
+      disclaimer: '⚠️ Calculix.ca ofrece herramientas solo con fines informativos. Para un ejercicio de equidad salarial conforme a la Ley, consulte a un asesor de RR. HH. o a la CNESST.',
+      sectBornes: '📚 Rangos generalmente reconocidos',
+      bornesIntro: 'Valores de referencia según las prácticas habituales de evaluación de empleos. Úselos como punto de partida para ponderar sus factores a continuación.',
+      thFactor: 'Factor', thSubfactor: 'Sub-factor', thBorne: 'Rango generalmente reconocido', thValue: 'Valor por sub-factor',
+      totalRowLabel: 'TOTAL (debe estar entre {range})', grandTotalLabel: 'GRAN TOTAL (debe ser igual a 100%)',
+      bornesData: [
+        { name: 'Calificaciones requeridas', groupRange: '20 a 35%', subs: [
+          { name: 'Formación', borne: '10 a 15%', value: 12 },
+          { name: 'Experiencia', borne: '6 a 12%', value: 10 },
+          { name: 'Destreza y coordinación', borne: '4 a 8%', value: 8 }
+        ]},
+        { name: 'Responsabilidades asumidas', groupRange: '25 a 30%', subs: [
+          { name: 'Responsabilización', borne: '9 a 10%', value: 10 },
+          { name: 'Comunicaciones', borne: '9 a 10%', value: 10 },
+          { name: 'Supervisión', borne: '7 a 10%', value: 10 }
+        ]},
+        { name: 'Esfuerzos requeridos', groupRange: '20 a 40%', subs: [
+          { name: 'Esfuerzo intelectual', borne: '8 a 14%', value: 10 },
+          { name: 'Concentración y atención sensorial', borne: '6 a 13%', value: 10 },
+          { name: 'Esfuerzo físico', borne: '6 a 13%', value: 10 }
+        ]},
+        { name: 'Condiciones de trabajo', groupRange: '5 a 15%', subs: [
+          { name: 'Inconvenientes y riesgos', borne: '5 a 15%', value: 10 }
+        ]}
+      ],
+      defaultFactors: [
+        { name: 'Calificaciones requeridas', pct: 30, subs: [
+          { name: 'Formación', pct: 12 },
+          { name: 'Experiencia', pct: 10 },
+          { name: 'Destreza y coordinación', pct: 8 }
+        ]},
+        { name: 'Responsabilidades asumidas', pct: 30, subs: [
+          { name: 'Responsabilización', pct: 10 },
+          { name: 'Comunicaciones', pct: 10 },
+          { name: 'Supervisión', pct: 10 }
+        ]},
+        { name: 'Esfuerzos requeridos', pct: 30, subs: [
+          { name: 'Esfuerzo intelectual', pct: 10 },
+          { name: 'Concentración y atención sensorial', pct: 10 },
+          { name: 'Esfuerzo físico', pct: 10 }
+        ]},
+        { name: 'Condiciones de trabajo', pct: 10, subs: [
+          { name: 'Inconvenientes y riesgos', pct: 10 }
+        ]}
+      ],
+      defaultPros: [
+        { name: 'Técnico/a contable', salary: 62000 },
+        { name: 'Asistente administrativo/a', salary: 48000 },
+        { name: 'Analista financiero', salary: 78000 }
+      ],
+      xlsSheetName: 'Equidad salarial',
+      xlsTitle: 'Análisis de equidad salarial — Calculix.ca',
+      xlsFactorsHead: 'Factores y sub-factores',
+      xlsColFactor: 'Factor', xlsColSubFactor: 'Sub-factor', xlsColWeight: 'Peso efectivo (%)',
+      xlsProsHead: 'Profesionales',
+      xlsColPro: 'Profesional', xlsColSalary: 'Salario anual',
+      xlsColTotal: 'Total ponderado', xlsColRate: '$ / punto', xlsColEquity: 'Brecha ($)', xlsColEquityPct: 'Brecha (%)',
+      xlsRowAvg: 'Promedio',
+      xlsFooter: 'Calculix.ca · Herramienta informativa — Ley de Equidad Salarial (Quebec)',
+      xlsFilename: 'equidad-salarial',
+      formCalloutTitle: '✍️ Formulario de evaluación de categorías de empleo',
+      formCalloutDesc: 'Antes de ponderar los factores, evalúe cada categoría de empleo con nuestro formulario PDF rellenable. Refleja los mismos 4 factores y 10 sub-factores que esta calculadora, con los niveles y descripciones comúnmente utilizados en Quebec (formulario en francés).',
+      formCalloutBtn: 'Descargar el formulario (PDF)',
+      formSidebarTitle: '✍️ Formulario rellenable',
+      formSidebarDesc: 'Evalúe sus categorías de empleo sobre los 4 factores y 10 sub-factores con un PDF rellenable, luego transfiera los niveles aquí.',
+      formSidebarBtn: 'Descargar el PDF',
+      resetLbl: 'Restablecer todo',
+      resetConfirm: '¿Borrar todas las ponderaciones y todos los profesionales? La calculadora se restablecerá a los valores predeterminados.',
+    }
+  };
+
+  // ========== Langue ==========
+  let lang = (window.CXSite && CXSite.getStoredLang) ? CXSite.getStoredLang() : 'fr';
+
+  function updateLangToggleUI() {
+    document.querySelectorAll('.lang-opt').forEach(function(el){
+      el.classList.toggle('active', el.getAttribute('data-lang') === lang);
+    });
+  }
+  function toggleLang() {
+    if (window.CXSite && CXSite.cycleLang) { lang = CXSite.cycleLang(lang); CXSite.setStoredLang(lang); }
+    else { lang = lang === 'fr' ? 'en' : lang === 'en' ? 'es' : 'fr'; }
+    document.documentElement.lang = lang;
+    updateLangToggleUI();
+    applyTranslations();
+    renderFactors();
+    renderProsTable();
+    calculate();
+  }
+
+  function applyTranslations() {
+    const t = i18n[lang];
+    function setText(id, v) { const el = document.getElementById(id); if (el) el.textContent = v; }
+    function setHTML(id, v) { const el = document.getElementById(id); if (el) el.innerHTML = v; }
+    document.body.dataset.lang = lang;
+
+    document.title = t.mainTitle.replace(/^\S+\s/, '') + ' | Calculix.ca';
+    setText('mainTitle', t.mainTitle);
+    setText('mainSubtitle', t.mainSubtitle);
+    setText('sectBornes', t.sectBornes);
+    setText('bornesIntro', t.bornesIntro);
+    setText('thFactor', t.thFactor);
+    setText('thSubfactor', t.thSubfactor);
+    setText('thBorne', t.thBorne);
+    setText('thValue', t.thValue);
+    renderBornes();
+    setText('sectFactors', t.sectFactors);
+    setText('factorsIntro', t.factorsIntro);
+    setText('sectPros', t.sectPros);
+    setText('prosIntro', t.prosIntro);
+    setText('exportLbl', t.exportLbl);
+    setText('addProLbl', t.addProLbl);
+    setText('resultLabel', t.resultLabel);
+    setText('infoTitle', t.infoTitle);
+    setText('lblI1', t.infoNbFac);
+    setText('lblI2', t.infoNbSub);
+    setText('lblI3', t.infoNbPro);
+    setText('lblI4', t.infoAvgRate);
+    setText('tipsTitle', t.tipsTitle);
+    setHTML('tipsP1', t.tipsP1);
+    setHTML('tipsP2', t.tipsP2);
+    setText('disclaimerText', t.disclaimer);
+    setText('formCalloutTitle', t.formCalloutTitle);
+    setText('formCalloutDesc', t.formCalloutDesc);
+    setText('formCalloutBtnLbl', t.formCalloutBtn);
+    setText('formSidebarTitle', t.formSidebarTitle);
+    setText('formSidebarDesc', t.formSidebarDesc);
+    setText('formSidebarBtnLbl', t.formSidebarBtn);
+    setText('resetLbl', t.resetLbl);
+
+    if (window.CXSite) {
+      var shared = CXSite.SHARED[lang];
+      if (shared) {
+        setText('headerSubtitle', shared.headerSubtitle);
+        setText('footerText', shared.footerText);
+      }
+      CXSite.renderNav(lang, 'equite', 'siteNav');
+      CXSite.renderFooterLinks(lang, 'footerLinks');
+      var ads = document.getElementById('partnersRow');
+      if (ads) ads.innerHTML = CXSite.amazonAd(lang) + CXSite.cfoMasqueAd(lang) + CXSite.alchimixAd(lang);
+    }
+  }
+
+  // ========== Facteurs ==========
+  let factors = [];     // [{ id, name, pct, subs: [{id, name, pct}] }]
+  let pros = [];        // [{ id, name, salary, scores: {subId: value} }]
+  let nextFactorId = 1, nextSubId = 1, nextProId = 1;
+
+  function initDefaults() {
+    const t = i18n[lang];
+    factors = t.defaultFactors.map(function(f) {
+      return {
+        id: nextFactorId++,
+        name: f.name,
+        pct: f.pct,
+        subs: f.subs.map(function(s) { return { id: nextSubId++, name: s.name, pct: s.pct }; })
+      };
+    });
+    pros = t.defaultPros.map(function(p) {
+      const scoresObj = {};
+      factors.forEach(function(fac) {
+        fac.subs.forEach(function(sub) { scoresObj[sub.id] = 60 + Math.floor(Math.random() * 20); });
+      });
+      return { id: nextProId++, name: p.name, salary: p.salary, scores: scoresObj };
+    });
+  }
+
+  function resetAll() {
+    var t = i18n[lang];
+    if (!confirm(t.resetConfirm)) return;
+    // Reset IDs and re-init structure with defaults but blank scores/salaries
+    nextFactorId = 1; nextSubId = 1; nextProId = 1;
+    factors = t.defaultFactors.map(function(f) {
+      return {
+        id: nextFactorId++,
+        name: f.name,
+        pct: f.pct,
+        subs: f.subs.map(function(s) { return { id: nextSubId++, name: s.name, pct: s.pct }; })
+      };
+    });
+    // Single blank professional row to start with
+    var scoresObj = {};
+    factors.forEach(function(fac) {
+      fac.subs.forEach(function(sub) { scoresObj[sub.id] = 0; });
+    });
+    pros = [{ id: nextProId++, name: '', salary: 0, scores: scoresObj }];
+    renderFactors();
+    renderProsTable();
+    calculate();
+  }
+  // Expose for inline onclick handlers
+  window.resetAll = resetAll;
+
+  function escapeHtml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function renderBornes() {
+    var t = i18n[lang];
+    var tb = document.getElementById('bornesBody');
+    if (!tb || !t.bornesData) return;
+    tb.innerHTML = '';
+    var grandTotal = 0;
+    t.bornesData.forEach(function(group, gi) {
+      var groupTotal = 0;
+      group.subs.forEach(function(sub, si) {
+        var tr = document.createElement('tr');
+        tr.className = 'g' + gi;
+        var tds = '';
+        if (si === 0) {
+          tds += '<td class="factor-cell" rowspan="' + group.subs.length + '">' + group.name + '</td>';
+        }
+        tds += '<td>' + sub.name + '</td>';
+        tds += '<td>' + sub.borne + '</td>';
+        tds += '<td class="num val">' + sub.value + '%</td>';
+        tr.innerHTML = tds;
+        tb.appendChild(tr);
+        groupTotal += sub.value;
+      });
+      grandTotal += groupTotal;
+      var trTot = document.createElement('tr');
+      trTot.className = 'subtotal';
+      trTot.innerHTML =
+        '<td colspan="3" style="text-align:right;">' + t.totalRowLabel.replace('{range}', group.groupRange) + '</td>' +
+        '<td class="num val">' + groupTotal + '%</td>';
+      tb.appendChild(trTot);
+    });
+    var trG = document.createElement('tr');
+    trG.className = 'grand-total';
+    trG.innerHTML =
+      '<td colspan="3" style="text-align:right;">' + t.grandTotalLabel + '</td>' +
+      '<td class="num val">' + grandTotal + '%</td>';
+    tb.appendChild(trG);
+  }
+
+  function renderFactors() {
+    const t = i18n[lang];
+    const wrap = document.getElementById('factorsWrap');
+    wrap.innerHTML = '';
+
+    factors.forEach(function(fac, fi) {
+      const grp = document.createElement('div');
+      grp.className = 'factor-group color-' + (fi % 5);
+      grp.setAttribute('data-fid', fac.id);
+
+      // Sous-facteurs HTML
+      let subsHtml = '';
+      fac.subs.forEach(function(sub) {
+        subsHtml +=
+          '<div class="subfactor-row" data-sid="' + sub.id + '">' +
+            '<span class="bullet">•</span>' +
+            '<input type="text" class="cx-sub-name" value="' + escapeHtml(sub.name) + '" />' +
+            '<div class="pct-input"><input type="number" class="cx-sub-pct" min="0" max="100" step="1" value="' + sub.pct + '" /></div>' +
+            '<button type="button" class="del-btn cx-sub-del" title="' + t.delTooltip + '">✕</button>' +
+          '</div>';
+      });
+
+      // Somme des sous-facteurs = pct absolu du facteur
+      const subSum = fac.subs.reduce(function(a, s){ return a + (parseFloat(s.pct) || 0); }, 0);
+      fac.pct = subSum; // fac.pct est toujours dérivé de la somme de ses sous-facteurs
+      const subPill = '<span class="sum-pill ok">' + t.sumOk + subSum.toFixed(0) + ' %</span>';
+
+      grp.innerHTML =
+        '<div class="factor-head">' +
+          '<input type="text" class="cx-fac-name" value="' + escapeHtml(fac.name) + '" />' +
+          '<div class="pct-input"><input type="number" class="cx-fac-pct" value="' + fac.pct + '" readonly tabindex="-1" title="= Σ sous-facteurs" /></div>' +
+          '<button type="button" class="del-btn cx-fac-del" title="' + t.delTooltip + '">✕</button>' +
+        '</div>' +
+        subsHtml +
+        '<div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">' +
+          '<button type="button" class="add-btn cx-add-sub"><span>➕</span><span>' + t.addSubLbl + '</span></button>' +
+          subPill +
+        '</div>';
+
+      wrap.appendChild(grp);
+
+      // Wire events
+      grp.querySelector('.cx-fac-name').addEventListener('input', function(e){ fac.name = e.target.value; updateSums(); renderProsHeader(); calculate(); });
+      grp.querySelector('.cx-fac-del').addEventListener('click', function(){ removeFactor(fac.id); });
+      grp.querySelector('.cx-add-sub').addEventListener('click', function(){ addSubFactor(fac.id); });
+
+      grp.querySelectorAll('.subfactor-row').forEach(function(row) {
+        const sid = parseInt(row.getAttribute('data-sid'), 10);
+        const sub = fac.subs.find(function(x){ return x.id === sid; });
+        if (!sub) return;
+        row.querySelector('.cx-sub-name').addEventListener('input', function(e){ sub.name = e.target.value; renderProsHeader(); calculate(); });
+        row.querySelector('.cx-sub-pct').addEventListener('input', function(e){
+          sub.pct = parseFloat(e.target.value) || 0;
+          // Recompute factor pct and refresh the display
+          fac.pct = fac.subs.reduce(function(a, s){ return a + (parseFloat(s.pct) || 0); }, 0);
+          const facPctInput = grp.querySelector('.cx-fac-pct');
+          if (facPctInput) facPctInput.value = fac.pct;
+          const pill = grp.querySelector('.sum-pill');
+          if (pill) pill.textContent = t.sumOk + fac.pct.toFixed(0) + ' %';
+          updateSums();
+          calculate();
+        });
+        row.querySelector('.cx-sub-del').addEventListener('click', function(){ removeSubFactor(fac.id, sid); });
+      });
+    });
+
+    updateSums();
+  }
+
+  function updateSums() {
+    const t = i18n[lang];
+    // Factors total
+    const facSum = factors.reduce(function(a, f){ return a + (parseFloat(f.pct) || 0); }, 0);
+    const pill = document.getElementById('totalFactorsPct');
+    pill.textContent = t.sumOk + facSum.toFixed(0) + ' %';
+    pill.className = 'sum-pill ' + (Math.abs(facSum - 100) < 0.01 ? 'ok' : 'bad');
+  }
+
+  function addFactor() {
+    const name = lang==='fr' ? 'Nouveau facteur' : (lang==='es' ? 'Nuevo factor' : 'New factor');
+    factors.push({ id: nextFactorId++, name: name, pct: 0, subs: [] });
+    renderFactors();
+    renderProsHeader();
+    renderProsTable();
+    calculate();
+  }
+  function removeFactor(fid) {
+    const fac = factors.find(function(f){ return f.id === fid; });
+    if (!fac) return;
+    // Clean scores
+    fac.subs.forEach(function(sub){ pros.forEach(function(p){ delete p.scores[sub.id]; }); });
+    factors = factors.filter(function(f){ return f.id !== fid; });
+    renderFactors();
+    renderProsHeader();
+    renderProsTable();
+    calculate();
+  }
+  function addSubFactor(fid) {
+    const fac = factors.find(function(f){ return f.id === fid; });
+    if (!fac) return;
+    const name = lang==='fr' ? 'Nouveau sous-facteur' : (lang==='es' ? 'Nuevo sub-factor' : 'New sub-factor');
+    const sub = { id: nextSubId++, name: name, pct: 0 };
+    fac.subs.push(sub);
+    pros.forEach(function(p){ p.scores[sub.id] = 0; });
+    renderFactors();
+    renderProsHeader();
+    renderProsTable();
+    calculate();
+  }
+  function removeSubFactor(fid, sid) {
+    const fac = factors.find(function(f){ return f.id === fid; });
+    if (!fac) return;
+    fac.subs = fac.subs.filter(function(s){ return s.id !== sid; });
+    pros.forEach(function(p){ delete p.scores[sid]; });
+    renderFactors();
+    renderProsHeader();
+    renderProsTable();
+    calculate();
+  }
+
+  // ========== Professionnels ==========
+  function renderProsHeader() {
+    const t = i18n[lang];
+    const hdr = document.getElementById('prosHeader');
+    let html = '<th class="th-name">' + t.colName + '</th><th class="th-sal">' + t.colSalary + '</th>';
+    factors.forEach(function(fac) {
+      fac.subs.forEach(function(sub) {
+        html += '<th class="th-score" title="' + escapeHtml(fac.name + ' – ' + sub.name) + '">' + escapeHtml(sub.name) + '</th>';
+      });
+    });
+    html += '<th class="th-calc">' + t.colTotal + '</th><th class="th-calc">' + t.colRate + '</th><th class="th-calc">' + t.colEquity + '</th><th class="th-act">✕</th>';
+    hdr.innerHTML = html;
+  }
+
+  function renderProsTable() {
+    const body = document.getElementById('prosBody');
+    body.innerHTML = '';
+    pros.forEach(function(pro) {
+      const tr = document.createElement('tr');
+      tr.setAttribute('data-pid', pro.id);
+
+      let scoreCells = '';
+      factors.forEach(function(fac) {
+        fac.subs.forEach(function(sub) {
+          const v = pro.scores[sub.id] != null ? pro.scores[sub.id] : 0;
+          scoreCells += '<td><input type="number" class="score cx-score" data-sid="' + sub.id + '" min="0" max="100" step="1" value="' + v + '" /></td>';
+        });
+      });
+
+      tr.innerHTML =
+        '<td class="td-name"><input type="text" class="cx-name" value="' + escapeHtml(pro.name) + '" /></td>' +
+        '<td><input type="number" class="sal cx-sal" min="0" step="100" value="' + pro.salary + '" /></td>' +
+        scoreCells +
+        '<td class="calc cx-total">—</td>' +
+        '<td class="calc cx-rate">—</td>' +
+        '<td class="calc equity cx-equity">—</td>' +
+        '<td><button type="button" class="del-btn cx-pro-del" title="Supprimer">✕</button></td>';
+
+      body.appendChild(tr);
+
+      tr.querySelector('.cx-name').addEventListener('input', function(e){ pro.name = e.target.value; });
+      tr.querySelector('.cx-sal').addEventListener('input', function(e){ pro.salary = parseFloat(e.target.value) || 0; calculate(); });
+      tr.querySelectorAll('.cx-score').forEach(function(inp) {
+        inp.addEventListener('input', function(e){
+          const sid = parseInt(inp.getAttribute('data-sid'), 10);
+          pro.scores[sid] = parseFloat(e.target.value) || 0;
+          calculate();
+        });
+      });
+      tr.querySelector('.cx-pro-del').addEventListener('click', function(){ removePro(pro.id); });
+    });
+  }
+
+  function addPro() {
+    const name = lang==='fr' ? 'Nouveau professionnel' : (lang==='es' ? 'Nuevo profesional' : 'New professional');
+    const scoresObj = {};
+    factors.forEach(function(fac){ fac.subs.forEach(function(sub){ scoresObj[sub.id] = 0; }); });
+    pros.push({ id: nextProId++, name: name, salary: 0, scores: scoresObj });
+    renderProsTable();
+    calculate();
+  }
+  function removePro(pid) {
+    pros = pros.filter(function(p){ return p.id !== pid; });
+    renderProsTable();
+    calculate();
+  }
+
+  // ========== Calculs ==========
+  let lastResult = null;
+
+  function computeProTotal(pro) {
+    let total = 0;
+    factors.forEach(function(fac) {
+      fac.subs.forEach(function(sub) {
+        const subPct = parseFloat(sub.pct) || 0;
+        const score = pro.scores[sub.id] != null ? pro.scores[sub.id] : 0;
+        // total = Σ (score × subPct) / 100  — sub.pct is absolute (all subs sum to 100)
+        total += score * subPct / 100;
+      });
+    });
+    return total;
+  }
+
+  function calculate() {
+    const t = i18n[lang];
+    const banner = document.getElementById('resultBanner');
+
+    const proTotals = pros.map(function(pro) {
+      const total = computeProTotal(pro);
+      const rate = total > 0 ? (pro.salary / total) : 0;
+      return { pro: pro, total: total, rate: rate };
+    });
+
+    const validPros = proTotals.filter(function(pt){ return pt.total > 0 && pt.pro.salary > 0; });
+    const avgRate = validPros.length > 0
+      ? validPros.reduce(function(a, pt){ return a + pt.rate; }, 0) / validPros.length
+      : 0;
+
+    // Update table calc cells
+    const bodyRows = document.querySelectorAll('#prosBody tr');
+    proTotals.forEach(function(pt, i) {
+      const tr = bodyRows[i];
+      if (!tr) return;
+      tr.querySelector('.cx-total').textContent = CXSite.formatNumber(pt.total, lang, 2);
+      tr.querySelector('.cx-rate').textContent  = pt.total > 0 ? CXSite.formatMoney(pt.rate, lang) : '—';
+      const expectedSal = avgRate * pt.total;
+      const equity = pt.pro.salary - expectedSal;
+      const equityEl = tr.querySelector('.cx-equity');
+      if (avgRate > 0 && pt.total > 0) {
+        equityEl.textContent = (equity >= 0 ? '+' : '') + CXSite.formatMoney(equity, lang);
+        equityEl.classList.toggle('negative', equity < 0);
+      } else {
+        equityEl.textContent = '—';
+      }
+    });
+
+    // Sidebar info
+    const nbSub = factors.reduce(function(a, f){ return a + f.subs.length; }, 0);
+    document.getElementById('infoNbFac').textContent = String(factors.length);
+    document.getElementById('infoNbSub').textContent = String(nbSub);
+    document.getElementById('infoNbPro').textContent = String(pros.length);
+    document.getElementById('infoAvgRate').textContent = avgRate > 0 ? CXSite.formatMoney(avgRate, lang) : '—';
+
+    if (validPros.length > 0) {
+      lastResult = {
+        factors: factors.map(function(f){ return { name:f.name, pct:f.pct, subs:f.subs.map(function(s){ return { id:s.id, name:s.name, pct:s.pct }; }) }; }),
+        pros: pros.map(function(p){ return { name:p.name, salary:p.salary, scores: Object.assign({}, p.scores) }; }),
+        proTotals: proTotals,
+        avgRate: avgRate
+      };
+      document.getElementById('exportBtn').disabled = false;
+      banner.classList.remove('empty');
+      document.getElementById('resultMain').textContent = t.resultMain(CXSite.formatMoney(avgRate, lang));
+      document.getElementById('resultSub').textContent = t.resultSub(validPros.length);
+      banner.classList.add('animate'); setTimeout(function(){ banner.classList.remove('animate'); }, 400);
+    } else {
+      lastResult = null;
+      document.getElementById('exportBtn').disabled = true;
+      banner.classList.add('empty');
+      document.getElementById('resultMain').textContent = t.resultEmpty;
+      document.getElementById('resultSub').textContent = '';
+    }
+  }
+
+  // ========== Export Excel ==========
+  function exportToExcel() {
+    if (!lastResult || typeof XLSX === 'undefined') return;
+    const t = i18n[lang];
+    const r = lastResult;
+
+    const wb = XLSX.utils.book_new();
+    const aoa = [];
+    aoa.push([t.xlsTitle]);
+    aoa.push([]);
+
+    // Section 1 : facteurs et sous-facteurs
+    aoa.push([t.xlsFactorsHead]);
+    aoa.push([t.xlsColFactor, t.xlsColSubFactor, t.xlsColWeight]);
+    const weightRows = [];
+    r.factors.forEach(function(fac) {
+      fac.subs.forEach(function(sub) {
+        const effectiveWeight = parseFloat(sub.pct) || 0;
+        aoa.push([fac.name, sub.name, effectiveWeight / 100]);
+        weightRows.push(aoa.length - 1);
+      });
+    });
+    aoa.push([]);
+
+    // Section 2 : professionnels
+    aoa.push([t.xlsProsHead]);
+    const header = [t.xlsColPro, t.xlsColSalary];
+    r.factors.forEach(function(fac) {
+      fac.subs.forEach(function(sub) { header.push(fac.name + ' – ' + sub.name); });
+    });
+    header.push(t.xlsColTotal, t.xlsColRate, t.xlsColEquity, t.xlsColEquityPct);
+    aoa.push(header);
+    const prosHeaderRowIdx = aoa.length - 1;
+
+    const prosDataRows = [];
+    r.proTotals.forEach(function(pt) {
+      const row = [pt.pro.name, pt.pro.salary];
+      r.factors.forEach(function(fac) {
+        fac.subs.forEach(function(sub) {
+          row.push(pt.pro.scores[sub.id] != null ? pt.pro.scores[sub.id] : 0);
+        });
+      });
+      const expectedSal = r.avgRate * pt.total;
+      const equity = pt.pro.salary - expectedSal;
+      const equityPct = expectedSal > 0 ? (equity / expectedSal) : 0;
+      row.push(pt.total, pt.rate, equity, equityPct);
+      aoa.push(row);
+      prosDataRows.push(aoa.length - 1);
+    });
+
+    aoa.push([]);
+    aoa.push([t.xlsRowAvg, '', '', null]);
+    aoa.push([]);
+    aoa.push([t.xlsFooter]);
+
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+
+    // Column widths
+    const nbSubCols = r.factors.reduce(function(a, f){ return a + f.subs.length; }, 0);
+    const cols = [{wch: 28},{wch: 14}];
+    for (let i = 0; i < nbSubCols; i++) cols.push({wch: 13});
+    cols.push({wch: 14},{wch: 13},{wch: 14},{wch: 10});
+    ws['!cols'] = cols;
+
+    const maxCols = header.length;
+    const prosHeadIdx = prosHeaderRowIdx - 1; // row of "Professionals" label
+    ws['!merges'] = [
+      { s:{r:0,c:0}, e:{r:0,c:maxCols-1} },
+      { s:{r:2,c:0}, e:{r:2,c:maxCols-1} },
+      { s:{r:prosHeadIdx,c:0}, e:{r:prosHeadIdx,c:maxCols-1} }
+    ];
+
+    const money = '#,##0.00 [$CAD]';
+    const pct   = '0.0%';
+    const num2  = '#,##0.00';
+
+    // Style weights column
+    weightRows.forEach(function(rIdx) {
+      const ref = XLSX.utils.encode_cell({r:rIdx, c:2});
+      if (ws[ref]) ws[ref].z = pct;
+    });
+
+    // Style header row of pros
+    for (let c = 0; c < maxCols; c++) {
+      const ref = XLSX.utils.encode_cell({r:prosHeaderRowIdx, c:c});
+      if (ws[ref]) ws[ref].s = { font: { bold: true, color: { rgb: 'FFFFFF' } }, fill: { fgColor: { rgb: '6A4C93' } } };
+    }
+
+    // Style factor section header too
+    const factorHeaderIdx = 3;
+    for (let c = 0; c < 3; c++) {
+      const ref = XLSX.utils.encode_cell({r:factorHeaderIdx, c:c});
+      if (ws[ref]) ws[ref].s = { font: { bold: true, color: { rgb: 'FFFFFF' } }, fill: { fgColor: { rgb: '6A4C93' } } };
+    }
+
+    // Format pros data rows
+    prosDataRows.forEach(function(rIdx) {
+      // col B = salary (money)
+      const salRef = XLSX.utils.encode_cell({r:rIdx, c:1});
+      if (ws[salRef]) ws[salRef].z = money;
+      // total col = maxCols - 4
+      const totalRef = XLSX.utils.encode_cell({r:rIdx, c:maxCols-4});
+      if (ws[totalRef]) ws[totalRef].z = num2;
+      // rate col = maxCols - 3
+      const rateRef = XLSX.utils.encode_cell({r:rIdx, c:maxCols-3});
+      if (ws[rateRef]) ws[rateRef].z = money;
+      // equity $ col = maxCols - 2
+      const eqRef = XLSX.utils.encode_cell({r:rIdx, c:maxCols-2});
+      if (ws[eqRef]) ws[eqRef].z = money;
+      // equity % col = maxCols - 1
+      const eqPctRef = XLSX.utils.encode_cell({r:rIdx, c:maxCols-1});
+      if (ws[eqPctRef]) ws[eqPctRef].z = pct;
+    });
+
+    XLSX.utils.book_append_sheet(wb, ws, t.xlsSheetName);
+    const fn = t.xlsFilename + '-' + new Date().toISOString().slice(0,10) + '.xlsx';
+    XLSX.writeFile(wb, fn);
+  }
+
+  // ========== Init ==========
+  document.documentElement.lang = lang;
+  updateLangToggleUI();
+  initDefaults();
+  applyTranslations();
+  renderFactors();
+  renderProsHeader();
+  renderProsTable();
+  calculate();
+</script>
+<!-- Filet de sécurité -->
+<script>
+(function(){
+  function safetyRender() {
+    try {
+      if (!window.CXSite) return;
+      var curLang = (typeof lang === 'string' && lang) ? lang : ((CXSite.getStoredLang && CXSite.getStoredLang()) || 'fr');
+      var nav = document.getElementById('siteNav');
+      if (nav && nav.innerHTML.trim().length === 0) CXSite.renderNav(curLang, 'equite', 'siteNav');
+      var fl = document.getElementById('footerLinks');
+      if (fl && fl.innerHTML.trim().length === 0) CXSite.renderFooterLinks(curLang, 'footerLinks');
+      var ads = document.getElementById('partnersRow');
+      if (ads && ads.innerHTML.trim().length === 0) ads.innerHTML = CXSite.amazonAd(curLang) + CXSite.cfoMasqueAd(curLang) + CXSite.alchimixAd(curLang);
+      var shared = CXSite.SHARED[curLang] || CXSite.SHARED.fr;
+      var hs = document.getElementById('headerSubtitle');
+      var ft = document.getElementById('footerText');
+      if (hs) hs.textContent = shared.headerSubtitle;
+      if (ft) ft.textContent = shared.footerText;
+      if (CXSite.checkAdBlockAndNotify) CXSite.checkAdBlockAndNotify(curLang);
+    } catch(e) { console.warn('safetyRender equite:', e); }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', safetyRender);
+  else safetyRender();
+  window.addEventListener('load', safetyRender);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-Z8GX6M9JHC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Z8GX6M9JHC');
+</script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="Free financial calculators for Québec: tip splitting, investment, NPV/IRR, loan amortization, budgets, pay equity and GST/QST-compliant invoices." name="description"/>
+<title>Free Financial Calculators for Québec | Calculix.ca</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/ads.css?v=20260424j" rel="stylesheet"/>
+<link href="../assets/seo.css?v=20260510a" rel="stylesheet"/>
+<script async="" crossorigin="anonymous" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7530479618507451"></script>
+<style>
+  :root {
+    --bleu: #1a3a5c; --bleu-clair: #2d6a9f; --accent: #e8c547;
+    --vert: #2f8f5f; --vert-clair: #4db37f;
+    --fond: #f4f1eb; --blanc: #ffffff; --gris: #8a8a8a;
+    --gris-clair: #e8e4dc; --texte: #1a1a1a;
+    --ombre: 0 4px 24px rgba(26,58,92,0.10);
+    --ombre-h: 0 10px 40px rgba(26,58,92,0.18);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--fond); color: var(--texte); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+
+  header { width: 100%; background: var(--bleu); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1.35rem; letter-spacing: 0.03em; text-decoration: none; }
+  .logo span { color: var(--blanc); font-weight: 300; }
+  .header-right { display: flex; align-items: center; gap: 14px; }
+  .lang-label { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.05em; }
+
+  nav.site-nav { width: 100%; background: #142d47; border-bottom: 2px solid rgba(232,197,71,0.2); }
+  nav.site-nav .nav-inner { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; padding: 0 16px; gap: 4px; overflow-x: auto; }
+  nav.site-nav .nav-link { display: inline-block; padding: 12px 16px; color: rgba(255,255,255,0.6); font-size: 0.85rem; font-weight: 500; text-decoration: none; letter-spacing: 0.03em; white-space: nowrap; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
+  nav.site-nav .nav-link:hover { color: var(--blanc); }
+  nav.site-nav .nav-link.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  main { width: 100%; max-width: 1080px; padding: 0 16px 64px; }
+
+  .hero {
+    width: 100%; margin: 0 0 44px;
+    background: linear-gradient(135deg, var(--bleu) 0%, #2d6a9f 100%);
+    border-radius: 0 0 24px 24px;
+    padding: 56px 40px 60px;
+    text-align: center;
+    color: var(--blanc);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before { content: ''; position: absolute; right: -80px; top: -80px; width: 260px; height: 260px; border-radius: 50%; background: rgba(232,197,71,0.12); }
+  .hero::after  { content: ''; position: absolute; left: -60px; bottom: -60px; width: 180px; height: 180px; border-radius: 50%; background: rgba(77,179,127,0.12); }
+  .hero-inner { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; }
+  .hero-badge {
+    display: inline-block; font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 16px;
+    padding: 5px 14px; background: rgba(232,197,71,0.14);
+    border: 1px solid rgba(232,197,71,0.3); border-radius: 20px;
+  }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; line-height: 1.1; margin-bottom: 16px; letter-spacing: -0.01em; }
+  .hero h1 em { color: var(--accent); font-style: normal; }
+  .hero p.tagline { font-size: 1.1rem; font-weight: 300; color: rgba(255,255,255,0.85); line-height: 1.5; max-width: 580px; margin: 0 auto; }
+
+  .tools-section { width: 100%; margin-bottom: 40px; }
+  .section-title {
+    font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--bleu);
+    margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--gris-clair);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-title::before {
+    content: ''; display: inline-block; width: 6px; height: 24px;
+    background: var(--accent); border-radius: 3px;
+  }
+
+  .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .tool-card {
+    background: var(--blanc); border-radius: 18px; overflow: hidden;
+    box-shadow: var(--ombre); text-decoration: none; color: inherit;
+    display: flex; flex-direction: column;
+    transition: transform 0.25s cubic-bezier(.2,.9,.3,1.1), box-shadow 0.25s;
+    border: 1.5px solid transparent;
+  }
+  .tool-card:hover { transform: translateY(-4px); box-shadow: var(--ombre-h); border-color: var(--accent); }
+  .tool-card .tool-head {
+    padding: 28px 32px 22px; position: relative; overflow: hidden;
+    color: var(--blanc);
+  }
+  .tool-card .tool-head::before {
+    content: ''; position: absolute; right: -30px; top: -30px;
+    width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,0.1);
+  }
+  .tool-card.tip .tool-head  { background: linear-gradient(135deg, #2f8f5f 0%, #4db37f 100%); }
+  .tool-card.inv .tool-head  { background: linear-gradient(135deg, #1a3a5c 0%, #2d6a9f 100%); }
+  .tool-card.van .tool-head  { background: linear-gradient(135deg, #d97a2c 0%, #a05317 100%); }
+  .tool-card.amo .tool-head  { background: linear-gradient(135deg, #5b3a8f 0%, #8a5fb8 100%); }
+  .tool-card.bcp .tool-head  { background: linear-gradient(135deg, #b8336a 0%, #e84e8a 100%); }
+  .tool-card.bps .tool-head  { background: linear-gradient(135deg, #7355a8 0%, #4d3a72 100%); }
+  .tool-card.eqs .tool-head  { background: linear-gradient(135deg, #1d6f7f 0%, #339eb3 100%); }
+  .tool-card.fac .tool-head  { background: linear-gradient(135deg, #2d8a8a 0%, #1d5e5e 100%); }
+  .tool-card .tool-icon {
+    font-size: 2.2rem; line-height: 1; margin-bottom: 10px; display: inline-block;
+    position: relative; z-index: 1;
+  }
+  .tool-card .tool-title {
+    font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700;
+    margin-bottom: 6px; position: relative; z-index: 1;
+  }
+  .tool-card .tool-subtitle {
+    font-size: 0.88rem; font-weight: 300; color: rgba(255,255,255,0.82);
+    position: relative; z-index: 1;
+  }
+  .tool-card .tool-body {
+    padding: 22px 32px 26px; flex: 1;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .tool-card .tool-features {
+    list-style: none; padding: 0; margin: 0;
+  }
+  .tool-card .tool-features li {
+    font-size: 0.9rem; color: #444; padding: 6px 0 6px 26px;
+    position: relative; line-height: 1.5;
+  }
+  .tool-card .tool-features li::before {
+    content: '✓'; position: absolute; left: 0; top: 6px;
+    color: var(--vert); font-weight: 700; font-size: 1rem;
+  }
+  .tool-card .tool-cta {
+    margin-top: auto; padding-top: 14px;
+    font-size: 0.95rem; font-weight: 600; color: var(--bleu-clair);
+    display: inline-flex; align-items: center; gap: 6px;
+    letter-spacing: 0.01em;
+  }
+  .tool-card:hover .tool-cta { color: var(--bleu); }
+  .tool-card .tool-cta .arrow { transition: transform 0.2s; }
+  .tool-card:hover .tool-cta .arrow { transform: translateX(4px); }
+
+  .why-section { background: var(--blanc); border-radius: 18px; box-shadow: var(--ombre); padding: 32px 36px; margin-bottom: 40px; }
+  .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 20px; }
+  .why-item { text-align: center; }
+  .why-item .why-icon {
+    width: 54px; height: 54px; margin: 0 auto 12px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 1.6rem;
+    background: linear-gradient(135deg, rgba(232,197,71,0.15) 0%, rgba(47,143,95,0.10) 100%);
+    border-radius: 50%;
+  }
+  .why-item h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--bleu); margin-bottom: 6px; }
+  .why-item p  { font-size: 0.86rem; color: #555; line-height: 1.6; }
+
+  footer { width: 100%; background: var(--bleu); padding: 22px 32px; text-align: center; color: rgba(255,255,255,0.4); font-size: 0.78rem; margin-top: auto; }
+  footer a { color: rgba(255,255,255,0.55); text-decoration: none; margin: 0 8px; }
+  footer a:hover { color: var(--accent); }
+  .footer-links { margin-bottom: 10px; }
+
+  @media (max-width: 820px) {
+    .tools-grid { grid-template-columns: 1fr; }
+    .why-grid   { grid-template-columns: 1fr; }
+    .hero h1    { font-size: 2rem; }
+    .hero       { padding: 42px 22px 48px; }
+  }
+  @media (max-width: 480px) {
+    header { padding: 14px 16px; }
+    .lang-label { display: none; }
+    .hero h1 { font-size: 1.7rem; }
+    .hero { padding: 32px 16px 38px; }
+    .hero p.tagline { font-size: 0.95rem; }
+    main { padding: 0 10px 48px; }
+    .tool-card .tool-head { padding: 22px 22px 18px; }
+    .tool-card .tool-body { padding: 18px 22px 22px; }
+    .tool-card .tool-title { font-size: 1.15rem; }
+    .why-section { padding: 24px 20px; }
+    .section-title { font-size: 1.2rem; }
+  }
+  @media (max-width: 380px) {
+    .hero h1 { font-size: 1.45rem; }
+    .hero p.tagline { font-size: 0.88rem; }
+  }
+</style>
+<link href="https://www.calculix.ca/en/" rel="canonical"/><link href="https://www.calculix.ca/" hreflang="fr" rel="alternate"/><link href="https://www.calculix.ca/en/" hreflang="en" rel="alternate"/><link href="https://www.calculix.ca/es/" hreflang="es" rel="alternate"/><link href="https://www.calculix.ca/" hreflang="x-default" rel="alternate"/></head>
+<body>
+<header>
+<a class="logo" href="index.html">Calcul<span>ix</span>.ca</a>
+<div class="header-right">
+<span class="lang-label" id="headerSubtitle">Free financial calculators · Québec</span>
+<div class="lang-toggle-3" id="langToggle" onclick="toggleLang()" title="Language">
+<span class="lang-opt" data-lang="fr">FR</span>
+<span class="lang-opt" data-lang="en">EN</span>
+<span class="lang-opt" data-lang="es">ES</span>
+</div>
+</div>
+</header>
+<nav class="site-nav">
+<div class="nav-inner" id="siteNav"></div>
+</nav>
+<div class="hero">
+<div class="hero-inner">
+<span class="hero-badge" id="heroBadge">✨ 100 % free · No sign-up</span>
+<h1 id="heroTitle">Your financial calculations, <em>in seconds</em>.</h1>
+<p class="tagline" id="heroTagline">Tip splitting, investment projection and more — bilingual, fast, free.</p>
+</div>
+</div>
+<main>
+<div class="tools-section">
+<h2 class="section-title" id="toolsTitle">Our calculators</h2>
+<div class="tools-grid">
+<a class="tool-card tip" href="pourboires.html">
+<div class="tool-head">
+<div class="tool-icon">💰</div>
+<div class="tool-title" id="tipTitle">Tip Splitter</div>
+<div class="tool-subtitle" id="tipSubtitle">Even split or prorated by hours</div>
+</div>
+<div class="tool-body">
+<ul class="tool-features">
+<li id="tipF1">Even split per person</li>
+<li id="tipF2">Prorated based on hours worked</li>
+<li id="tipF3">Tip calculation on the bill</li>
+</ul>
+<div class="tool-cta" id="tipCTA">Open calculator <span class="arrow">→</span></div>
+</div>
+</a>
+<a class="tool-card inv" href="investissement.html">
+<div class="tool-head">
+<div class="tool-icon">📈</div>
+<div class="tool-title" id="invTitle">Investment Projection</div>
+<div class="tool-subtitle" id="invSubtitle">Capital + contributions + compound return</div>
+</div>
+<div class="tool-body">
+<ul class="tool-features">
+<li id="invF1">How much to reach your goal?</li>
+<li id="invF2">Daily, weekly, monthly or yearly contributions</li>
+<li id="invF3">Evolution table and chart</li>
+</ul>
+<div class="tool-cta" id="invCTA">Open calculator <span class="arrow">→</span></div>
+</div>
+</a>
+<a class="tool-card van" href="van.html">
+<div class="tool-head">
+<div class="tool-icon">💼</div>
+<div class="tool-title" id="vanTitle">NPV / IRR</div>
+<div class="tool-subtitle" id="vanSubtitle">Net present value and internal rate of return</div>
+</div>
+<div class="tool-body">
+<ul class="tool-features">
+<li id="vanF1">Assess the profitability of an investment project</li>
+<li id="vanF2">Custom, constant or growing cash flows</li>
+<li id="vanF3">IRR, payback period and profitability index</li>
+</ul>
+<div class="tool-cta" id="vanCTA">Open calculator <span class="arrow">→</span></div>
+</div>
+</a>
+<a class="tool-card amo" href="amortissement.html">
+<div class="tool-head">
+<div class="tool-icon">🏠</div>
+<div class="tool-title" id="amoTitle">Loan amortization</div>
+<div class="tool-subtitle" id="amoSubtitle">Mortgage, auto or personal loan</div>
+</div>
+<div class="tool-body">
+<ul class="tool-features">
+<li id="amoF1">Periodic payment and total interest</li>
+<li id="amoF2">Complete amortization schedule</li>
+<li id="amoF3">Comparison with extra payments</li>
+</ul>
+<div class="tool-cta" id="amoCTA">Open calculator <span class="arrow">→</span></div>
+</div>
+</a>
+<a class="tool-card bcp" href="budget-couple.html">
+<div class="tool-head">
+<div class="tool-icon">💑</div>
+<div class="tool-title" id="bcpTitle">Couple Budget</div>
+<div class="tool-subtitle" id="bcpSubtitle">Income, expenses and fair sharing</div>
+</div>
+<div class="tool-body">
+<ul class="tool-features">
+<li id="bcpF1">Compare both partners' income</li>
+<li id="bcpF2">Pro-rated expense sharing</li>
+<li id="bcpF3">50/30/20 rule and savings rate</li>
+</ul>
+<div class="tool-cta" id="bcpCTA">Open calculator <span class="arrow">→</span></div>
+</div>
+</a>
+<a class="tool-card bps" href="budget-personne-seule.html">
+<div class="tool-head">
+<div class="tool-icon">🧍</div>
+<div class="tool-title" id="bpsTitle">Personal Budget</div>
+<div class="tool-subtitle" id="bpsSubtitle">Monthly tracking of income and expenses</div>
+</div>
+<div class="tool-body">
+<ul class="tool-features">
+<li id="bpsF1">All frequencies (daily, weekly, bi-weekly, monthly, yearly)</li>
+<li id="bpsF2">50/30/20 rule — needs, wants, savings</li>
+<li id="bpsF3">Financial health indicator and savings rate</li>
+</ul>
+<div class="tool-cta" id="bpsCTA">Open calculator <span class="arrow">→</span></div>
+</div>
+</a>
+<a class="tool-card eqs" href="equite-salariale.html">
+<div class="tool-head">
+<div class="tool-icon">⚖️</div>
+<div class="tool-title" id="eqsTitle">Pay Equity</div>
+<div class="tool-subtitle" id="eqsSubtitle">Compare your salary to the market</div>
+</div>
+<div class="tool-body">
+<ul class="tool-features">
+<li id="eqsF1">Analysis by position, industry and experience</li>
+<li id="eqsF2">Detect pay gaps</li>
+<li id="eqsF3">Recommendations for negotiation</li>
+</ul>
+<div class="tool-cta" id="eqsCTA">Open calculator <span class="arrow">→</span></div>
+</div>
+</a>
+<a class="tool-card fac" href="factures-recus.html">
+<div class="tool-head">
+<div class="tool-icon">🧾</div>
+<div class="tool-title" id="facTitle">Invoices &amp; Receipts</div>
+<div class="tool-subtitle" id="facSubtitle">Revenu Québec compliant — GST &amp; QST</div>
+</div>
+<div class="tool-body">
+<ul class="tool-features">
+<li id="facF1">Professional invoices, receipts and quotes</li>
+<li id="facF2">Remembers your company info</li>
+<li id="facF3">Saved history and PDF export</li>
+</ul>
+<div class="tool-cta" id="facCTA">Open calculator <span class="arrow">→</span></div>
+</div>
+</a>
+</div>
+</div>
+<div class="why-section">
+<h2 class="section-title" id="whyTitle">Why Calculix.ca?</h2>
+<div class="why-grid">
+<div class="why-item">
+<div class="why-icon">🆓</div>
+<h3 id="why1T">100 % free</h3>
+<p id="why1P">No sign-up, no hidden fees. Our tools are funded by a few discreet ads.</p>
+</div>
+<div class="why-item">
+<div class="why-icon">🌐</div>
+<h3 id="why2T">Trilingual FR / EN / ES</h3>
+<p id="why2P">Switch languages in one click. Ideal for multicultural families and teams in Quebec.</p>
+</div>
+<div class="why-item">
+<div class="why-icon">🔒</div>
+<h3 id="why3T">Your data stays private</h3>
+<p id="why3P">No calculation is sent to any server — everything happens in your browser.</p>
+</div>
+</div>
+</div>
+<div class="partners-row" id="partnersRow"><a class="partner-amz" href="https://www.amazon.ca/?tag=amazingam068f-20" rel="sponsored noopener" target="_blank">
+<div class="partner-amz-inner">
+<img alt="Amazon" class="partner-amz-logo" loading="lazy" src="../images/amazon.svg?v=20260424f"/>
+<div class="partner-amz-text">
+<div class="partner-amz-headline">Our Amazon picks</div>
+<div class="partner-amz-subline">Books, tools and resources to manage your personal finances.</div>
+<div class="partner-amz-cta">Shop on Amazon → <span aria-hidden="true">›</span></div>
+</div>
+</div>
+<div class="partner-label">Partner</div>
+</a><a class="partner-cfo" href="https://lecfomasque.com/ref/107/" rel="sponsored noopener" target="_blank">
+<div class="partner-cfo-inner">
+<img alt="Le CFO masqué" class="partner-cfo-logo" loading="lazy" src="../images/cfo-masque.svg?v=20260424f"/>
+<div class="partner-cfo-text">
+<div class="partner-cfo-headline">Become an Excel &amp; Power BI pro</div>
+<div class="partner-cfo-subline">French-language training for analysts, controllers and managers.</div>
+<div class="partner-cfo-promo">Use promo code <span class="partner-cfo-code">MPP5%Rabais</span></div>
+<div class="partner-cfo-cta">See the training →</div>
+</div>
+</div>
+<div class="partner-label">Partner</div>
+</a><a class="partner-alch" href="https://alchimix-app.com/" rel="sponsored noopener" target="_blank">
+<div class="partner-alch-inner">
+<img alt="Alchimix" class="partner-alch-banner" loading="lazy" src="../images/alchimix.png?v=20260424f"/>
+<div class="partner-alch-text">
+<div class="partner-alch-headline">Alchimix — the card game</div>
+<div class="partner-alch-subline">The strategic and magical card game. Free to try!</div>
+<div class="partner-alch-cta">Play now! →</div>
+</div>
+</div>
+<div class="partner-label">Partner</div>
+</a></div>
+</main>
+<section aria-label="Présentation Calculix.ca" class="cx-seo">
+<!-- ═══════════════════════════════ FRANÇAIS ═══════════════════════════════ -->
+<!-- ═══════════════════════════════ ENGLISH ═══════════════════════════════ -->
+<div lang="en">
+<div class="cx-seo-intro">
+<h2>Calculix.ca — your financial tools designed for Québec</h2>
+<p>Calculix.ca is a <strong>free toolbox</strong> of financial calculators designed for individuals, freelancers and small businesses in Québec. Our goal: make everyday financial calculations <strong>accessible, fast and reliable</strong>, with no signup, no subscription and without sending your data anywhere.</p>
+<p>Each tool addresses a real need: building a couple's budget, projecting retirement with a TFSA or RRSP, understanding a mortgage's amortization, splitting tips on a team, calculating GST and QST on an invoice, or evaluating an investment project with NPV and IRR. Everything runs in your browser, in French, English and Spanish.</p>
+</div>
+<details open="">
+<summary>How to choose the right calculator?</summary>
+<div class="cx-seo-body">
+<p>Here's how to navigate our tools based on your situation:</p>
+<h3>Managing your personal finances</h3>
+<ul>
+<li>To <strong>structure a budget</strong>, open the <em>Personal Budget</em> or <em>Couple Budget</em>. 50/30/20 method, average Québec expenses and saving tips included.</li>
+<li>To <strong>project savings or retirement</strong>, use <em>Investment Projection</em>. It illustrates compound interest over 5, 10, 25 or 40 years.</li>
+<li>To <strong>simulate a mortgage or loan</strong>, the <em>Amortization</em> calculator details principal, interest and the effect of accelerated payments.</li>
+</ul>
+<h3>Working as a team or in hospitality</h3>
+<ul>
+<li>The <strong>Tip</strong> calculator splits the pool evenly or prorated by hours worked.</li>
+<li>For your <strong>invoices and receipts</strong>, the tool automatically applies GST (5%) and QST (9.975%) to Revenu Québec standards.</li>
+</ul>
+<h3>Entrepreneur or manager</h3>
+<ul>
+<li>To evaluate an <strong>investment project</strong>, open the <em>NPV/IRR</em> calculator: cash flows, discount rate, payback period.</li>
+<li>If your business has 10+ employees, the <strong>pay equity</strong> tool guides you through the obligations imposed by the CNESST.</li>
+</ul>
+</div>
+</details>
+<details>
+<summary>Who are these tools for?</summary>
+<div class="cx-seo-body">
+<p>Calculix.ca calculators target several audiences, all <strong>easy to use without prior training</strong>:</p>
+<ul>
+<li><strong>Individuals</strong> wanting to take charge of their finances: students, young workers, families, retirees.</li>
+<li><strong>Freelancers</strong> who need to quickly produce a compliant invoice or evaluate a project's profitability.</li>
+<li><strong>Small and medium businesses</strong> looking for a fast tool for routine decisions: budgeting, pay equity, investment analysis.</li>
+<li><strong>Students and teachers</strong> in finance, accounting, administration or social sciences: our tools illustrate key concepts (compound interest, NPV, amortization).</li>
+<li><strong>Advisors, accountants and financial planners</strong>: a quick complement to verify a calculation or demonstrate to a client.</li>
+</ul>
+<p>If you handle complex financial situations (estate planning, international tax, business optimization), Calculix.ca remains a practical starting point, but we always recommend consulting a licensed professional for your personal situation.</p>
+</div>
+</details>
+<details>
+<summary>Why a Québec-specific site?</summary>
+<div class="cx-seo-body">
+<p>Québec's tax system, regulations and financial culture are distinctive. A generic North American calculator may miss several local realities:</p>
+<ul>
+<li><strong>Taxes:</strong> QST (9.975%) is added to GST (5%). Many U.S. tools don't compute it.</li>
+<li><strong>Deductions and credits:</strong> Québec has its own tax return and credits (childcare, work-incentive, solidarity, etc.).</li>
+<li><strong>Tips and minimum wage:</strong> Québec rules differ (separate tipped-employee minimum wage, TP-1019.4 declaration).</li>
+<li><strong>Mortgages:</strong> distinct concepts of "term" vs "amortization", CMHC insurance, welcome tax.</li>
+<li><strong>Pay equity:</strong> a legal obligation unique to Québec for businesses with 10+ employees, under CNESST jurisdiction.</li>
+</ul>
+<p>Calculix.ca takes these specifics into account to deliver results applicable to your daily reality — in Montréal, Québec City, Sherbrooke, Saguenay or in the regions.</p>
+</div>
+</details>
+<details>
+<summary>Privacy, free access and funding</summary>
+<div class="cx-seo-body">
+<p>Calculix.ca is and will remain <strong>100% free</strong>. No signup needed, no paywall, no premium tier. To cover hosting costs and keep developing new tools, the site is funded by:</p>
+<ul>
+<li>A few <strong>Google AdSense</strong> ads placed discreetly on the pages.</li>
+<li><strong>Affiliate links</strong> to useful products (personal-finance books on Amazon, Excel/Power BI training from Le CFO masqué).</li>
+<li><strong>Voluntary donations</strong> from users who want to support the project ("Buy me a coffee" button).</li>
+</ul>
+<p>On <strong>privacy</strong>, every calculation runs in your browser. No value you enter (income, mortgage, project) is sent to our servers. See our <a href="privacy-policy.html">privacy policy</a> for cookie details (anonymized Analytics, AdSense, language preference).</p>
+</div>
+</details>
+<details>
+<summary>General FAQ</summary>
+<div class="cx-seo-body">
+<p class="cx-faq-q">Are the calculations reliable?</p>
+<p>Yes. Our tools use standard financial formulas (compound interest, amortization, NPV, IRR). They reflect current Québec tax parameters. That said, they are <strong>informative</strong> and don't replace a professional's advice for important decisions.</p>
+<p class="cx-faq-q">Is my data saved?</p>
+<p>No — your inputs disappear when you close the page (only your language preference is kept locally). No information is sent to a server. You can export results to Excel where the tool offers it.</p>
+<p class="cx-faq-q">Can I use Calculix.ca on my phone?</p>
+<p>Absolutely. All calculators work on desktop, tablet and phone, in portrait or landscape. No app to install.</p>
+<p class="cx-faq-q">Can I embed a calculator on my own site?</p>
+<p>There's no official embeddable version yet. If you run a site that could benefit from integration (school, community organization, accounting firm), email us at <a href="mailto:info@calculix.ca">info@calculix.ca</a>.</p>
+<p class="cx-faq-q">What new tools are planned?</p>
+<p>We're working on additional calculators: Québec income tax, QPP and Old Age Security, rent-vs-buy comparison, student loan. Suggestions welcome at <a href="mailto:info@calculix.ca">info@calculix.ca</a>.</p>
+</div>
+</details>
+</div>
+<!-- ═══════════════════════════════ ESPAÑOL ═══════════════════════════════ -->
+</section>
+<footer>
+<div class="footer-links" id="footerLinks"></div>
+<div id="footerText">© 2026 Calculix.ca — For informational purposes only. Please consult a professional for your personal situation.</div>
+<div style="margin-top:8px;font-size:0.72rem;">
+<a href="mailto:info@calculix.ca">info@calculix.ca</a>
+</div>
+</footer>
+<script src="../assets/site-config.js?v=20260424j"></script>
+<script>
+const ACTIVE_PAGE = 'home';
+let lang = (window.CXSite && CXSite.getStoredLang()) || 'fr';
+
+const i18n = {
+  fr: {
+    heroBadge: '✨ 100 % gratuit · Sans inscription',
+    heroTitle: 'Vos calculs financiers <em>en quelques secondes</em>.',
+    heroTagline: "Séparation de pourboires, projection d'investissement et plus — bilingue, rapide, sans frais.",
+    toolsTitle: 'Nos calculateurs',
+    tipTitle: 'Séparation de pourboires',
+    tipSubtitle: 'Équitable ou au prorata des heures',
+    tipF1: 'Partage équitable par personne',
+    tipF2: 'Prorata selon les heures travaillées',
+    tipF3: "Calcul du pourboire sur l'addition",
+    tipCTA: 'Ouvrir le calculateur',
+    invTitle: "Projection d'investissement",
+    invSubtitle: 'Capital + cotisations + rendement composé',
+    invF1: 'Combien pour atteindre votre objectif ?',
+    invF2: 'Cotisations quotidiennes, hebdo, mensuelles ou annuelles',
+    invF3: "Tableau et graphique d'évolution",
+    invCTA: 'Ouvrir le calculateur',
+    vanTitle: 'VAN / TRI',
+    vanSubtitle: 'Valeur actuelle nette et taux de rendement interne',
+    vanF1: "Évaluez la rentabilité d'un projet d'investissement",
+    vanF2: 'Flux libres, constants ou avec croissance',
+    vanF3: 'TRI, période de récupération et indice de rentabilité',
+    vanCTA: 'Ouvrir le calculateur',
+    amoTitle: 'Amortissement de prêt',
+    amoSubtitle: 'Hypothèque, prêt auto ou personnel',
+    amoF1: 'Paiement périodique et intérêts totaux',
+    amoF2: "Calendrier complet d'amortissement",
+    amoF3: 'Comparaison avec versements supplémentaires',
+    amoCTA: 'Ouvrir le calculateur',
+    bcpTitle: 'Budget couple',
+    bcpSubtitle: 'Revenus, dépenses et partage équitable',
+    bcpF1: 'Comparez les revenus des deux conjoints',
+    bcpF2: 'Partage des dépenses au prorata',
+    bcpF3: "Règle 50/30/20 et taux d'épargne",
+    bcpCTA: 'Ouvrir le calculateur',
+    bpsTitle: 'Budget personne seule',
+    bpsSubtitle: 'Suivi mensuel des revenus et dépenses',
+    bpsF1: 'Toutes les fréquences (jour, semaine, 2 sem., mois, an)',
+    bpsF2: 'Règle 50/30/20 — besoins, désirs, épargne',
+    bpsF3: "Indicateur de santé financière et taux d'épargne",
+    bpsCTA: 'Ouvrir le calculateur',
+    eqsTitle: 'Équité salariale',
+    eqsSubtitle: 'Comparez votre salaire au marché',
+    eqsF1: 'Analyse par poste, secteur et expérience',
+    eqsF2: 'Détection des écarts salariaux',
+    eqsF3: 'Recommandations pour la négociation',
+    eqsCTA: 'Ouvrir le calculateur',
+    facTitle: 'Factures & reçus',
+    facSubtitle: 'Conforme Revenu Québec — TPS & TVQ',
+    facF1: 'Factures, reçus et soumissions professionnels',
+    facF2: 'Mémorise les infos de votre entreprise',
+    facF3: 'Historique sauvegardé et export PDF',
+    facCTA: 'Ouvrir le calculateur',
+    whyTitle: 'Pourquoi Calculix.ca ?',
+    why1T: '100 % gratuit',
+    why1P: 'Aucune inscription, aucun frais caché. Nos outils sont financés par quelques annonces discrètes.',
+    why2T: 'Trilingue FR / EN / ES',
+    why2P: "Basculez d'une langue à l'autre en un clic. Idéal pour les familles et équipes multiculturelles du Québec.",
+    why3T: 'Vos données restent privées',
+    why3P: "Aucun calcul n'est envoyé à un serveur. Tout se passe dans votre navigateur.",
+  },
+  en: {
+    heroBadge: '✨ 100 % free · No sign-up',
+    heroTitle: 'Your financial calculations, <em>in seconds</em>.',
+    heroTagline: 'Tip splitting, investment projection and more — bilingual, fast, free.',
+    toolsTitle: 'Our calculators',
+    tipTitle: 'Tip Splitter',
+    tipSubtitle: 'Even split or prorated by hours',
+    tipF1: 'Even split per person',
+    tipF2: 'Prorated based on hours worked',
+    tipF3: 'Tip calculation on the bill',
+    tipCTA: 'Open calculator',
+    invTitle: 'Investment Projection',
+    invSubtitle: 'Capital + contributions + compound return',
+    invF1: 'How much to reach your goal?',
+    invF2: 'Daily, weekly, monthly or yearly contributions',
+    invF3: 'Evolution table and chart',
+    invCTA: 'Open calculator',
+    vanTitle: 'NPV / IRR',
+    vanSubtitle: 'Net present value and internal rate of return',
+    vanF1: 'Assess the profitability of an investment project',
+    vanF2: 'Custom, constant or growing cash flows',
+    vanF3: 'IRR, payback period and profitability index',
+    vanCTA: 'Open calculator',
+    amoTitle: 'Loan amortization',
+    amoSubtitle: 'Mortgage, auto or personal loan',
+    amoF1: 'Periodic payment and total interest',
+    amoF2: 'Complete amortization schedule',
+    amoF3: 'Comparison with extra payments',
+    amoCTA: 'Open calculator',
+    bcpTitle: 'Couple Budget',
+    bcpSubtitle: 'Income, expenses and fair sharing',
+    bcpF1: 'Compare both partners\' income',
+    bcpF2: 'Pro-rated expense sharing',
+    bcpF3: '50/30/20 rule and savings rate',
+    bcpCTA: 'Open calculator',
+    bpsTitle: 'Personal Budget',
+    bpsSubtitle: 'Monthly tracking of income and expenses',
+    bpsF1: 'All frequencies (daily, weekly, bi-weekly, monthly, yearly)',
+    bpsF2: '50/30/20 rule — needs, wants, savings',
+    bpsF3: 'Financial health indicator and savings rate',
+    bpsCTA: 'Open calculator',
+    eqsTitle: 'Pay Equity',
+    eqsSubtitle: 'Compare your salary to the market',
+    eqsF1: 'Analysis by position, industry and experience',
+    eqsF2: 'Detect pay gaps',
+    eqsF3: 'Recommendations for negotiation',
+    eqsCTA: 'Open calculator',
+    facTitle: 'Invoices & Receipts',
+    facSubtitle: 'Revenu Québec compliant — GST & QST',
+    facF1: 'Professional invoices, receipts and quotes',
+    facF2: 'Remembers your company info',
+    facF3: 'Saved history and PDF export',
+    facCTA: 'Open calculator',
+    whyTitle: 'Why Calculix.ca?',
+    why1T: '100 % free',
+    why1P: 'No sign-up, no hidden fees. Our tools are funded by a few discreet ads.',
+    why2T: 'Trilingual FR / EN / ES',
+    why2P: 'Switch languages in one click. Ideal for multicultural families and teams in Quebec.',
+    why3T: 'Your data stays private',
+    why3P: 'No calculation is sent to any server — everything happens in your browser.',
+  },
+  es: {
+    heroBadge: '✨ 100 % gratis · Sin registro',
+    heroTitle: 'Sus cálculos financieros, <em>en segundos</em>.',
+    heroTagline: 'División de propinas, proyección de inversión y más — bilingüe, rápido, gratis.',
+    toolsTitle: 'Nuestras calculadoras',
+    tipTitle: 'Divisor de propinas',
+    tipSubtitle: 'Igual o según las horas trabajadas',
+    tipF1: 'Reparto igual por persona',
+    tipF2: 'Prorrateo según las horas trabajadas',
+    tipF3: 'Cálculo de la propina sobre la cuenta',
+    tipCTA: 'Abrir calculadora',
+    invTitle: 'Proyección de inversión',
+    invSubtitle: 'Capital + aportes + rendimiento compuesto',
+    invF1: '¿Cuánto para alcanzar su meta?',
+    invF2: 'Aportes diarios, semanales, mensuales o anuales',
+    invF3: 'Tabla y gráfico de evolución',
+    invCTA: 'Abrir calculadora',
+    vanTitle: 'VAN / TIR',
+    vanSubtitle: 'Valor actual neto y tasa interna de retorno',
+    vanF1: 'Evalúe la rentabilidad de un proyecto de inversión',
+    vanF2: 'Flujos libres, constantes o con crecimiento',
+    vanF3: 'TIR, período de recuperación e índice de rentabilidad',
+    vanCTA: 'Abrir calculadora',
+    amoTitle: 'Amortización de préstamo',
+    amoSubtitle: 'Hipoteca, préstamo de auto o personal',
+    amoF1: 'Pago periódico e intereses totales',
+    amoF2: 'Calendario completo de amortización',
+    amoF3: 'Comparación con pagos extra',
+    amoCTA: 'Abrir calculadora',
+    bcpTitle: 'Presupuesto de pareja',
+    bcpSubtitle: 'Ingresos, gastos y reparto justo',
+    bcpF1: 'Compare los ingresos de ambos cónyuges',
+    bcpF2: 'Reparto de gastos a prorrata',
+    bcpF3: 'Regla 50/30/20 y tasa de ahorro',
+    bcpCTA: 'Abrir calculadora',
+    bpsTitle: 'Presupuesto personal',
+    bpsSubtitle: 'Seguimiento mensual de ingresos y gastos',
+    bpsF1: 'Todas las frecuencias (día, semana, quincena, mes, año)',
+    bpsF2: 'Regla 50/30/20 — necesidades, deseos, ahorro',
+    bpsF3: 'Indicador de salud financiera y tasa de ahorro',
+    bpsCTA: 'Abrir calculadora',
+    eqsTitle: 'Equidad salarial',
+    eqsSubtitle: 'Compare su salario con el mercado',
+    eqsF1: 'Análisis por puesto, sector y experiencia',
+    eqsF2: 'Detección de brechas salariales',
+    eqsF3: 'Recomendaciones para la negociación',
+    eqsCTA: 'Abrir calculadora',
+    facTitle: 'Facturas y recibos',
+    facSubtitle: 'Conforme Revenu Québec — GST y QST',
+    facF1: 'Facturas, recibos y cotizaciones profesionales',
+    facF2: 'Recuerda los datos de su empresa',
+    facF3: 'Historial guardado y exportación PDF',
+    facCTA: 'Abrir calculadora',
+    whyTitle: '¿Por qué Calculix.ca?',
+    why1T: '100 % gratis',
+    why1P: 'Sin registro, sin costos ocultos. Nuestras herramientas se financian con algunos anuncios discretos.',
+    why2T: 'Trilingüe FR / EN / ES',
+    why2P: 'Cambie de idioma con un clic. Ideal para familias y equipos multiculturales de Quebec.',
+    why3T: 'Sus datos permanecen privados',
+    why3P: 'Ningún cálculo se envía a un servidor — todo ocurre en su navegador.',
+  }
+};
+
+function updateLangToggleUI() {
+  document.querySelectorAll('#langToggle .lang-opt').forEach(function(el){
+    el.classList.toggle('active', el.dataset.lang === lang);
+  });
+}
+
+function toggleLang() {
+  lang = CXSite.cycleLang(lang);
+  CXSite.setStoredLang(lang);
+  document.documentElement.lang = lang;
+  updateLangToggleUI();
+  applyTranslations();
+}
+
+function applyTranslations() {
+  var t = i18n[lang];
+  var s = CXSite.SHARED[lang];
+  var setText = function(id, val) { var el = document.getElementById(id); if (el) el.textContent = val; };
+  var setHtml = function(id, val) { var el = document.getElementById(id); if (el) el.innerHTML = val; };
+
+  document.body.dataset.lang = lang;
+  setText('headerSubtitle', s.headerSubtitle);
+  setText('heroBadge', t.heroBadge);
+  setHtml('heroTitle', t.heroTitle);
+  setText('heroTagline', t.heroTagline);
+  setText('toolsTitle', t.toolsTitle);
+  setText('tipTitle', t.tipTitle);
+  setText('tipSubtitle', t.tipSubtitle);
+  setText('tipF1', t.tipF1);
+  setText('tipF2', t.tipF2);
+  setText('tipF3', t.tipF3);
+  setHtml('tipCTA', t.tipCTA + ' <span class="arrow">→</span>');
+  setText('invTitle', t.invTitle);
+  setText('invSubtitle', t.invSubtitle);
+  setText('invF1', t.invF1);
+  setText('invF2', t.invF2);
+  setText('invF3', t.invF3);
+  setHtml('invCTA', t.invCTA + ' <span class="arrow">→</span>');
+
+  var cards = ['van', 'amo', 'bcp', 'bps', 'eqs', 'fac'];
+  cards.forEach(function(k){
+    setText(k + 'Title', t[k + 'Title']);
+    setText(k + 'Subtitle', t[k + 'Subtitle']);
+    setText(k + 'F1', t[k + 'F1']);
+    setText(k + 'F2', t[k + 'F2']);
+    setText(k + 'F3', t[k + 'F3']);
+    setHtml(k + 'CTA', t[k + 'CTA'] + ' <span class="arrow">→</span>');
+  });
+
+  setText('whyTitle', t.whyTitle);
+  setText('why1T', t.why1T); setText('why1P', t.why1P);
+  setText('why2T', t.why2T); setText('why2P', t.why2P);
+  setText('why3T', t.why3T); setText('why3P', t.why3P);
+  setText('footerText', s.footerText);
+
+  CXSite.renderNav(lang, ACTIVE_PAGE);
+  CXSite.renderFooterLinks(lang, 'footerLinks');
+  document.getElementById('partnersRow').innerHTML =
+    CXSite.amazonAd(lang) + CXSite.cfoMasqueAd(lang) + CXSite.alchimixAd(lang);
+}
+
+document.documentElement.lang = lang;
+updateLangToggleUI();
+applyTranslations();
+</script>
+<!-- Filet de sécurité -->
+<script>
+(function(){
+  function safetyRender() {
+    try {
+      if (!window.CXSite) return;
+      var curLang = (typeof lang === 'string' && lang) ? lang : ((CXSite.getStoredLang && CXSite.getStoredLang()) || 'fr');
+      var nav = document.getElementById('siteNav');
+      if (nav && nav.innerHTML.trim().length === 0) CXSite.renderNav(curLang, 'home', 'siteNav');
+      var fl = document.getElementById('footerLinks');
+      if (fl && fl.innerHTML.trim().length === 0) CXSite.renderFooterLinks(curLang, 'footerLinks');
+      var ads = document.getElementById('partnersRow');
+      if (ads && ads.innerHTML.trim().length === 0) ads.innerHTML = CXSite.amazonAd(curLang) + CXSite.cfoMasqueAd(curLang) + CXSite.alchimixAd(curLang);
+      if (CXSite.checkAdBlockAndNotify) CXSite.checkAdBlockAndNotify(curLang);
+    } catch(e) { console.warn('safetyRender index:', e); }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', safetyRender);
+  else safetyRender();
+  window.addEventListener('load', safetyRender);
+})();
+</script>
+</body>
+</html>
