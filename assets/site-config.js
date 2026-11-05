@@ -28,7 +28,7 @@
       headerSubtitle: 'Calculs financiers gratuits · Québec',
       footerText:     '© 2026 Calculix.ca — Outil informatif uniquement. Consultez un professionnel pour votre situation personnelle.',
       affiliateDisclosure: 'En tant que Partenaire Amazon, Calculix.ca réalise un bénéfice sur les achats remplissant les conditions requises. Ce site contient aussi des liens d\'affiliation (ex: Le CFO masqué) — nous pouvons recevoir une commission sans frais supplémentaires pour vous.',
-      adLabel: 'Annonce',
+      adLabel: 'Partenaire',
       cfoHeadline: 'Devenez un pro d\'Excel et Power BI',
       cfoSubline: 'Formations francophones pour analystes, contrôleurs et gestionnaires.',
       cfoPromo: 'Utilisez le code promo',
@@ -60,7 +60,7 @@
       headerSubtitle: 'Free financial calculators · Québec',
       footerText:     '© 2026 Calculix.ca — For informational purposes only. Please consult a professional for your personal situation.',
       affiliateDisclosure: 'As an Amazon Associate, Calculix.ca earns from qualifying purchases. This site also contains other affiliate links (e.g., Le CFO masqué) — we may earn a commission at no extra cost to you.',
-      adLabel: 'Ad',
+      adLabel: 'Partner',
       cfoHeadline: 'Become an Excel & Power BI pro',
       cfoSubline: 'French-language training for analysts, controllers and managers.',
       cfoPromo: 'Use promo code',
@@ -92,7 +92,7 @@
       headerSubtitle: 'Calculadoras financieras gratuitas · Québec',
       footerText:     '© 2026 Calculix.ca — Solo con fines informativos. Consulte a un profesional para su situación personal.',
       affiliateDisclosure: 'Como Afiliado de Amazon, Calculix.ca obtiene ingresos por compras que cumplan los requisitos. Este sitio también contiene otros enlaces de afiliados (ej. Le CFO masqué) — podemos recibir una comisión sin costo adicional para usted.',
-      adLabel: 'Anuncio',
+      adLabel: 'Socio',
       cfoHeadline: 'Conviértase en experto de Excel y Power BI',
       cfoSubline: 'Formaciones en francés para analistas, contables y gerentes.',
       cfoPromo: 'Use el código promo',
@@ -433,6 +433,8 @@
 
   function checkAdBlockAndNotify(lang, opts) {
     opts = opts || {};
+    // Désactivé temporairement pendant l'examen AdSense (réactiver : supprimer la ligne suivante).
+    if (!opts.force) return;
     if (!opts.force && getAdblockDismissed()) return;
     // Laisser à la page le temps de se charger avant de déranger l'utilisateur
     setTimeout(function () {
