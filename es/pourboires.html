@@ -210,6 +210,10 @@
     .card-header h1 { font-size: 1.2rem; }
     .worker-row { grid-template-columns: 1fr 1fr 32px; gap: 6px; }
   }
+  .related-box { margin:26px 0 10px; background:var(--blanc); border-radius:12px; padding:16px 20px; box-shadow:0 4px 24px rgba(26,58,92,0.08); border-left:4px solid var(--accent); }
+  .related-box h3 { font-size:1rem; margin:0 0 8px; color:var(--bleu); }
+  .related-box ul { margin:0 0 0 18px; line-height:1.8; }
+  .related-box a { color:var(--bleu-clair); }
 </style>
 <link href="https://www.calculix.ca/es/pourboires.html" rel="canonical"/><link href="https://www.calculix.ca/pourboires.html" hreflang="fr" rel="alternate"/><link href="https://www.calculix.ca/en/pourboires.html" hreflang="en" rel="alternate"/><link href="https://www.calculix.ca/es/pourboires.html" hreflang="es" rel="alternate"/><link href="https://www.calculix.ca/pourboires.html" hreflang="x-default" rel="alternate"/></head>
 <body>
@@ -262,7 +266,7 @@
 <input id="tipTotalH" min="0" placeholder="ex: 350.00" step="0.01" type="number"/>
 </div>
 <label id="labelWorkers">Empleados y horas trabajadas</label>
-<div class="workers-list" id="workersList"><div class="worker-row"><input oninput="updateWorker('1793844648871-0', 'name', this.value)" placeholder="Nombre" type="text" value="Mesero 1"/><input min="0" oninput="updateWorker('1793844648871-0', 'hours', this.value)" placeholder="Horas" step="0.25" type="number" value=""/><button class="remove" onclick="removeWorker('1793844648871-0')" title="Supprimer" type="button">×</button></div><div class="worker-row"><input oninput="updateWorker('1793844648871-1', 'name', this.value)" placeholder="Nombre" type="text" value="Mesero 2"/><input min="0" oninput="updateWorker('1793844648871-1', 'hours', this.value)" placeholder="Horas" step="0.25" type="number" value=""/><button class="remove" onclick="removeWorker('1793844648871-1')" title="Supprimer" type="button">×</button></div><div class="worker-row"><input oninput="updateWorker('1793844648871-2', 'name', this.value)" placeholder="Nombre" type="text" value="Ayudante"/><input min="0" oninput="updateWorker('1793844648871-2', 'hours', this.value)" placeholder="Horas" step="0.25" type="number" value=""/><button class="remove" onclick="removeWorker('1793844648871-2')" title="Supprimer" type="button">×</button></div></div>
+<div class="workers-list" id="workersList"><div class="worker-row"><input oninput="updateWorker('1793845012310-0', 'name', this.value)" placeholder="Nombre" type="text" value="Mesero 1"/><input min="0" oninput="updateWorker('1793845012310-0', 'hours', this.value)" placeholder="Horas" step="0.25" type="number" value=""/><button class="remove" onclick="removeWorker('1793845012310-0')" title="Supprimer" type="button">×</button></div><div class="worker-row"><input oninput="updateWorker('1793845012310-1', 'name', this.value)" placeholder="Nombre" type="text" value="Mesero 2"/><input min="0" oninput="updateWorker('1793845012310-1', 'hours', this.value)" placeholder="Horas" step="0.25" type="number" value=""/><button class="remove" onclick="removeWorker('1793845012310-1')" title="Supprimer" type="button">×</button></div><div class="worker-row"><input oninput="updateWorker('1793845012310-2', 'name', this.value)" placeholder="Nombre" type="text" value="Ayudante"/><input min="0" oninput="updateWorker('1793845012310-2', 'hours', this.value)" placeholder="Horas" step="0.25" type="number" value=""/><button class="remove" onclick="removeWorker('1793845012310-2')" title="Supprimer" type="button">×</button></div></div>
 <button class="add-worker-btn" id="addWorkerBtn" onclick="addWorker()" type="button">+ <span id="addWorkerLbl">Agregar un empleado</span></button>
 <div class="result-box empty" id="resultHours" style="margin-top:20px;">
 <div class="result-label" id="resultHoursLabel">Total de horas</div>
